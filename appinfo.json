@@ -1,0 +1,9 @@
+{
+	"id": "com.1912software.rosy-palm-box",
+	"version": "0.1.0",
+	"vendor": "1912software",
+	"type": "web",
+	"main": "index.html",
+	"title": "rosy-palm-box",
+	"icon": "icon.png"
+}

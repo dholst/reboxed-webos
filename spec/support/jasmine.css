@@ -1,0 +1,3 @@
+div.suite.passed, div.suite.skipped {
+  display: none;
+}
