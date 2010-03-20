@@ -15,6 +15,25 @@ Movie = Class.create({
   }
 });
 
+Movie.findAll = function(success, failure) {
+  var onSuccess = function(resultSet) {
+    var movies = [];
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      movies.push(Movie.fromJson(resultSet.rows.item(i)));
+    }
+
+    success(movies);
+  }
+
+  var onFailure = function(message) {
+    Mojo.Log.error("findAll failed", message)
+    failure(message);
+  }
+
+  Database.getInstance().execute("select * from movies", [], onSuccess, onFailure);
+};
+
 Movie.find = function(id, success, failure) {
   var onSuccess = function(resultSet) {
     if(resultSet.rows.length != 1) {
