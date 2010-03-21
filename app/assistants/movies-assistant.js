@@ -1,16 +1,36 @@
 MoviesAssistant = Class.create({
   setup: function() {
     this.listAttributes = {
+      renderLimit: 10,
+      lookahead: 5,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
+      onItemRendered: this.itemRendered.bind(this),
       itemsCallback: this.itemsCallback.bind(this)
     };
 
     this.controller.setupWidget("movies", this.listAttributes);
-    this.paginate(0, 50);
+    this.imageCached = this.imageCached.bind(this);
+    this.controller.listen(document, Redbox.Event.imageCached, this.imageCached);
+    this.paginate(0, 30);
+  },
+
+  cleanup: function() {
+    this.controller.stopListening(document, Redbox.Event.imageCached, this.imageCahced);
+  },
+
+  imageCached: function(event) {
+    var img = this.controller.get("img-" + event.movie.id);
+    img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
+  },
+
+  itemRendered: function(listWidget, movie, node) {
+    Mojo.Log.info("rendering", movie.name);
+    movie.cacheImage();
   },
 
   itemsCallback: function(listWidget, offset, count) {
+    Mojo.Log.info("need", count, "more at", offset);
     this.paginate(offset, count);
   },
 

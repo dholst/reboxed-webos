@@ -1,4 +1,9 @@
 Movie = Class.create({
+  initialize: function() {
+    this.imageSource = "http://images.redbox.com/Images/Thumbnails";
+    this.cacheDirectory = "/media/internal/files/redbox-palm/cache";
+  },
+
   save: function(success, failure) {
     Mojo.Log.info("Saving", this.name);
 
@@ -11,7 +16,24 @@ Movie = Class.create({
       failure();
     }
 
-    Database.getInstance().execute("insert into movies(id, name, image) values(?, ?, ?)", [this.id, this.name, this.image], saveSuccess, saveFailure);
+    Database.getInstance().execute("insert into movies(id, name, image, released) values(?, ?, ?, ?)", [this.id, this.name, this.image, this.released.getTime()], saveSuccess, saveFailure);
+  },
+
+  cacheImage: function() {
+    var movie = this;
+
+    new Ajax.Request("file://" + this.cacheDirectory + "/" + this.image, {
+      method: "get",
+
+      onComplete: function(resp) {
+        if(resp.getStatus() != 200) {
+          DownloadManager.download(movie.imageSource + "/" + movie.image, movie.cacheDirectory, movie.image, function() {
+            Mojo.Event.send(document, Redbox.Event.imageCached, {movie: movie});
+          });
+        }
+      }
+    });
+
   }
 });
 
@@ -42,7 +64,7 @@ Movie.paginate = function(offset, count, success, failure) {
     failure(message);
   }
 
-  var sql = "select * from movies order by name limit " + count + " offset " + offset;
+  var sql = "select * from movies order by released desc, name limit " + count + " offset " + offset;
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
@@ -69,5 +91,6 @@ Movie.fromJson = function(json) {
   movie.id = json.id;
   movie.name = json.name;
   movie.image = json.image;
+  movie.released = new Date(json.released);
   return movie;
 };

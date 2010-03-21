@@ -8,7 +8,7 @@ MovieSync = {
   },
 
   syncMovies: function(response) {
-    this.syncMovie(response.responseJSON, 0);
+    this.syncMovie(response.responseJSON, 1200);
   },
 
   syncMovie: function(movies, index) {
@@ -26,7 +26,7 @@ MovieSync = {
     Mojo.Log.error("Sync failure", response.getStatus());
     this.syncComplete();
   },
-  
+
   syncComplete: function() {
     Mojo.Event.send(document, Redbox.Event.movieSyncComplete, {});
   }

@@ -2,13 +2,14 @@ describe("Movie", function() {
   var movie;
 
   beforeEach(function() {
-    movie = Movie.fromJson({id: 1234, name: "name", image: "image"});
+    movie = Movie.fromJson({id: 1234, name: "name", image: "image", "released": new Date().getTime()});
   });
 
   it("should have created a movie from json", function() {
     expect(movie.id).toEqual(1234);
     expect(movie.name).toEqual("name");
     expect(movie.image).toEqual("image");
+    //expect(movie.released).toEqual(new Date("2009-08-05")); WTF??? Safari can't parse yyyy-mm-dd
   });
 
   describe("database", function() {
@@ -70,26 +71,26 @@ describe("Movie", function() {
         databaseFailure();
         expect(callback).wasCalled();
       });
-      
+
       it("should execute pagination sql", function() {
         Movie.paginate(0, 10);
-        expectSql("select * from movies order by name limit 10 offset 0");
+        expectSql("select * from movies order by released desc, name limit 10 offset 0");
       });
-      
+
       it("should create movies when paginating", function() {
         spyOn(Movie, "fromJson").andReturn("movie");
-        
+
         Movie.paginate(0, 10, callback);
         databaseSuccess(["movie1", "movie2"]);
-        
+
         expect(callback).wasCalledWith(["movie", "movie"]);
       });
     });
 
     describe("saving", function() {
-      it("should execute some sweet sql", function() {
+      it("should execute sql", function() {
         movie.save();
-        expectSql("insert into movies(id, name, image) values(?, ?, ?)", [movie.id, movie.name, movie.image]);
+        expectSql("insert into movies(id, name, image, released) values(?, ?, ?, ?)", [movie.id, movie.name, movie.image, movie.released.getTime()]);
       });
 
       it("should callback on success", function() {
@@ -119,5 +120,4 @@ describe("Movie", function() {
       database.execute.mostRecentCall.args[3](message);
     }
   });
-
 });

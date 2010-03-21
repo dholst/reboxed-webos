@@ -1,1 +1,22 @@
-/* TODO: put your application-specific CSS here */
+body {
+  background-color: #500005 !important;
+}
+
+div.palm-list.movies {
+  padding: 7px;
+}
+
+div.palm-row.movie {
+  height: ;
+  padding: 5px;
+}
+
+div.palm-row.movie img {
+  float: left;
+  width: 75px;
+  height: 108px
+}
+
+div.clear {
+  clear: both;
+}
