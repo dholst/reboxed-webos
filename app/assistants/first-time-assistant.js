@@ -1,6 +1,6 @@
 FirstTimeAssistant = Class.create({
   setup: function() {
-    this.controller.listen(document, Event.movieSyncComplete, this.syncComplete.bind(this));
+    this.controller.listen(document, Redbox.Event.movieSyncComplete, this.syncComplete.bind(this));
     MovieSync.sync();
   },
   

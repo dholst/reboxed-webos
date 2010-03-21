@@ -18,7 +18,7 @@ describe("Movie Sync", function() {
     MovieSync.sync();
 
     Ajax.Request.mostRecentCall.args[1].onFailure({getStatus: function(){return 404;}});
-    expect(Mojo.Event.send).wasCalledWith(document, Event.movieSyncComplete, {});
+    expect(Mojo.Event.send).wasCalledWith(document, Redbox.Event.movieSyncComplete, {});
   });
 
   it("should start the sync recursion", function() {
@@ -46,6 +46,6 @@ describe("Movie Sync", function() {
 
     MovieSync.syncMovie(["movie1", "movie2"], 2);
 
-    expect(Mojo.Event.send).wasCalledWith(document, Event.movieSyncComplete, {});
+    expect(Mojo.Event.send).wasCalledWith(document, Redbox.Event.movieSyncComplete, {});
   });
 });

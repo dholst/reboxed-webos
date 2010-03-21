@@ -25,94 +25,99 @@ describe("Movie", function() {
     describe("reading", function() {
       it("should execute count sql", function() {
         Movie.count();
-
-        var expectedSql = "select count(*) as count from movies";
-        expect(database.execute).wasCalledWith(expectedSql, [], jasmine.any(Function), jasmine.any(Function));
+        expectSql("select count(*) as count from movies");
       });
-      
+
       it("should return count", function() {
         Movie.count(callback);
-        
-        database.execute.mostRecentCall.args[2](new ResultSetStub([{count: 5}]));
-        
+        databaseSuccess([{count: 5}]);
         expect(callback).wasCalledWith(5);
       });
-      
+
       it("should return null for count on error", function() {
         Movie.count(callback);
-        
-        database.execute.mostRecentCall.args[3]("error");
-        
+        databaseFailure();
         expect(callback).wasCalledWith(null);
       });
 
-      it("should execute some sweet sql", function() {
+      it("should execute find sql", function() {
         Movie.find(1234);
-
-        var expectedSql = "select * from movies where id = ?";
-        var expectedValues = [1234];
-        expect(database.execute).wasCalledWith(expectedSql, expectedValues, jasmine.any(Function), jasmine.any(Function));
+        expectSql("select * from movies where id = ?", [1234]);
       });
 
-      it("should construct a movie on success", function() {
+      it("should build a movie when found", function() {
         Movie.find(1234, callback);
-
-        expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[2](new ResultSetStub([{id: 1234}]));
+        databaseSuccess([{id: 1234}]);
         expect(callback).wasCalledWith(jasmine.any(Movie));
         expect(callback.mostRecentCall.args[0].id).toEqual(1234);
       });
 
       it("should call failure when no rows found", function() {
         Movie.find(1234, null, callback);
-
         expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[2](new ResultSetStub([]));
+        databaseSuccess([]);
         expect(callback).wasCalled();
       });
 
       it("should call failure when 2 rows found", function() {
         Movie.find(1234, null, callback);
-
-        expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[2](new ResultSetStub([{}, {}]));
+        databaseSuccess([{}, {}]);
         expect(callback).wasCalled();
       });
 
       it("should call failure when there was a database failure", function() {
         Movie.find(1234, null, callback);
-
-        expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[3]();
+        databaseFailure();
         expect(callback).wasCalled();
+      });
+      
+      it("should execute pagination sql", function() {
+        Movie.paginate(0, 10);
+        expectSql("select * from movies order by name limit 10 offset 0");
+      });
+      
+      it("should create movies when paginating", function() {
+        spyOn(Movie, "fromJson").andReturn("movie");
+        
+        Movie.paginate(0, 10, callback);
+        databaseSuccess(["movie1", "movie2"]);
+        
+        expect(callback).wasCalledWith(["movie", "movie"]);
       });
     });
 
     describe("saving", function() {
       it("should execute some sweet sql", function() {
         movie.save();
-
-        var expectedSql = "insert into movies(id, name, image) values(?, ?, ?)";
-        var expectedValues = [movie.id, movie.name, movie.image];
-        expect(database.execute).wasCalledWith(expectedSql, expectedValues, jasmine.any(Function), jasmine.any(Function));
+        expectSql("insert into movies(id, name, image) values(?, ?, ?)", [movie.id, movie.name, movie.image]);
       });
 
       it("should callback on success", function() {
         movie.save(callback);
-
-        expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[2]();
+        databaseSuccess();
         expect(callback).wasCalled();
       });
 
       it("should callback on failure", function() {
         movie.save(null, callback);
-
-        expect(database.execute).wasCalled();
-        database.execute.mostRecentCall.args[3]();
+        databaseFailure();
         expect(callback).wasCalled();
       });
     });
+
+    function expectSql(sql, values) {
+      values = values || [];
+      expect(database.execute).wasCalledWith(sql, values, jasmine.any(Function), jasmine.any(Function));
+    }
+
+    function databaseSuccess(rows) {
+      database.execute.mostRecentCall.args[2](rows ? new ResultSetStub(rows) : undefined);
+    }
+
+    function databaseFailure(message) {
+      message = message || "error";
+      database.execute.mostRecentCall.args[3](message);
+    }
   });
 
 });

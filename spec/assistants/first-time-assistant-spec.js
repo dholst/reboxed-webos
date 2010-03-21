@@ -13,7 +13,7 @@ describe("First Time Assistant", function() {
 
     assistant.setup();
 
-    expect(assistant.controller.listen).wasCalledWith(document, Event.movieSyncComplete, jasmine.any(Function));
+    expect(assistant.controller.listen).wasCalledWith(document, Redbox.Event.movieSyncComplete, jasmine.any(Function));
     expect(MovieSync.sync).wasCalled();
     assistant.controller.listen.mostRecentCall.args[2]();
     expect(assistant.controller.stageController.pushScene).wasCalledWith("movies");

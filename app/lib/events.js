@@ -1,3 +1,5 @@
-Event = {
-  movieSyncComplete: "movie-sync-complete"
+Redbox = {
+  Event: {
+    movieSyncComplete: "movie-sync-complete"
+  }
 };

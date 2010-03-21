@@ -15,8 +15,19 @@ Movie = Class.create({
   }
 });
 
-/*
-Movie.findAll = function(success, failure) {
+Movie.count = function(result) {
+  var onSuccess = function(resultSet) {
+    result(resultSet.rows.item(0).count);
+  }
+
+  var onFailure = function(message) {
+    result(null);
+  }
+
+  Database.getInstance().execute("select count(*) as count from movies", [], onSuccess, onFailure);
+};
+
+Movie.paginate = function(offset, count, success, failure) {
   var onSuccess = function(resultSet) {
     var movies = [];
 
@@ -28,24 +39,11 @@ Movie.findAll = function(success, failure) {
   }
 
   var onFailure = function(message) {
-    Mojo.Log.error("findAll failed", message)
     failure(message);
   }
 
-  Database.getInstance().execute("select * from movies", [], onSuccess, onFailure);
-};
-*/
-
-Movie.count = function(result) {
-  var onSuccess = function(resultSet) {
-    result(resultSet.rows.item(0).count);
-  }
-
-  var onFailure = function(message) {
-    result(null);
-  }
-
-  Database.getInstance().execute("select count(*) as count from movies", [], onSuccess, onFailure);
+  var sql = "select * from movies order by name limit " + count + " offset " + offset;
+  Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
 Movie.find = function(id, success, failure) {
