@@ -1,6 +1,6 @@
 MovieSync = {
   sync: function() {
-    new Ajax.Request("http://192.168.2.106:3000/movies", {
+    new Ajax.Request("http://redboxmovies.heroku.com/movies", {
       method: "get",
       onSuccess: this.syncMovies.bind(this),
       onFailure: this.syncFailure.bind(this)
@@ -8,7 +8,7 @@ MovieSync = {
   },
 
   syncMovies: function(response) {
-    this.syncMovie(response.responseJSON, 1000);
+    this.syncMovie(response.responseJSON, 0);
   },
 
   syncMovie: function(movies, index) {
@@ -26,7 +26,7 @@ MovieSync = {
     Mojo.Log.error("Sync failure", response.getStatus());
     this.syncComplete();
   },
-
+  
   syncComplete: function() {
     Mojo.Event.send(document, Redbox.Event.movieSyncComplete, {});
   }
