@@ -4,17 +4,16 @@ MoviesAssistant = Class.create({
   },
 
   setup: function() {
-    this.controller.setupWidget('movies', {itemTemplate: 'movies/movie'}, this.movies);
-    Movie.findAll(this.moviesFound.bind(this), function(){});
+    var listAttributes = {
+      itemCallback: this.moreMovies.bind(this),
+      lookahead: 10,
+      itemTemplate: "movies/movie"
+    };
+
+    this.controller.setupWidget("movies", listAttributes, this.movies);
   },
 
-  moviesFound: function(movies) {
-    this.movies.items.clear();
-
-    for(var i = 0; i < 10 && i < movies.length; i++) {
-      this.movies.items.push(movies[i]);
-    }
-
-    this.controller.modelChanged(this.movies);
+  moreMovies: function(widget, offset, count) {
+    console.log("offset: " + offset + ", count: " + count);
   }
 });

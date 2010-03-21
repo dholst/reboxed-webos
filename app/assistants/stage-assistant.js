@@ -5,6 +5,9 @@ StageAssistant = Class.create({
   },
 
   databaseOpened: function() {
-    this.controller.pushScene("movies");
+    Movie.count(function(count) {
+      var scene = count ? "movies" : "first-time";
+      this.controller.pushScene(scene);
+    }.bind(this));
   }
 });

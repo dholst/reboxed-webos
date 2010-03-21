@@ -23,6 +23,29 @@ describe("Movie", function() {
     });
 
     describe("reading", function() {
+      it("should execute count sql", function() {
+        Movie.count();
+
+        var expectedSql = "select count(*) as count from movies";
+        expect(database.execute).wasCalledWith(expectedSql, [], jasmine.any(Function), jasmine.any(Function));
+      });
+      
+      it("should return count", function() {
+        Movie.count(callback);
+        
+        database.execute.mostRecentCall.args[2](new ResultSetStub([{count: 5}]));
+        
+        expect(callback).wasCalledWith(5);
+      });
+      
+      it("should return null for count on error", function() {
+        Movie.count(callback);
+        
+        database.execute.mostRecentCall.args[3]("error");
+        
+        expect(callback).wasCalledWith(null);
+      });
+
       it("should execute some sweet sql", function() {
         Movie.find(1234);
 
@@ -55,7 +78,7 @@ describe("Movie", function() {
         database.execute.mostRecentCall.args[2](new ResultSetStub([{}, {}]));
         expect(callback).wasCalled();
       });
-      
+
       it("should call failure when there was a database failure", function() {
         Movie.find(1234, null, callback);
 
