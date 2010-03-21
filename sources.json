@@ -1,5 +1,7 @@
 [
   {source: "app/lib/ajax.js"},
+  {source: "app/lib/events.js"},
+  {source: "app/lib/movie-sync.js"},
   {source: "app/models/database.js"},
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},

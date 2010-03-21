@@ -1,9 +1,9 @@
 {
-	"id": "com.1912software.rosy-palm-box",
+	"id": "com.1912software.redbox-palm",
 	"version": "0.1.0",
 	"vendor": "1912software",
 	"type": "web",
 	"main": "index.html",
-	"title": "rosy-palm-box",
+	"title": "redbox-palm",
 	"icon": "icon.png"
 }
