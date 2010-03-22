@@ -9,12 +9,13 @@ describe("Movies Assistant", function() {
   it("should setup the scene", function() {
     spyOn(Movie, "paginate");
     spyOn(assistant.controller, "setupWidget");
+    spyOn(assistant.controller, "listen");
 
     assistant.setup();
 
     expect(assistant.controller.setupWidget).wasCalledWith("movies", jasmine.any(Object));
-    assistant.controller.setupWidget.mostRecentCall.args[1].itemsCallback(null, 50, 10);
-    expect(Movie.paginate).wasCalledWith(0, 50, jasmine.any(Function), jasmine.any(Function));
-    expect(Movie.paginate).wasCalledWith(50, 10, jasmine.any(Function), jasmine.any(Function));
+    assistant.controller.setupWidget.mostRecentCall.args[1].itemsCallback(null, 30, 10);
+    expect(Movie.paginate).wasCalledWith(0, 30, jasmine.any(Function), jasmine.any(Function));
+    expect(Movie.paginate).wasCalledWith(30, 10, jasmine.any(Function), jasmine.any(Function));
   });
 });

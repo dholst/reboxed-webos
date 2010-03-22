@@ -8,7 +8,7 @@ MovieSync = {
   },
 
   syncMovies: function(response) {
-    this.syncMovie(response.responseJSON, 1200);
+    this.syncMovie(response.responseJSON, 0);
   },
 
   syncMovie: function(movies, index) {
