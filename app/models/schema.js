@@ -8,7 +8,8 @@ SCHEMA = {
         "'id' integer primary key not null",
         "'name' text",
         "'image' text",
-        "'released' real"
+        "'released' real",
+        "'rating' text"
       ]
     }
   ]

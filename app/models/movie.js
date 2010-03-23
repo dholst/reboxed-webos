@@ -16,7 +16,12 @@ Movie = Class.create({
       failure();
     }
 
-    Database.getInstance().execute("insert into movies(id, name, image, released) values(?, ?, ?, ?)", [this.id, this.name, this.image, this.released.getTime()], saveSuccess, saveFailure);
+    Database.getInstance().execute(
+      "insert into movies(id, name, image, released, rating) values(?, ?, ?, ?, ?)",
+      [this.id, this.name, this.image, this.released.getTime(), this.rating],
+      saveSuccess,
+      saveFailure
+    );
   },
 
   cacheImage: function() {
@@ -91,6 +96,29 @@ Movie.fromJson = function(json) {
   movie.id = json.id;
   movie.name = json.name;
   movie.image = json.image;
-  movie.released = new Date(json.released);
+  movie.released = dateFrom(json.released);
+  movie.rating = json.rating;
+
+  try {
+    var day = ("0" + movie.released.getDate()).slice(-2);
+    var month = ("0" + (movie.released.getMonth() + 1)).slice(-2);
+    var year = movie.released.getFullYear();
+    movie.releasedDisplay = month + "/" + day + "/" + year;
+  }
+  catch(e) {
+    movie.releasedDisplay = "N/A";
+  }
+  
+  function dateFrom(value) {
+    var match = /(\d{4})-(\d{1,2})-(\d{1,2})/.exec(value)
+    
+    if(match) {
+      return new Date(match[1], parseInt(match[2]) - 1, match[3]);
+    }
+    else {
+      return new Date(value);
+    }
+  }
+
   return movie;
 };

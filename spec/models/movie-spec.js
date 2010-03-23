@@ -2,14 +2,20 @@ describe("Movie", function() {
   var movie;
 
   beforeEach(function() {
-    movie = Movie.fromJson({id: 1234, name: "name", image: "image", "released": new Date().getTime()});
+    movie = Movie.fromJson({
+      id: 1234, 
+      name: "name", 
+      image: "image", 
+      released: "2010-03-20",
+      rating: "rating"
+    });
   });
 
   it("should have created a movie from json", function() {
     expect(movie.id).toEqual(1234);
     expect(movie.name).toEqual("name");
     expect(movie.image).toEqual("image");
-    //expect(movie.released).toEqual(new Date("2009-08-05")); WTF??? Safari can't parse yyyy-mm-dd
+    expect(movie.releasedDisplay).toEqual("03/20/2010");
   });
 
   describe("database", function() {
@@ -90,7 +96,10 @@ describe("Movie", function() {
     describe("saving", function() {
       it("should execute sql", function() {
         movie.save();
-        expectSql("insert into movies(id, name, image, released) values(?, ?, ?, ?)", [movie.id, movie.name, movie.image, movie.released.getTime()]);
+        expectSql(
+          "insert into movies(id, name, image, released, rating) values(?, ?, ?, ?, ?)", 
+          [movie.id, movie.name, movie.image, movie.released.getTime(), movie.rating]
+        );
       });
 
       it("should callback on success", function() {
