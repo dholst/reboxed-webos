@@ -17,8 +17,8 @@ Movie = Class.create({
     }
 
     Database.getInstance().execute(
-      "insert into movies(id, name, image, released, rating) values(?, ?, ?, ?, ?)",
-      [this.id, this.name, this.image, this.released.getTime(), this.rating],
+      "insert into movies(id, name, image, released, rating, description, running_time, actors, genre) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [this.id, this.name, this.image, this.released.getTime(), this.rating, this.description, this.runningTime, this.actors, this.genre],
       saveSuccess,
       saveFailure
     );
@@ -98,6 +98,10 @@ Movie.fromJson = function(json) {
   movie.image = json.image;
   movie.released = dateFrom(json.released);
   movie.rating = json.rating;
+  movie.runningTime = json.running_time;
+  movie.actors = json.actors;
+  movie.genre = json.genre
+  movie.description = json.description;
 
   try {
     var day = ("0" + movie.released.getDate()).slice(-2);

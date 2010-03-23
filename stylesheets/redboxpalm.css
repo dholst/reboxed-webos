@@ -1,5 +1,4 @@
 div.palm-list.movies {
-  padding: 7px;
 }
 
 div.palm-row.movie {
@@ -10,15 +9,15 @@ div.palm-row.movie {
 div.palm-row div.movie-title {
   font-weight: bold;
   padding-left: 10px;
-  line-height: 24px;
-  font-size: 14px;
+  line-height: 26px;
+  font-size: 16px;
 }
 
 div.palm-row div.movie-meta {
   font-weight: normal;
   padding-left: 10px;
-  line-height: 22px;
-  font-size: 12px;
+  line-height: 24px;
+  font-size: 14px;
 }
 
 div.palm-row.movie img {
@@ -31,3 +30,28 @@ div.clear {
   background-color: red;
   clear: both;
 }
+
+div.movie-scene {
+  padding: 7px;
+}
+
+div.movie-scene img {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 3px;
+}
+
+div.movie-scene div {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+div.movie-scene div.movie-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+div.movie-scene div#description {
+  margin-top: 5px;
+}
+
