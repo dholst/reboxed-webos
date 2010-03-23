@@ -17,8 +17,8 @@ Movie = Class.create({
     }
 
     Database.getInstance().execute(
-      "insert into movies(id, name, image, released, rating, description, running_time, actors, genre) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [this.id, this.name, this.image, this.released.getTime(), this.rating, this.description, this.runningTime, this.actors, this.genre],
+      "insert into movies(id, name, image, released, rating, description, running_time, actors, genre, yahoo_rating) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [this.id, this.name, this.image, this.released.getTime(), this.rating, this.description, this.runningTime, this.actors, this.genre, this.yahooRating],
       saveSuccess,
       saveFailure
     );
@@ -100,7 +100,8 @@ Movie.fromJson = function(json) {
   movie.rating = json.rating;
   movie.runningTime = json.running_time;
   movie.actors = json.actors;
-  movie.genre = json.genre
+  movie.genre = json.genre;
+  movie.yahooRating = json.yahoo_rating;
   movie.description = json.description;
 
   try {

@@ -12,5 +12,6 @@ MovieAssistant = Class.create({
     $('actors').update(this.movie.actors);
     $('genre').update(this.movie.genre);
     $('description').update(this.movie.description);
+    $('yahoo').update(this.movie.yahooRating);
   }
 });

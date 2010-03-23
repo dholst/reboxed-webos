@@ -13,6 +13,7 @@ SCHEMA = {
         "'running_time' text",
         "'actors' text",
         "'genre' text",
+        "'yahoo_rating' text",
         "'description' text"
       ]
     }
