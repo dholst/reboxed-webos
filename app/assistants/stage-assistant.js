@@ -5,9 +5,11 @@ StageAssistant = Class.create({
   },
 
   databaseOpened: function() {
-    Movie.count(function(count) {
-      var scene = count ? "movies" : "first-time";
-      this.controller.pushScene(scene);
-    }.bind(this));
+    Mojo.Event.listen(document, Redbox.Event.movieSyncComplete, this.syncComplete.bind(this));
+    MovieSync.sync();
+  },
+
+  syncComplete: function() {
+    this.controller.pushScene("movies");
   }
 });

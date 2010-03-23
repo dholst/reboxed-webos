@@ -22,8 +22,8 @@ div.palm-row div.movie-title {
 div.palm-row div.movie-meta {
   font-weight: normal;
   padding-left: 10px;
-  line-height: 24px;
-  font-size: 14px;
+  line-height: 25px;
+  font-size: 15px;
 }
 
 div.palm-row.movie img {
@@ -38,13 +38,13 @@ div.palm-row.movie img {
  *
  */
 
-div.palm-group.movie img {
+div.palm-group img {
   float: left;
   margin-right: 10px;
   margin-bottom: 3px;
 }
 
-div.palm-group.movie div {
+div.palm-group div {
   margin-bottom: 5px;
   font-size: 13px;
 }

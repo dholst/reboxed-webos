@@ -7,7 +7,7 @@
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},
   {source: "app/assistants/stage-assistant.js"},
-  {source: "app/assistants/first-time-assistant.js", scenes: "first-time"},
   {source: "app/assistants/movies-assistant.js", scenes: "movies"},
   {source: "app/assistants/movie-assistant.js", scenes: "movie"}
+  {source: "app/assistants/locate-movie-assistant.js", scenes: "locate-movie"}
 ]
