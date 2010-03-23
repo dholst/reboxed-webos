@@ -1,6 +1,12 @@
-div.palm-list.movies {
+div.clear {
+  clear: both;
 }
 
+/*
+ *
+ * All movies scene
+ *
+ */
 div.palm-row.movie {
   margin: 0px;
   background: url(../images/gradient.png) repeat-x 0% 100%;
@@ -26,11 +32,11 @@ div.palm-row.movie img {
   height: 108px
 }
 
-div.clear {
-  background-color: red;
-  clear: both;
-}
-
+/*
+ *
+ * Individiual movie scene
+ *
+ */
 div.movie-scene {
   padding: 7px;
 }
