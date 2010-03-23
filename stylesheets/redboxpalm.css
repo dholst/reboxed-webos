@@ -37,27 +37,14 @@ div.palm-row.movie img {
  * Individiual movie scene
  *
  */
-div.movie-scene {
-  padding: 7px;
-}
 
-div.movie-scene img {
+div.palm-group.movie img {
   float: left;
   margin-right: 10px;
   margin-bottom: 3px;
 }
 
-div.movie-scene div {
+div.palm-group.movie div {
   margin-bottom: 5px;
   font-size: 13px;
 }
-
-div.movie-scene div.movie-title {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-div.movie-scene div#description {
-  margin-top: 5px;
-}
-
