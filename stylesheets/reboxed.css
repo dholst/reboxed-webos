@@ -1,0 +1,35 @@
+div.spinner {
+  margin: auto;
+}
+
+div.clear {
+  clear: both;
+}
+
+div.palm-row.movie {
+  margin: 0px;
+  background: url(../images/gradient.png) repeat-x 0% 100%;
+}
+
+div.palm-row div.palm-body-text {
+  margin-bottom: 7px;
+}
+
+div.palm-row.kiosk {
+  padding: 3px;
+}
+
+div.palm-row.kiosk div.palm-body-text {
+  margin-bottom: 1px;
+}
+
+div.palm-row.movie img {
+  float: left;
+  width: 75px;
+  height: 108px
+}
+
+div img {
+  float: right;
+  padding-right: 10px;
+}

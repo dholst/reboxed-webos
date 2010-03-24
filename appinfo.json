@@ -1,9 +1,9 @@
 {
-	"id": "com.1912software.redbox-palm",
-	"version": "0.1.0",
-	"vendor": "1912software",
+	"id": "com.1912apps.reboxed",
+	"version": "0.0.1",
+	"vendor": "1912apps",
 	"type": "web",
 	"main": "index.html",
-	"title": "redbox-palm",
+	"title": "reboxed",
 	"icon": "icon.png"
 }

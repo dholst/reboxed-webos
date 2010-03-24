@@ -10,10 +10,10 @@ MoviesAssistant = Class.create({
     };
 
     this.controller.setupWidget("movies", this.listAttributes);
-    
+
     this.imageCached = this.imageCached.bind(this);
     this.controller.listen(document, Redbox.Event.imageCached, this.imageCached);
-    
+
     this.movieTapped = this.movieTapped.bind(this);
     this.controller.listen('movies', Mojo.Event.listTap, this.movieTapped);
     this.paginate(0, 30);
@@ -27,7 +27,7 @@ MoviesAssistant = Class.create({
   movieTapped: function(event) {
     this.controller.stageController.pushScene("movie", event.item);
   },
-  
+
   imageCached: function(event) {
     var img = this.controller.get("img-" + event.movie.id);
     img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;

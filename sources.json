@@ -4,6 +4,7 @@
   {source: "app/lib/events.js"},
   {source: "app/lib/movie-sync.js"},
   {source: "app/models/database.js"},
+  {source: "app/models/kiosk.js"},
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},
   {source: "app/assistants/stage-assistant.js"},

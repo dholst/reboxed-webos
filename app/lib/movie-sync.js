@@ -1,6 +1,6 @@
 MovieSync = {
   sync: function() {
-    new Ajax.Request("http://redboxmovies.heroku.com/movies", {
+    new Ajax.Request("http://reboxed-proxy.heroku.com/movies", {
       method: "get",
       onSuccess: this.syncMovies.bind(this),
       onFailure: this.syncFailure.bind(this)
