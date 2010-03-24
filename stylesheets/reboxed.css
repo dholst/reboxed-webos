@@ -6,21 +6,12 @@ div.clear {
   clear: both;
 }
 
-div.palm-row.movie {
-  margin: 0px;
-  background: url(../images/gradient.png) repeat-x 0% 100%;
-}
 
-div.palm-row div.palm-body-text {
-  margin-bottom: 7px;
-}
-
-div.palm-row.kiosk {
-  padding: 3px;
-}
-
-div.palm-row.kiosk div.palm-body-text {
-  margin-bottom: 1px;
+/*
+ * MOVIE LIST
+ */
+div.palm-row.movie div.palm-row-wrapper {
+  /*background: url(../images/gradient.png) repeat-x 0% 100%;*/
 }
 
 div.palm-row.movie img {
@@ -29,7 +20,56 @@ div.palm-row.movie img {
   height: 108px
 }
 
-div img {
-  float: right;
-  padding-right: 10px;
+div.palm-row.movie div.palm-body-text {
+  margin: 0px;
+  font-size: 14px;
+  line-height: 22px;
+  color: gray;
 }
+
+div.palm-row.movie div.palm-body-text.movie-name {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+div.palm-row.movie .movie-info {
+  height: 108px;
+  background: url(../images/details.png) center center no-repeat;
+}
+
+/*
+ * MOVIE DETAIL
+ */
+div img {
+ float: right;
+ padding-right: 10px;
+}
+
+
+/*
+ * KIOSK LIST
+ */
+div.palm-row.kiosk div.palm-row-wrapper {
+ margin: 10px;
+}
+
+div.palm-row.kiosk div.palm-body-text {
+  margin: 0px;
+  font-size: 14px;
+  color: gray;
+  line-height: 22px;
+}
+
+div.palm-row.kiosk div.palm-body-text.kiosk-address {
+  line-height: 16px;
+}
+
+div.palm-row.kiosk div.palm-body-text.kiosk-vendor {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
