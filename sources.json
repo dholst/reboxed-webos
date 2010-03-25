@@ -3,6 +3,7 @@
   {source: "app/lib/download-manager.js"},
   {source: "app/lib/events.js"},
   {source: "app/lib/movie-sync.js"},
+  {source: "app/lib/redbox.js"},
   {source: "app/models/cart.js"},
   {source: "app/models/database.js"},
   {source: "app/models/kiosk.js"},

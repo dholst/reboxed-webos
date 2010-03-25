@@ -6,14 +6,12 @@ StageAssistant = Class.create({
 
   databaseOpened: function() {
     new User("darrinholst@gmail.com", "i9uuZOEXEo8y");
-    Mojo.Event.listen(document, Redbox.Event.movieSyncComplete, this.syncComplete.bind(this));
+    Mojo.Event.listen(document, Reboxed.Event.movieSyncComplete, this.syncComplete.bind(this));
     MovieSync.sync();
   },
 
   syncComplete: function() {
-    var movie = new Movie();
-    movie.name = "FUMULLINS"
-    var kiosk = new Kiosk();
-    this.controller.pushScene("reserve-movie", kiosk, movie);
+    this.controller.pushScene("movies");
+    //this.controller.pushScene("reserve-movie", new Kiosk(), new Movie());
   }
 });

@@ -12,16 +12,16 @@ MoviesAssistant = Class.create({
     this.controller.setupWidget("movies", this.listAttributes);
 
     this.imageCached = this.imageCached.bind(this);
-    this.controller.listen(document, Redbox.Event.imageCached, this.imageCached);
+    this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached);
 
     this.movieTapped = this.movieTapped.bind(this);
-    this.controller.listen('movies', Mojo.Event.listTap, this.movieTapped);
+    this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped);
     this.paginate(0, 30);
   },
 
   cleanup: function() {
-    this.controller.stopListening(document, Redbox.Event.imageCached, this.imageCahced);
-    this.controller.stopListening('movies', Mojo.Event.listTap, this.movieTapped);
+    this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCahced);
+    this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
   },
 
   movieTapped: function(event) {

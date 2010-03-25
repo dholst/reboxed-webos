@@ -101,3 +101,11 @@ div.palm-button.reserve {
 #reserve-form .palm-info-text {
   margin: 2px;
 }
+
+#reserve-form #movie-name {
+  font-weight: bold;
+}
+
+#reserve-form #kiosk-name {
+  font-weight: bold;
+}

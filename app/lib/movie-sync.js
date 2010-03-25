@@ -28,6 +28,6 @@ MovieSync = {
   },
 
   syncComplete: function() {
-    Mojo.Event.send(document, Redbox.Event.movieSyncComplete, {});
+    Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {});
   }
 };

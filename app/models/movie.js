@@ -33,7 +33,7 @@ Movie = Class.create({
       onComplete: function(resp) {
         if(resp.getStatus() != 200) {
           DownloadManager.download(movie.imageSource + "/" + movie.image, movie.cacheDirectory, movie.image, function() {
-            Mojo.Event.send(document, Redbox.Event.imageCached, {movie: movie});
+            Mojo.Event.send(document, Reboxed.Event.imageCached, {movie: movie});
           });
         }
       }
