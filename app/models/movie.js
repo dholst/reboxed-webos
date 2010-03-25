@@ -1,7 +1,7 @@
 Movie = Class.create({
   initialize: function() {
     this.imageSource = "http://images.redbox.com/Images/Thumbnails";
-    this.cacheDirectory = "/media/internal/files/redbox-palm/cache";
+    this.cacheDirectory = "/media/internal/files/.reboxed/.cache";
   },
 
   save: function(success, failure) {
@@ -113,10 +113,10 @@ Movie.fromJson = function(json) {
   catch(e) {
     movie.releasedDisplay = "N/A";
   }
-  
+
   function dateFrom(value) {
     var match = /(\d{4})-(\d{1,2})-(\d{1,2})/.exec(value)
-    
+
     if(match) {
       return new Date(match[1], parseInt(match[2]) - 1, match[3]);
     }

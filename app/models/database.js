@@ -1,6 +1,6 @@
 Database = Class.create({
   initialize: function() {
-    this.databaseName = "redbox-palm";
+    this.databaseName = "reboxed";
   },
 
   open: function(callback) {
