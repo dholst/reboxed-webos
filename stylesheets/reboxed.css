@@ -6,6 +6,13 @@ div.clear {
   clear: both;
 }
 
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
 
 /*
  * MOVIE LIST
@@ -73,3 +80,24 @@ div.palm-row.kiosk div.palm-body-text.kiosk-vendor {
   color: #333;
 }
 
+div.palm-row.kiosk div.button-wrapper {
+  float: right;
+}
+
+div.palm-button.reserve {
+  float: right;
+  font-size: 15px;
+  width: 30%;
+}
+
+
+
+
+
+#reserve-from .palm-group {
+  padding: 10px;
+}
+
+#reserve-form .palm-info-text {
+  margin: 2px;
+}

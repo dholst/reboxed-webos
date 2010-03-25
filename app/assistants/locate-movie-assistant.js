@@ -8,14 +8,21 @@ LocateMovieAssistant = Class.create({
   setup: function() {
     $("name").update(this.movie.name);
     this.controller.setupWidget("kiosks", {listTemplate: "locate-movie/kiosks", itemTemplate: "locate-movie/kiosk"}, this.kiosks);
+    this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped.bind(this));
     this.addSpinner();
     this.locate();
   },
 
+  kioskTapped: function(event) {
+    if(event.originalEvent.target.hasClassName("reserve")) {
+      this.controller.stageController.pushScene("reserve-movie", event.item, this.movie);
+    }
+  },
+
   addSpinner: function() {
-    this.controller.setupWidget("spinner", {spinnerSize: "large"}, this);
+    this.controller.setupWidget("locate-spinner", {spinnerSize: "large"}, this);
     var marginTop = (Mojo.Environment.DeviceInfo.maximumCardHeight / 2) - 64;
-    $("spinner").setStyle({marginTop: marginTop + "px"});
+    $("locate-spinner").setStyle({marginTop: marginTop + "px"});
   },
 
   locate: function() {
@@ -44,10 +51,10 @@ LocateMovieAssistant = Class.create({
   },
 
   gpsFailure: function() {
-
+    Mojo.Log.info("gps locate failed");
   },
 
   kioskFailure: function() {
-
+    Mojo.Log.info("kiosk locate failed");
   }
 })

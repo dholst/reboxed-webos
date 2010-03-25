@@ -4,6 +4,8 @@ MovieAssistant = Class.create({
   },
 
   setup: function() {
+    this.controller.listen(document, Redbox.Event.imageCached, this.imageCached);
+
     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {
       items: [
         {},
@@ -21,10 +23,22 @@ MovieAssistant = Class.create({
     $("description").update(this.movie.description);
     $("yahoo").update(this.movie.yahooRating);
   },
-  
+
+  cleanup: function() {
+    this.controller.stopListening(document, Redbox.Event.imageCached, this.imageCahced);
+  },
+
   handleCommand: function(event) {
     if("locate" === event.command) {
       this.controller.stageController.pushScene("locate-movie", this.movie);
+    }
+  },
+
+  imageCached: function(event) {
+    var img = this.controller.get("img-" + event.movie.id);
+
+    if(img) {
+      img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
     }
   }
 });

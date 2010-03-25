@@ -7,3 +7,8 @@ Ajax.Responders.register({
     Mojo.Log.info("ajax request completed with", response.getStatus());
   }
 });
+
+Ajax.Request.prototype.success = function() {
+  var status = this.getStatus();
+  return (status >= 200 && status < 300);
+}

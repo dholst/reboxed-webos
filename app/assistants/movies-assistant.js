@@ -30,7 +30,10 @@ MoviesAssistant = Class.create({
 
   imageCached: function(event) {
     var img = this.controller.get("img-" + event.movie.id);
-    img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
+
+    if(img) {
+      img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
+    }
   },
 
   itemRendered: function(listWidget, movie, node) {

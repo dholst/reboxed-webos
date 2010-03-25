@@ -24,8 +24,6 @@ Kiosk.locate = function(id, lat, long, success, failure) {
     titleID: id
   };
 
-  Mojo.Log.info("requesting ", Object.toJSON(request));
-
   new Ajax.Request("http://www.redbox.com/ajax.svc/Kiosk/GetNearbyKiosks/", {
     method: "post",
     contentType: "application/json",
@@ -40,12 +38,8 @@ Kiosk.parseKiosks = function(json) {
   var profiles = json.d.profiles;
   var states = json.d.states;
 
-  Mojo.Log.info("found", profiles.length, "and", states.length, "states");
-
   profiles.each(function(profile, index) {
     var state = states[index];
-    Mojo.Log.info("profile:", Object.toJSON(profile));
-    Mojo.Log.info("state:", Object.toJSON(state));
 
     if(state.Online && state.Inv.length && state.Inv.first().Qty) {
       kiosks.push(Kiosk.fromJson(profile));
@@ -56,7 +50,6 @@ Kiosk.parseKiosks = function(json) {
 };
 
 Kiosk.fromJson = function(json) {
-  Mojo.Log.info("building kiosk from", Object.toJSON(json));
   var kiosk = new Kiosk();
   kiosk.id = json.ID;
   kiosk.address = json.Addr;

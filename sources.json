@@ -3,12 +3,15 @@
   {source: "app/lib/download-manager.js"},
   {source: "app/lib/events.js"},
   {source: "app/lib/movie-sync.js"},
+  {source: "app/models/cart.js"},
   {source: "app/models/database.js"},
   {source: "app/models/kiosk.js"},
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},
+  {source: "app/models/user.js"},
   {source: "app/assistants/stage-assistant.js"},
   {source: "app/assistants/movies-assistant.js", scenes: "movies"},
   {source: "app/assistants/movie-assistant.js", scenes: "movie"}
   {source: "app/assistants/locate-movie-assistant.js", scenes: "locate-movie"}
+  {source: "app/assistants/reserve-movie-assistant.js", scenes: "reserve-movie"}
 ]
