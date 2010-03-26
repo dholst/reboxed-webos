@@ -1,6 +1,6 @@
 Movie = Class.create({
   initialize: function() {
-    this.imageSource = Redbox.Images.thumbnailUrl;
+    this.imageSource = Redbox.Images.thumbnailUrl();
     this.cacheDirectory = "/media/internal/files/.reboxed/.cache";
   },
 

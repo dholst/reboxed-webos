@@ -1,10 +1,18 @@
 Ajax.Responders.register({
   onCreate: function(request) {
-    Mojo.Log.info("ajax request started,", request.method, request.url)
+  	if(request.url.startsWith("http")) {
+  	  Mojo.Log.info("ajax request started,", request.method, request.url)
+  	}
   },
 
   onComplete: function(response) {
-    Mojo.Log.info("ajax request completed with", response.getStatus());
+  	if(response.url.startsWith("http")) {
+      Mojo.Log.info("ajax request completed with", response.getStatus());
+    }
+  },
+
+  onException: function(request, exception) {
+    Mojo.Log.info("ajax exception -", exception.message);
   }
 });
 
