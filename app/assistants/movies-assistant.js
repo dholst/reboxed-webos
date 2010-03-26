@@ -1,8 +1,12 @@
 MoviesAssistant = Class.create({
+  initialize: function() {
+    this.cachedImages = {};
+  },
+
   setup: function() {
     this.listAttributes = {
       renderLimit: 10,
-      lookahead: 5,
+      lookahead: 7,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
@@ -37,8 +41,10 @@ MoviesAssistant = Class.create({
   },
 
   itemRendered: function(listWidget, movie, node) {
-    Mojo.Log.info("rendering", movie.name);
-    movie.cacheImage();
+    if(!this.cachedImages[movie.id]) {
+      this.cachedImages[movie.id] = true;
+      movie.cacheImage();
+    }
   },
 
   itemsCallback: function(listWidget, offset, count) {

@@ -1,15 +1,12 @@
 StageAssistant = Class.create({
   setup: function() {
-    this.databaseOpened = this.databaseOpened.bind(this);
-    Database.getInstance().open(this.databaseOpened);
+    Database.getInstance().open(this.databaseOpened.bind(this));
   },
 
   databaseOpened: function() {
-    Mojo.Event.listen(document, Reboxed.Event.movieSyncComplete, this.syncComplete.bind(this));
-    MovieSync.sync();
-  },
-
-  syncComplete: function() {
-    this.controller.pushScene("movies");
+    Movie.count(function(count) {
+      var scene = count ? "movies" : "full-sync";
+      this.controller.pushScene(scene);
+    }.bind(this));
   }
 });

@@ -1,8 +1,12 @@
-div.spinner {
+.spinner {
   margin: auto;
 }
 
-div.clear {
+.spinner-message {
+  text-align: center;
+}
+
+.clear {
   clear: both;
 }
 

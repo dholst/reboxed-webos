@@ -14,8 +14,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped.bind(this));
     this.controller.listen("locate-address", Mojo.Event.tap, this.locateAddress.bind(this));
 
-    this.addSpinner("locate-spinner");
-    this.spinnerOn();
+    this.spinnerOn("getting current location");
     this.locateGps();
   },
 
@@ -53,7 +52,6 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   addressLocateSuccess: function(latitude, longitude) {
     console.log("found " + latitude + ", " + longitude)
     this.addressInputOff();
-    this.spinnerOn();
     this.locateKioskAt(latitude, longitude);
   },
 
@@ -75,6 +73,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   locateKioskAt: function(latitude, longitude) {
+    this.spinnerOn("locating movie")
     Kiosk.locate(this.movie.id, latitude, longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this));
   },
 
