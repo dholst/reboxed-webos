@@ -10,19 +10,6 @@ ReserveMovieAssistant = Class.create({
     var marginTop = (Mojo.Environment.DeviceInfo.maximumCardHeight / 2) - 64;
     $("reserve-spinner").setStyle({marginTop: marginTop + "px"});
     Cart.create(this.kiosk, this.movie, this.cartCreated.bind(this), this.cartFailed.bind(this));
-
-    //
-    // TESTING
-    //
-    /*
-    this.movie.name = "The FUMULLINS Saga";
-    this.kiosk.vendor = "McDonalds";
-    this.kiosk.address = "123 FU Way";
-    this.kiosk.city = "Bouton";
-    this.kiosk.state = "IA";
-    this.kiosk.zip = "50039"
-    this.cartCreated({price: "$1.00", tax: "$0.07", total: "$1.07"});
-    */
   },
 
   cartCreated: function(cart) {

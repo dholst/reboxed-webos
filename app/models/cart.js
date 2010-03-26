@@ -1,57 +1,39 @@
 Cart = Class.create({
-  initialize: function(kiosk, movie, success, failure) {
-    this.kiosk = kiosk;
-    this.movie = movie;
-    this.success = success;
-    this.failure = failure;
-
-    var request = {
-      buy: false,
-      kiosk: this.kiosk.id
-    };
-
-    new Ajax.Request("https://www.redbox.com/ajax.svc/Cart/AddItem/" + this.movie.id, {
-      method: "post",
-      contentType: "application/json",
-      postBody: Object.toJSON(request),
-      onSuccess: this.addItemSuccess.bind(this),
-      onFailure: this.addItemFailure.bind(this)
-    });
-  },
-
-  addItemSuccess: function(response) {
-    new Ajax.Request("https://www.redbox.com/ajax.svc/Cart/Refresh/", {
-      method: "post",
-      contentType: "application/json",
-      postBody: "{}",
-      onSuccess: this.cartRefreshSuccess.bind(this),
-      onFailure: this.cartRefreshFailure.bind(this)
-    });
-  },
-
-  cartRefreshSuccess: function(response) {
-    var cart = response.responseJSON.d.cart;
-    this.price = cart.Total;
-    this.tax = cart.Tax;
-    this.total = cart.GrandTotal;
-    this.canCheckout = cart.CanCheckout;
-    this.pickupBy = cart.PickupBy;
-    this.success(this);
-  },
-
-  addItemFailure: function(response) {
-    Mojo.Log.info("add to cart failed, status:", response.getStatus());
-    this.failure();
-  },
-
-  cartRefreshFailure: function(response) {
-    Mojo.Log.info("cart refresh failed, status:", response.getStatus());
-    this.failure();
-  }
 });
 
 Cart.create = function(kiosk, movie, success, failure) {
-  new Cart(kiosk, movie, success, failure);
+  new Ajax.Request(Redbox.Cart.addItemUrl(movie.id), {
+    method: "post",
+    contentType: "application/json",
+    postBody: Redbox.Cart.buildAddItemRequest(kiosk.id),
+    onSuccess: Cart.addSuccess.bind(this, kiosk, movie, success, failure),
+    onFailure: Cart.failure.bind(this, failure)
+  });
+}
+
+Cart.addSuccess = function(kiosk, movie, successCallback, failureCallback, response) {
+  new Ajax.Request(Redbox.Cart.refreshUrl(), {
+    method: "post",
+    contentType: "application/json",
+    postBody: Redbox.Cart.buildRefreshRequest(),
+    onSuccess: Cart.refreshSuccess.bind(this, kiosk, movie, successCallback, failureCallback),
+    onFailure: Cart.failure.bind(this, failureCallback)
+  });
+}
+
+Cart.refreshSuccess = function(kiosk, movie, successCallback, failureCallback, response) {
+  var cart = Redbox.Cart.parseRefreshResponse(response.responseJSON);
+
+  //TODO: MAKE SURE THEY'RE THE SAME AS IN THE CART
+  cart.movie = movie;
+  cart.kiosk = kiosk;
+
+  successCallback(cart);
+}
+
+Cart.failure = function(failureCallback, response) {
+  Mojo.Log.info("cart failure, status:", response.getStatus());
+  failureCallback();
 }
 
 /*

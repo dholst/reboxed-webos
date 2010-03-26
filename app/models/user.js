@@ -1,15 +1,9 @@
 User = Class.create({
   initialize: function(username, password) {
-    var request = {
-      userName: username,
-      password: password,
-      createPersistentCookie: false
-    };
-
-    new Ajax.Request("https://www.redbox.com/ajax.svc/Account/Login/", {
+    new Ajax.Request(Redbox.Account.loginUrl(), {
       method: "post",
       contentType: "application/json",
-      postBody: Object.toJSON(request),
+      postBody: Redbox.Account.buildLoginRequest(username, password),
       onSuccess: this.loginSuccess.bind(this),
       onFailure: this.loginFailure.bind(this)
     });
