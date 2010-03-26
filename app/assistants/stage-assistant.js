@@ -5,7 +5,6 @@ StageAssistant = Class.create({
   },
 
   databaseOpened: function() {
-    new User("darrinholst@gmail.com", "i9uuZOEXEo8y");
     Mojo.Event.listen(document, Reboxed.Event.movieSyncComplete, this.syncComplete.bind(this));
     MovieSync.sync();
   },

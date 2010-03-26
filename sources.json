@@ -17,5 +17,6 @@
   {source: "app/assistants/movies-assistant.js", scenes: "movies"},
   {source: "app/assistants/movie-assistant.js", scenes: "movie"}
   {source: "app/assistants/locate-movie-assistant.js", scenes: "locate-movie"}
+  {source: "app/assistants/login-assistant.js", scenes: "login"}
   {source: "app/assistants/reserve-movie-assistant.js", scenes: "reserve-movie"}
 ]

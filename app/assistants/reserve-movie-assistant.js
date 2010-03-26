@@ -7,11 +7,23 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   setup: function() {
     this.controller.get("movie-name").update(this.movie.name);
     this.addSpinner("reserve-spinner");
-    this.spinnerOn();
-    this.realSetup();
   },
 
-  realSetup: function() {
+  activate: function() {
+    if(User.current) {
+      this.addToCart();
+    }
+    else if(this.triedToLogin) {
+      this.controller.stageController.popScene();
+    }
+    else {
+      this.triedToLogin = true;
+      this.controller.stageController.pushScene("login");
+    }
+  },
+
+  addToCart: function() {
+    this.spinnerOn();
     Cart.create(this.kiosk, this.movie, this.cartCreated.bind(this), this.cartFailed.bind(this));
   },
 

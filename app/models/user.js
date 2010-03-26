@@ -1,20 +1,29 @@
 User = Class.create({
-  initialize: function(username, password) {
-    new Ajax.Request(Redbox.Account.loginUrl(), {
-      method: "post",
-      contentType: "application/json",
-      postBody: Redbox.Account.buildLoginRequest(username, password),
-      onSuccess: this.loginSuccess.bind(this),
-      onFailure: this.loginFailure.bind(this)
-    });
-  },
-
-  loginSuccess: function(response) {
-    Mojo.Log.info("Login success!");
-    CURRENT_USER = this;
-  },
-
-  loginFailure: function(response) {
-    Mojo.Log.info("Login failed, status:", response.getStatus());
-  }
 });
+
+User.login = function(username, password, success, failure) {
+  new Ajax.Request(Redbox.Account.loginUrl(), {
+    method: "post",
+    contentType: "application/json",
+    postBody: Redbox.Account.buildLoginRequest(username, password),
+    onSuccess: User.loginSuccess.bind(this, success, failure),
+    onFailure: User.loginFailure.bind(this, failure)
+  });
+};
+
+User.loginSuccess = function(success, failure, response) {
+  var wasSuccessful = Redbox.Account.parseLoginResponse(response.responseJSON);
+
+  if(wasSuccessful) {
+    User.current = new User();
+    success();
+  }
+  else {
+    User.loginFailure(failure, response);
+  }
+};
+
+User.loginFailure = function(failure, response) {
+  Mojo.Log.info("Login failed, status:", response.getStatus());
+  failure();
+};

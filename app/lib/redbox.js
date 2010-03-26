@@ -17,6 +17,10 @@ Redbox = {
         createPersistentCookie: false
       });
     },
+    
+    parseLoginResponse: function(json) {
+      return json.d.success;
+    },
 
     getCardsUrl: function() {
       return "https://www.redbox.com/ajax.svc/Account/GetCards/"
