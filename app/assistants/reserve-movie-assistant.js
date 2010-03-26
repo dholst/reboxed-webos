@@ -6,7 +6,6 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   setup: function() {
     this.controller.get("movie-name").update(this.movie.name);
-    this.addSpinner("reserve-spinner");
   },
 
   activate: function() {
@@ -23,7 +22,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   addToCart: function() {
-    this.spinnerOn();
+    this.spinnerOn("adding movie to cart");
     Cart.create(this.kiosk, this.movie, this.cartCreated.bind(this), this.cartFailed.bind(this));
   },
 

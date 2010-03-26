@@ -19,7 +19,7 @@ LoginAssistant = Class.create({
   },
 
   loginSuccess: function() {
-    this.controller.stageConroller.popScene();
+    this.controller.stageController.popScene();
   },
 
   loginFailure: function() {
