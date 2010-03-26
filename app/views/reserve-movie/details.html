@@ -1,6 +1,7 @@
 <div class="palm-group">
-	<div class="palm-group-title">Movie</div>
+	<div class="palm-group-title">Details</div>
 	<div class="palm-info-text"><strong>#{movie.name}</strong></div>
+	<div class="palm-info-text">Pickup by #{cart.pickupBy}</div>
 </div>
 
 <div class="palm-group">
@@ -29,7 +30,27 @@
 </div>
 
 <div class="palm-group">
-	<div class="palm-group-title">Credit Card</div>
+  <div class="palm-group-title" x-mojo-loc=''>Credit Card</div>
+  <div class="palm-list">
+    <div class="palm-row single">
+      <div class="palm-row-wrapper" x-mojo-focus-highlight="true">
+        <div x-mojo-element="ListSelector" id="cardSelector"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="palm-group">
+  <div class="palm-group-title" x-mojo-loc=''>Card Verification Code</div>
+  <div class="palm-list">
+    <div class="palm-row single">
+      <div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+        <div class="title">
+          <div id="cvc" x-mojo-element="TextField"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="palm-group">
@@ -37,4 +58,10 @@
 	<div class="palm-info-text">By clicking "Confirm Reservation" I understand that my credit card will be charged for my first night's rental plus tax. The rental period for my title will begin immediately after the "Checkout" button is clicked, and I will have until 9:00 p.m. tomorrow to view and return the DVD. If I do not pick my DVD up by 9:00 p.m. tomorrow, it will be released for other customers to rent. I also agree to redbox's Terms of Use.</div>
 </div>
 
-<div class="palm-button affirmative">Confirm Reservation</div>
+<div id="rated-r" class="palm-group">
+	<div class="palm-group-title">Age Verification</div>
+	<div x-mojo-element="CheckBox" id="eighteen"></div>
+	<div class="palm-info-text">This movie is rated 'R'. Please check this box to verify you are 18 or older.</div>
+</div>
+
+<div class="palm-button affirmative" id="confirm">Confirm Reservation</div>

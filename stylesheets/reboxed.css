@@ -94,18 +94,28 @@ div.palm-button.reserve {
 
 
 
-#reserve-from .palm-group {
-  padding: 10px;
+#reserve-form .palm-group {
+  margin: 5px !important;
 }
 
 #reserve-form .palm-info-text {
   margin: 2px;
 }
 
-#reserve-form #movie-name {
+#reserve-form .palm-info-text strong, #cardSelector {
   font-weight: bold;
+  color: #333;
 }
 
-#reserve-form #kiosk-name {
-  font-weight: bold;
+#reserve-form #rated-r .palm-info-text {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#reserve-form table {
+  border-collapse: collapse;
+}
+
+#reserve-form table .palm-info-text {
+  margin: 1px;
 }

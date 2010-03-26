@@ -11,7 +11,7 @@ StageAssistant = Class.create({
   },
 
   syncComplete: function() {
-    this.controller.pushScene("movies");
-    //this.controller.pushScene("reserve-movie", new Kiosk(), new Movie());
+    //this.controller.pushScene("movies");
+    this.controller.pushScene("reserve-movie");
   }
 });

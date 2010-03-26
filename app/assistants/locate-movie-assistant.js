@@ -2,7 +2,6 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   initialize: function(movie) {
     this.movie = movie;
     this.kiosks = {items: []};
-    this.spinning = true;
     this.button = {buttonLabel: "Locate"};
   },
 
@@ -16,6 +15,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     this.controller.listen("locate-address", Mojo.Event.tap, this.locateAddress.bind(this));
 
     this.addSpinner("locate-spinner");
+    this.spinnerOn();
     this.locateGps();
   },
 
@@ -35,7 +35,6 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   gpsSuccess: function(response) {
-    console.log(Object.toJSON(response));
     response.latitude = 41.853056209834;
     response.longitude = -94.02111123432;
     this.locateKioskAt(response.latitude, response.longitude);
@@ -89,16 +88,6 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
 
   kioskFailure: function() {
     Mojo.Log.info("kiosk locate failed");
-  },
-
-  spinnerOn: function() {
-    this.spinning = true;
-    this.controller.modelChanged(this);
-  },
-
-  spinnerOff: function() {
-    this.spinning = false;
-    this.controller.modelChanged(this);
   },
 
   addressInputOff: function() {
