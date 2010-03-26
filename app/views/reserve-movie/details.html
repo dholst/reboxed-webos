@@ -1,19 +1,10 @@
 <div class="palm-group">
 	<div class="palm-group-title">Details</div>
-	<div class="palm-info-text"><strong>#{movie.name}</strong></div>
-	<div class="palm-info-text">Pickup by #{cart.pickupBy}</div>
-</div>
-
-<div class="palm-group">
-	<div class="palm-group-title">Location</div>
-	<div class="palm-info-text"><strong>#{kiosk.vendor}</strong></div>
-	<div class="palm-info-text">#{kiosk.address}</div>
-	<div class="palm-info-text">#{kiosk.city}, #{kiosk.state} #{kiosk.zip}</div>
-</div>
-
-<div class="palm-group">
-	<div class="palm-group-title">Price</div>
-  <table>
+	<table>
+    <tr>
+      <td><div class="palm-info-text"><strong>Pickup by:</strong></div></td>
+      <td><div class="palm-info-text">#{cart.pickupBy}</div></td>
+    </tr>
     <tr>
       <td><div class="palm-info-text"><strong>Price:</strong></div></td>
       <td><div class="palm-info-text">#{cart.price}</div></td>
@@ -27,6 +18,13 @@
       <td><div class="palm-info-text">#{cart.total}</div></td>
     </tr>
   </table>
+</div>
+
+<div class="palm-group">
+	<div class="palm-group-title">Location</div>
+	<div class="palm-info-text"><strong>#{kiosk.vendor}</strong></div>
+	<div class="palm-info-text">#{kiosk.address}</div>
+	<div class="palm-info-text">#{kiosk.city}, #{kiosk.state} #{kiosk.zip}</div>
 </div>
 
 <div class="palm-group">
@@ -58,7 +56,7 @@
 	<div class="palm-info-text">By clicking "Confirm Reservation" I understand that my credit card will be charged for my first night's rental plus tax. The rental period for my title will begin immediately after the "Checkout" button is clicked, and I will have until 9:00 p.m. tomorrow to view and return the DVD. If I do not pick my DVD up by 9:00 p.m. tomorrow, it will be released for other customers to rent. I also agree to redbox's Terms of Use.</div>
 </div>
 
-<div id="rated-r" class="palm-group">
+<div id="rated-r" class="palm-group" style="display: none;">
 	<div class="palm-group-title">Age Verification</div>
 	<div x-mojo-element="CheckBox" id="eighteen"></div>
 	<div class="palm-info-text">This movie is rated 'R'. Please check this box to verify you are 18 or older.</div>

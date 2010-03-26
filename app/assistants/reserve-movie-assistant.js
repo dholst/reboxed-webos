@@ -5,9 +5,10 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   setup: function() {
+    this.controller.get("movie-name").update(this.movie.name);
     this.addSpinner("reserve-spinner");
     this.spinnerOn();
-    this.mockSetup();
+    this.realSetup();
   },
 
   realSetup: function() {
@@ -21,17 +22,21 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   cardsRetrieved: function(cards) {
     this.cards = cards;
-    this.setupWidgets(cards);
+    this.setupWidgets();
     this.spinnerOff();
 
-    $("reserve-form").update(Mojo.View.render({object: this, template: "reserve-movie/details"}));
+    this.controller.update("reserve-form", Mojo.View.render({object: this, template: "reserve-movie/details"}));
+
+    if(this.movie.rating === "R") {
+      this.controller.get("rated-r").show();
+    }
 
     this.controller.listen("cardSelector", Mojo.Event.propertyChange, this.cardChanged.bind(this));
     this.controller.listen("confirm", Mojo.Event.tap, this.confirm.bind(this));
   },
 
-  setupWidgets: function(cards) {
-    var choices = cards.map(function(card, index) {
+  setupWidgets: function() {
+    var choices = this.cards.map(function(card, index) {
       return {label: card.alias, value: index}
     });
 
@@ -73,6 +78,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   mockMovie: function() {
     var movie = new Movie();
     movie.name = "Mock Movie Name";
+    movie.rating = "R";
     return movie;
   },
 

@@ -35,8 +35,6 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   gpsSuccess: function(response) {
-    response.latitude = 41.853056209834;
-    response.longitude = -94.02111123432;
     this.locateKioskAt(response.latitude, response.longitude);
   },
 
