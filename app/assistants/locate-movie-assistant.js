@@ -1,16 +1,22 @@
-LocateMovieAssistant = Class.create({
+LocateMovieAssistant = Class.create(BaseAssistant, {
   initialize: function(movie) {
     this.movie = movie;
     this.kiosks = {items: []};
     this.spinning = true;
+    this.button = {buttonLabel: "Locate"};
   },
 
   setup: function() {
     $("name").update(this.movie.name);
     this.controller.setupWidget("kiosks", {listTemplate: "locate-movie/kiosks", itemTemplate: "locate-movie/kiosk"}, this.kiosks);
+    this.controller.setupWidget("address", {modelProperty: "address"}, this);
+    this.controller.setupWidget("locate-address", {type: Mojo.Widget.activityButton}, this.button);
+
     this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped.bind(this));
-    this.addSpinner();
-    this.locate();
+    this.controller.listen("locate-address", Mojo.Event.tap, this.locateAddress.bind(this));
+
+    this.addSpinner("locate-spinner");
+    this.locateGps();
   },
 
   kioskTapped: function(event) {
@@ -19,18 +25,10 @@ LocateMovieAssistant = Class.create({
     }
   },
 
-  addSpinner: function() {
-    this.controller.setupWidget("locate-spinner", {spinnerSize: "large"}, this);
-    var marginTop = (Mojo.Environment.DeviceInfo.maximumCardHeight / 2) - 64;
-    $("locate-spinner").setStyle({marginTop: marginTop + "px"});
-  },
-
-  locate: function() {
+  locateGps: function() {
     this.controller.serviceRequest('palm://com.palm.location', {
       method: "getCurrentPosition",
-      parameters: {
-        maximumAge: 300
-      },
+      parameters: {maximumAge: 300},
       onSuccess: this.gpsSuccess.bind(this),
       onFailure: this.gpsFailure.bind(this)
     });
@@ -40,21 +38,74 @@ LocateMovieAssistant = Class.create({
     console.log(Object.toJSON(response));
     response.latitude = 41.853056209834;
     response.longitude = -94.02111123432;
-    Kiosk.locate(this.movie.id, response.latitude, response.longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this));
-  },
-
-  kioskSuccess: function(kiosks) {
-    this.spinning = false;
-    this.controller.modelChanged(this);
-    this.kiosks.items.push.apply(this.kiosks.items, kiosks);
-    this.controller.modelChanged(this.kiosks);
+    this.locateKioskAt(response.latitude, response.longitude);
   },
 
   gpsFailure: function() {
     Mojo.Log.info("gps locate failed");
+    this.spinnerOff();
+    this.addressInputOn();
+  },
+
+  locateAddress: function() {
+    console.log("locating " + this.address);
+    this.disableButton();
+    Yahoo.geocode(this.address, this.addressLocateSuccess.bind(this), this.addressLocateFailure.bind(this));
+  },
+
+  addressLocateSuccess: function(latitude, longitude) {
+    console.log("found " + latitude + ", " + longitude)
+    this.addressInputOff();
+    this.spinnerOn();
+    this.locateKioskAt(latitude, longitude);
+  },
+
+  addressLocateFailure: function() {
+    this.enableButton();
+  },
+
+  disableButton: function() {
+    this.button.disabled = true;
+    this.controller.modelChanged(this.button);
+    this.controller.get("address-failure").hide();
+  },
+
+  enableButton: function() {
+    this.button.disabled = false;
+    this.controller.modelChanged(this.button);
+    this.controller.get("locate-address").mojo.deactivate();
+    this.controller.get("address-failure").show();
+  },
+
+  locateKioskAt: function(latitude, longitude) {
+    Kiosk.locate(this.movie.id, latitude, longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this));
+  },
+
+  kioskSuccess: function(kiosks) {
+    this.spinnerOff();
+    this.kiosks.items.push.apply(this.kiosks.items, kiosks);
+    this.controller.modelChanged(this.kiosks);
   },
 
   kioskFailure: function() {
     Mojo.Log.info("kiosk locate failed");
+  },
+
+  spinnerOn: function() {
+    this.spinning = true;
+    this.controller.modelChanged(this);
+  },
+
+  spinnerOff: function() {
+    this.spinning = false;
+    this.controller.modelChanged(this);
+  },
+
+  addressInputOff: function() {
+    this.controller.get("address-input").hide();
+  },
+
+  addressInputOn: function() {
+    this.controller.get("address-input").show();
   }
 })

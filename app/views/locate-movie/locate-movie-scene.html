@@ -2,6 +2,31 @@
   <div class="palm-header center" id="main-hdr"><strong id="name"></strong></div>
 </div>
 
-<div x-mojo-element="Spinner" class="spinner" id="locate-spinner"></div>
+<div id="address-input" style="display: none;">
+  <div id="gps-failure" class="palm-info-text">
+    Couldn't get your current location, you can try entering an address
+  </div>
+
+  <div class="palm-group">
+    <div class="palm-group-title" x-mojo-loc=''>Address</div>
+    <div class="palm-list">
+      <div class="palm-row single">
+        <div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+          <div class="title">
+            <div id="address" x-mojo-element="TextField"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="address-failure" class="palm-info-text" style="display: none;">
+    Couldn't find that location
+  </div>
+
+  <div x-mojo-element="Button" id="locate-address"></div>
+</div>
 
 <div id="kiosks" x-mojo-element="List"></div>
+
+<div x-mojo-element="Spinner" class="spinner" id="locate-spinner"></div>
