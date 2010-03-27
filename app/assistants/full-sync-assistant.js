@@ -1,6 +1,6 @@
 FullSyncAssistant = Class.create(BaseAssistant, {
   setup: function() {
-    this.spinnerOn("Preparing for first time use");
+    this.spinnerOn("preparing for first time use");
     Mojo.Event.listen(document, Reboxed.Event.movieSyncComplete, this.syncComplete.bind(this));
     MovieSync.sync();
   },

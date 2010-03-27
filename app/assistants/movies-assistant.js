@@ -1,5 +1,6 @@
 MoviesAssistant = Class.create({
   initialize: function() {
+    MovieSync.sync();
     this.cachedImages = {};
   },
 

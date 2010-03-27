@@ -1,10 +1,25 @@
 MovieSync = {
   sync: function() {
-    new Ajax.Request("http://reboxed-proxy.heroku.com/movies", {
-      method: "get",
-      onSuccess: this.syncMovies.bind(this),
-      onFailure: this.syncFailure.bind(this)
-    });
+    this.movies_sunk = 0;
+
+    Movie.syncDate(function(date) {
+      var parameters = {};
+
+      if(date) {
+        parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+      }
+      else {
+        //TODO: REMOVE...TESTING ONLY
+        parameters.since = "03/01/2010"
+      }
+
+      new Ajax.Request("http://reboxed-proxy.heroku.com/movies", {
+        method: "get",
+        parameters: parameters,
+        onSuccess: this.syncMovies.bind(this),
+        onFailure: this.syncFailure.bind(this)
+      });
+    }.bind(this))
   },
 
   syncMovies: function(response) {
@@ -13,12 +28,25 @@ MovieSync = {
 
   syncMovie: function(movies, index) {
     if(index >= movies.length) {
-      this.syncComplete();
+      if(this.movies_sunk == 0) {
+        this.syncComplete();
+      }
+      else {
+        Mojo.Event.send(document, Reboxed.Event.movieSyncProgress, {count: this.movies_sunk});
+        this.sync();
+      }
     }
     else {
-      var saveCallback = this.syncMovie.bind(this, movies, index + 1);
-      var movieJson = movies[index];
-      Movie.fromJson(movies[index]).save(saveCallback, saveCallback);
+      var syncNext = this.syncMovie.bind(this, movies, index + 1);
+
+      var onSuccess = function() {
+        this.movies_sunk++;
+        syncNext();
+      }.bind(this);
+
+      var onFailure = syncNext;
+
+      Movie.fromJson(movies[index]).save(onSuccess, onFailure);
     }
   },
 

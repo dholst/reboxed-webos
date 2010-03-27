@@ -4,10 +4,7 @@ Database = Class.create({
   },
 
   open: function(callback) {
-    Mojo.Log.info("opening database", this.databaseName);
     this.db = openDatabase("ext:" + this.databaseName, SCHEMA.version, this.databaseName, 500000);
-
-    Mojo.Log.info("creating schema");
     this._executeSchemaStatement(callback, 0);
   },
 

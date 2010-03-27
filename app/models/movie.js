@@ -5,22 +5,11 @@ Movie = Class.create({
   },
 
   save: function(success, failure) {
-    Mojo.Log.info("Saving", this.name);
-
-    var saveSuccess = function() {
-      success();
-    }
-
-    var saveFailure = function(message) {
-      Mojo.Log.error("save failed", message);
-      failure();
-    }
-
     Database.getInstance().execute(
       "insert into movies(id, name, image, released, rating, description, running_time, actors, genre, yahoo_rating) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [this.id, this.name, this.image, this.released.getTime(), this.rating, this.description, this.runningTime, this.actors, this.genre, this.yahooRating],
-      saveSuccess,
-      saveFailure
+      success,
+      failure
     );
   },
 
@@ -38,9 +27,21 @@ Movie = Class.create({
         }
       }
     });
-
   }
 });
+
+Movie.syncDate = function(result) {
+  var onSuccess = function(resultSet) {
+    var date = resultSet.rows.length > 1 ? new Date(resultSet.rows.item(1).released) : null;
+    result(date);
+  };
+
+  var onFailure = function(message) {
+    result(null);
+  };
+
+  Database.getInstance().execute("select distinct released from movies order by released desc", [], onSuccess, onFailure);
+};
 
 Movie.count = function(result) {
   var onSuccess = function(resultSet) {
@@ -95,7 +96,7 @@ Movie.fromJson = function(json) {
   var movie = new Movie();
   movie.id = json.id;
   movie.name = json.name;
-  movie.image = json.image;
+  movie.image = json.image ? json.image.gsub(" ", "%20") : undefined;
   movie.released = dateFrom(json.released);
   movie.rating = json.rating;
   movie.runningTime = json.running_time;

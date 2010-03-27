@@ -44,13 +44,13 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   locateAddress: function() {
-    console.log("locating " + this.address);
+    Mojo.Log.info("locating " + this.address);
     this.disableButton();
     Yahoo.geocode(this.address, this.addressLocateSuccess.bind(this), this.addressLocateFailure.bind(this));
   },
 
   addressLocateSuccess: function(latitude, longitude) {
-    console.log("found " + latitude + ", " + longitude)
+    Mojo.Log.info("found " + latitude + ", " + longitude)
     this.addressInputOff();
     this.locateKioskAt(latitude, longitude);
   },
