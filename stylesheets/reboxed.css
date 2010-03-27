@@ -1,8 +1,31 @@
-.spinner {
-  margin: auto;
+.my-scene-fade-top {
+	position: fixed; 
+	top: 0; 
+	z-index: 100000;
+	height: 54px; 
+	width: 100%;
+	background: url(../images/my-scene-fade-top.png) top center repeat-x;
+	-webkit-palm-mouse-target: ignore;
+}
+.palm-dark .my-scene-fade-top {
+	background-image: url(../images/my-scene-fade-top-dark.png);
+}
+
+.my-scene-fade-bottom {
+	position: fixed; 
+	bottom: 0; 
+	z-index: 100000;
+	height: 54px; 
+	width: 100%;
+	background: url(../images/my-scene-fade-bottom.png) bottom center repeat-x;
+	-webkit-palm-mouse-target: ignore;
+}
+.palm-dark .my-scene-fade-bottom {
+	background-image: url(../images/my-scene-fade-bottom-dark.png);
 }
 
 .spinner-message {
+  color: #333;
   text-align: center;
 }
 
@@ -58,7 +81,6 @@ div img {
  padding-right: 10px;
 }
 
-
 /*
  * KIOSK LIST
  */
@@ -94,10 +116,9 @@ div.palm-button.reserve {
   width: 30%;
 }
 
-
-
-
-
+/*
+ * RESERVE MOVIE
+ */
 #reserve-form .palm-group {
   margin: 5px !important;
 }

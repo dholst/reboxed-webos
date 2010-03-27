@@ -1,16 +1,11 @@
 BaseAssistant = Class.create({
+  setup: function() {
+    this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
+  },
+  
   spinnerOn: function(message) {
-    if(!this.spinner) {
-      this.spinner = {spinning: false};
-      this.controller.setupWidget("spinner", {spinnerSize: "large"}, this.spinner);
-    }
-
-    this.spinner.spinning = true;
-    this.controller.modelChanged(this.spinner);
-    message = message || "Working...";
-    var marginTop = (Mojo.Environment.DeviceInfo.maximumCardHeight / 2) - 64;
     var spinner = $$(".spinner").first()
-    spinner.setStyle({marginTop: marginTop + "px"});
+    spinner.mojo.start();
 
     var spinnerMessage = $("spinner-message");
 
@@ -19,12 +14,12 @@ BaseAssistant = Class.create({
       spinnerMessage = $("spinner-message");
     }
 
-    spinnerMessage.update(message);
+    spinnerMessage.update(message || "");
   },
 
   spinnerOff: function() {
-    this.spinner.spinning = false;
-    this.controller.modelChanged(this.spinner);
     $("spinner-message").remove();
+    $$(".spinner").first().mojo.stop();
+    $$(".palm-scrim").first().hide();
   }
 });

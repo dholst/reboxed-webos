@@ -25,7 +25,7 @@ MoviesAssistant = Class.create({
   },
 
   cleanup: function() {
-    this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCahced);
+    this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCached);
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
   },
 

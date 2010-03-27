@@ -17,7 +17,8 @@ MovieSync = {
         method: "get",
         parameters: parameters,
         onSuccess: this.syncMovies.bind(this),
-        onFailure: this.syncFailure.bind(this)
+        onFailure: this.syncFailure.bind(this),
+        onException: this.syncFailure.bind(this)
       });
     }.bind(this))
   },
@@ -51,8 +52,7 @@ MovieSync = {
   },
 
   syncFailure: function(response) {
-    Mojo.Log.error("Sync failure", response.getStatus());
-    this.syncComplete();
+    Mojo.Event.send(document, Reboxed.Event.movieSyncFailed, {});
   },
 
   syncComplete: function() {

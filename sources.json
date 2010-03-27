@@ -14,6 +14,7 @@
   {source: "app/models/user.js"},
   {source: "app/assistants/base-assistant.js"},
   {source: "app/assistants/stage-assistant.js"},
+  {source: "app/assistants/bail-assistant.js", scenes: "bail"},
   {source: "app/assistants/full-sync-assistant.js", scenes: "full-sync"},
   {source: "app/assistants/locate-movie-assistant.js", scenes: "locate-movie"},
   {source: "app/assistants/login-assistant.js", scenes: "login"},

@@ -1,3 +1,11 @@
+<div class="palm-page-header multi-line">
+  <div class="palm-page-header-wrapper">
+    <div class="title left">
+      Login to Redbox
+    </div>
+  </div>
+</div>
+
 <div class="palm-group">
   <div class="palm-group-title" x-mojo-loc=''>Email Address</div>
   <div class="palm-list">
@@ -24,6 +32,8 @@
   </div>
 </div>
 
-<div id="login-failure" class="palm-info-text" style="display: none;">Try again</div>
+<div class="palm-inline-error" style="display:none" id="login-failure">
+	<div class="error-message">Email address or password invalid. Try again.</div>
+</div>
 
 <div x-mojo-element="Button" id="login"></div>

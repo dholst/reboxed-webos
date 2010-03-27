@@ -1,16 +1,26 @@
 LoginAssistant = Class.create({
   initialize: function() {
-    this.user = {};
-    this.button = {buttonLabel: "Sign In"};
+    this.user = {username: "", password: ""};
+    this.button = {buttonLabel: "Login", disabled: true};
   },
 
   setup: function() {
-    this.controller.setupWidget("username", {modelProperty: "username", focus: true}, this.user);
-    this.controller.setupWidget("password", {modelProperty: "password"}, this.user);
+    this.controller.setupWidget("username", {modelProperty: "username", changeOnKeyPress: true, focus: true}, this.user);
+    this.controller.setupWidget("password", {modelProperty: "password", changeOnKeyPress: true}, this.user);
     this.controller.setupWidget("login", {type: Mojo.Widget.activityButton}, this.button);
 
-    this.login = this.login.bind(this);
-    this.controller.listen("login", Mojo.Event.tap, this.login);
+    this.controller.listen("username", Mojo.Event.propertyChange, this.propertyChanged.bind(this));
+		this.controller.listen("password", Mojo.Event.propertyChange, this.propertyChanged.bind(this));
+    this.controller.listen("login", Mojo.Event.tap, this.login.bind(this));
+  },
+
+  propertyChanged: function() {
+    if(this.user.username.length && this.user.password.length) {
+      this.enableButton();
+    }
+    else {
+      this.disableButton();
+    }
   },
 
   login: function() {

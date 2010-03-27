@@ -5,15 +5,19 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     this.button = {buttonLabel: "Locate"};
   },
 
-  setup: function() {
-    $("name").update(this.movie.name);
+  setup: function($super) {
+    $super();
+
     this.controller.setupWidget("kiosks", {listTemplate: "locate-movie/kiosks", itemTemplate: "locate-movie/kiosk"}, this.kiosks);
     this.controller.setupWidget("address", {modelProperty: "address"}, this);
     this.controller.setupWidget("locate-address", {type: Mojo.Widget.activityButton}, this.button);
 
     this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped.bind(this));
     this.controller.listen("locate-address", Mojo.Event.tap, this.locateAddress.bind(this));
-
+  },
+  
+  ready: function() {
+    this.controller.update("name", this.movie.name);
     this.spinnerOn("getting current location");
     this.locateGps();
   },
