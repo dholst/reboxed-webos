@@ -1,8 +1,8 @@
 .my-scene-fade-top {
-	position: fixed; 
-	top: 0; 
+	position: fixed;
+	top: 0;
 	z-index: 100000;
-	height: 54px; 
+	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-top.png) top center repeat-x;
 	-webkit-palm-mouse-target: ignore;
@@ -12,10 +12,10 @@
 }
 
 .my-scene-fade-bottom {
-	position: fixed; 
-	bottom: 0; 
+	position: fixed;
+	bottom: 0;
 	z-index: 100000;
-	height: 54px; 
+	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-bottom.png) bottom center repeat-x;
 	-webkit-palm-mouse-target: ignore;
@@ -84,36 +84,21 @@ div img {
 /*
  * KIOSK LIST
  */
+
 div.palm-row.kiosk div.palm-row-wrapper {
- margin: 10px;
+ margin: 0;
+ padding: 10px;
 }
 
-div.palm-row.kiosk div.palm-body-text {
-  margin: 0px;
-  font-size: 14px;
-  color: gray;
-  line-height: 22px;
+div.palm-row.kiosk div.palm-info-text {
+  margin: 4px;
+  font-size: 16px;
 }
 
-div.palm-row.kiosk div.palm-body-text.kiosk-address {
-  line-height: 16px;
-}
-
-div.palm-row.kiosk div.palm-body-text.kiosk-vendor {
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-div.palm-row.kiosk div.button-wrapper {
-  float: right;
-}
-
-div.palm-button.reserve {
-  float: right;
-  font-size: 15px;
-  width: 30%;
+div.palm-row.kiosk .icon {
+  background-color: red;
+  height: 70px;
+  background: url(../images/details.png) center center no-repeat;
 }
 
 /*

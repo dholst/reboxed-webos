@@ -23,8 +23,21 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   kioskTapped: function(event) {
+    /*
     if(event.originalEvent.target.hasClassName("reserve")) {
-      this.controller.stageController.pushScene("reserve-movie", event.item, this.movie);
+    }
+    */
+    
+    this.controller.popupSubmenu({
+      onChoose: this.kioskPopupTapped.bind(this, event.item),
+      placeNear: event.originalEvent.target,
+      items: [{label: 'Reserve', command: 'reserve'}]
+    });
+  },
+  
+  kioskPopupTapped: function(kiosk, command) {
+    if(command === "reserve") {
+      this.controller.stageController.pushScene("reserve-movie", event.item, this.movie);    
     }
   },
 
