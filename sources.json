@@ -15,6 +15,7 @@
   {source: "app/assistants/base-assistant.js"},
   {source: "app/assistants/stage-assistant.js"},
   {source: "app/assistants/bail-assistant.js", scenes: "bail"},
+  {source: "app/assistants/error-dialog-assistant.js"},
   {source: "app/assistants/full-sync-assistant.js", scenes: "full-sync"},
   {source: "app/assistants/locate-movie-assistant.js", scenes: "locate-movie"},
   {source: "app/assistants/login-assistant.js", scenes: "login"},
@@ -22,5 +23,5 @@
   {source: "app/assistants/movie-assistant.js", scenes: "movie"},
   {source: "app/assistants/reserve-movie-assistant.js", scenes: "reserve-movie"},
   {source: "app/assistants/reserved-movie-assistant.js", scenes: "reserved-movie"},
-  {source: "app/assistants/error-dialog-assistant.js"}
+  {source: "app/assistants/terms-assistant.js", scenes: "terms"},
 ]

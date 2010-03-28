@@ -10,6 +10,11 @@ StageAssistant = Class.create({
       scene = "movies";
     }
 
-    this.controller.pushScene(scene);
+    if(new Mojo.Model.Cookie("termsOfUseAccepted").get()) {
+      this.controller.pushScene(scene);
+    }
+    else {
+      this.controller.pushScene("terms", scene)
+    }
   }
 });
