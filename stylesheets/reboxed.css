@@ -127,12 +127,8 @@ div.palm-row.kiosk .icon {
 /*
  * RESERVED MOVIE
  */
-.reserved .section {
-  padding: 5px;
-}
-
-.reserved .section .palm-info-text {
+.reserved .palm-info-text {
   margin: 0;
-  padding: 5px;
+  padding: 1px;
   line-height: 16px;
 }

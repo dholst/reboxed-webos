@@ -23,9 +23,9 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.update("yahoo", this.movie.yahooRating);
   },
 
-  activate: function(movieWasReserved) {
-    if(movieWasReserved) {
-      this.controller.stageController.swapScene("reserved-movie");
+  activate: function(cart) {
+    if(cart) {
+      this.controller.stageController.swapScene("reserved-movie", cart);
     }
   },
 

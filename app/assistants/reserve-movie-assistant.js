@@ -71,6 +71,9 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   confirm: function() {
+    this.checkoutComplete();
+    return;
+    
     if(!this.cvc.value.length) {
       this.reserveError("Enter your card verification code.");
     }
@@ -119,7 +122,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   checkoutComplete: function() {
-    this.controller.stageController.popScene(true);
+    this.controller.stageController.popScenesTo("movie", this.cart);
   },
 
   checkoutFailed: function() {
