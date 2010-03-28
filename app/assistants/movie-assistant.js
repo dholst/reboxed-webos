@@ -5,6 +5,7 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   setup: function() {
     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {label:"Locate", command:"locate"}]});
+    this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached = this.imageCached.bind(this));
   },
 
   ready: function() {
@@ -25,12 +26,9 @@ MovieAssistant = Class.create(BaseAssistant, {
     if(cart) {
       this.controller.stageController.swapScene("reserved-movie", cart);
     }
-    else {
-      this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached = this.imageCached.bind(this));
-    }
   },
 
-  deactivate: function() {
+  cleanup: function() {
     this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCached);
   },
 
