@@ -33,7 +33,11 @@
   clear: both;
 }
 
-
+#bail-action {
+  width: 50%;
+  margin: auto;
+  margin-top: 10px;
+}
 
 /*
  * MOVIE LIST

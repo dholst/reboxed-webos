@@ -4,9 +4,12 @@ StageAssistant = Class.create({
   },
 
   databaseOpened: function() {
-    Movie.count(function(count) {
-      var scene = count ? "movies" : "full-sync";
-      this.controller.pushScene(scene);
-    }.bind(this));
+    var scene = "full-sync";
+
+    if(new Mojo.Model.Cookie("fullSyncComplete").get()) {
+      scene = "movies";
+    }
+
+    this.controller.pushScene(scene);
   }
 });
