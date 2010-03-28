@@ -6,7 +6,8 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super();
-    this.controller.get("movie-name").update(this.movie.name);
+    this.update("movie-name", this.movie.name);
+
   },
 
   activate: function() {
@@ -29,22 +30,28 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   cartCreated: function(cart) {
     this.cart = cart;
+    this.update("movie-name", this.cart.movie.name);
     Card.getAll(this.cardsRetrieved.bind(this), this.cardsFailed.bind(this));
   },
 
   cardsRetrieved: function(cards) {
-    this.cards = cards;
-    this.setupWidgets();
-    this.spinnerOff();
-
-    this.controller.update("reserve-form", Mojo.View.render({object: this, template: "reserve-movie/details"}));
-
-    if(this.movie.rating === "R") {
-      this.controller.get("rated-r").show();
+    if(!cards.length) {
+      this.cardsFailed();
     }
+    else {
+      this.cards = cards;
+      this.setupWidgets();
+      this.spinnerOff();
 
-    this.controller.listen("cardSelector", Mojo.Event.propertyChange, this.cardChanged.bind(this));
-    this.controller.listen("confirm", Mojo.Event.tap, this.confirm.bind(this));
+      this.controller.update("reserve-form", Mojo.View.render({object: this, template: "reserve-movie/details"}));
+
+      if(this.cart.movie.rating === "R") {
+        this.controller.get("rated-r").show();
+      }
+
+      this.controller.listen("cardSelector", Mojo.Event.propertyChange, this.cardChanged.bind(this));
+      this.controller.listen("confirm", Mojo.Event.tap, this.confirm.bind(this));
+    }
   },
 
   setupWidgets: function() {
@@ -53,12 +60,28 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
     });
 
     this.selectedCard = {value: 0};
-    this.cvc = {disabled: false};
+    this.cvc = {disabled: false, value: ""};
     this.eighteen = {value: false};
+    this.button = {buttonLabel: "Confirm Reservation", buttonClass: 'affirmative'};
 
     this.controller.setupWidget("cardSelector", {choices: choices}, this.selectedCard);
     this.controller.setupWidget("cvc", {hintText: "Enter verification code...", maxLength: 3}, this.cvc);
     this.controller.setupWidget("eighteen", {}, this.eighteen);
+    this.controller.setupWidget("confirm", {type: Mojo.Widget.activityButton}, this.button);
+  },
+
+  confirm: function() {
+    if(!this.cvc.value.length) {
+      this.reserveError("Enter your card verification code.");
+    }
+    else if(this.cart.movie.rating === "R" && !this.eighteen.value) {
+      this.reserveError("Verify your age.");
+    }
+    else {
+      this.button.disabled = true;
+      this.controller.modelChanged(this.button);
+      this.cart.checkoutWith(this.cards[this.selectedCard.value], this.cvc.value, this.checkoutComplete.bind(this), this.checkoutFailed.bind(this));
+    }
   },
 
   cardChanged: function(event) {
@@ -67,59 +90,39 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   cartFailed: function() {
-    Mojo.Log.info("cart creation failed");
+    this.failAndPop("Unable to reserve movie.");
   },
 
   cardsFailed: function() {
-    Mojo.Log.info("cards retrieval failed");
+    this.failAndPop("Unable to reserve movie, check that a credit card is available on your account.")
   },
 
-  confirm: function() {
-    console.log(this.cards[this.selectedCard.value].alias);
-    console.log(this.cvc.value);
-    console.log(this.eighteen.value);
+  failAndPop: function(message) {
+    this.spinnerOff();
+
+    this.controller.showDialog({
+      message: message,
+      preventCancel: true,
+      template: 'dialog/error',
+      assistant: new ErrorDialogAssistant(function() {
+        this.controller.stageController.popScene();
+      }.bind(this))
+    });
   },
 
-  mockSetup: function() {
-    this.movie = this.mockMovie();
-    this.kiosk = this.mockKiosk();
-    this.cart = this.mockCart();
-    this.cardsRetrieved(this.mockCards());
+  reserveError: function(message) {
+    this.button.disabled = false;
+    this.controller.modelChanged(this.button);
+    this.controller.get("confirm").mojo.deactivate();
+    this.controller.update("reserve-failure-message", message)
+    this.controller.get("reserve-failure").show();
   },
 
-  mockMovie: function() {
-    var movie = new Movie();
-    movie.name = "Mock Movie Name";
-    movie.rating = "R";
-    return movie;
+  checkoutComplete: function() {
+    this.controller.stageController.popScene(true);
   },
 
-  mockKiosk: function() {
-    var kiosk = new Kiosk();
-    kiosk.vendor = "McDonalds";
-    kiosk.address = "123 Redbox Way";
-    kiosk.city = "Sunnyvale";
-    kiosk.state = "CA";
-    kiosk.zip = "90210";
-    return kiosk;
-  },
-
-  mockCart: function() {
-    var cart = new Cart();
-    cart.price = "$1.00";
-    cart.tax = "$0.08";
-    cart.total = "$1.08";
-    cart.pickupBy = "March 25, 2010 9:00 PM";
-    return cart;
-  },
-
-  mockCards: function() {
-    var card1 = new Card();
-    card1.alias = "Discover";
-
-    var card2 = new Card();
-    card2.alias = "Visa";
-
-    return [card1, card2];
+  checkoutFailed: function() {
+    this.reserveError("Unable to complete reservation. Check your card and card verification code and try again.");
   }
 });

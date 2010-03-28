@@ -6,7 +6,7 @@ StageAssistant = Class.create({
   databaseOpened: function() {
     Movie.count(function(count) {
       var scene = count ? "movies" : "full-sync";
-      this.controller.pushScene(scene);
+      this.controller.pushScene(scene) //"reserved-movie");
     }.bind(this));
   }
 });

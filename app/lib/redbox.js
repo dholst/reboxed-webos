@@ -17,7 +17,7 @@ Redbox = {
         createPersistentCookie: false
       });
     },
-    
+
     parseLoginResponse: function(json) {
       return json.d.success;
     },
@@ -36,11 +36,12 @@ Redbox = {
 
       jsonCards.each(function(jsonCard) {
         var card = new Card();
-        card.id = jsonCard.ID;
-        card.number = jsonCard.CardNumber;
-        card.alias = jsonCard.Alias;
+        card.original = jsonCard;
+        card.id = card.original.ID;
+        card.number = card.original.CardNumber;
+        card.alias = card.original.Alias;
 
-        if(jsonCard.IsPreferred) {
+        if(card.original.IsPreferred) {
           cards.unshift(card);
         }
         else {
@@ -74,13 +75,44 @@ Redbox = {
 
     parseRefreshResponse: function(json) {
       var cart = new Cart();
-      var cartJson = json.d.cart;
-      cart.price = cartJson.Total;
-      cart.tax = cartJson.Tax;
-      cart.total = cartJson.GrandTotal;
-      cart.canCheckout = cartJson.CanCheckout;
-      cart.pickupBy = cartJson.PickupBy;
+      cart.original = json.d.cart;
+
+      cart.price = cart.original.Total;
+      cart.tax = cart.original.Tax;
+      cart.total = cart.original.GrandTotal;
+      cart.canCheckout = cart.original.CanCheckout;
+      cart.pickupBy = cart.original.PickupBy;
+
+      cart.kiosk = new Kiosk();
+      cart.kiosk.vendor = cart.original.Kiosk.Vendor;
+      cart.kiosk.address = cart.original.Kiosk.Address;
+      cart.kiosk.city = cart.original.Kiosk.City;
+      cart.kiosk.state = cart.original.Kiosk.State;
+      cart.kiosk.zip = cart.original.Kiosk.Zip;
+
+      if(cart.original.Items.length == 1) {
+        cart.movie = new Movie();
+        cart.movie.name = cart.original.Items[0].Name;
+        cart.movie.rating = cart.original.Items[0].Rating;
+      }
+
       return cart;
+    },
+
+    reserveUrl: function() {
+      return "https://www.redbox.com/ajax.svc/Cart/Reserve/";
+    },
+
+    buildReserveRequest: function(cart, card, verificationCode) {
+      var request = {};
+      request.Cart = cart.original;
+      request.Card = card.original;
+      request.Card.CVV = verificationCode;
+      return Object.toJSON(request);
+    },
+
+    parseReserveResponse: function(json) {
+      return json.d.msgs.length == 0;
     }
   },
 

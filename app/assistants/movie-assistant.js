@@ -1,27 +1,32 @@
-MovieAssistant = Class.create({
+MovieAssistant = Class.create(BaseAssistant, {
   initialize: function(movie) {
     this.movie = movie;
   },
 
   setup: function() {
+    this.imageCached = this.imageCached.bind(this);
     this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached);
+    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {label:"Locate", command:"locate"}]});
+  },
 
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {
-      items: [
-        {},
-        {label:"Locate", command:"locate"}
-      ]
-    });
-
-    $("name").update(this.movie.name)
+  ready: function() {
+    //TODO: make this a template
     $("image").src = "file://" + this.movie.cacheDirectory + "/" + this.movie.image;
-    $("rating").update(this.movie.rating);
-    $("released").update(this.movie.releasedDisplay);
-    $("running-time").update(this.movie.runningTime);
-    $("actors").update(this.movie.actors);
-    $("genre").update(this.movie.genre);
-    $("description").update(this.movie.description);
-    $("yahoo").update(this.movie.yahooRating);
+
+    this.update("name", this.movie.name)
+    this.update("rating", this.movie.rating);
+    this.update("released", this.movie.releasedDisplay);
+    this.update("running-time", this.movie.runningTime);
+    this.update("actors", this.movie.actors);
+    this.update("genre", this.movie.genre);
+    this.update("description", this.movie.description);
+    this.update("yahoo", this.movie.yahooRating);
+  },
+
+  activate: function(movieWasReserved) {
+    if(movieWasReserved) {
+      this.controller.stageController.swapScene("reserved-movie");
+    }
   },
 
   cleanup: function() {

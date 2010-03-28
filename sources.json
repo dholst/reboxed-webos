@@ -20,5 +20,7 @@
   {source: "app/assistants/login-assistant.js", scenes: "login"},
   {source: "app/assistants/movies-assistant.js", scenes: "movies"},
   {source: "app/assistants/movie-assistant.js", scenes: "movie"},
-  {source: "app/assistants/reserve-movie-assistant.js", scenes: "reserve-movie"}
+  {source: "app/assistants/reserve-movie-assistant.js", scenes: "reserve-movie"},
+  {source: "app/assistants/reserved-movie-assistant.js", scenes: "reserved-movie"},
+  {source: "app/assistants/error-dialog-assistant.js"}
 ]

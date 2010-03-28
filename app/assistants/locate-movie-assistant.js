@@ -8,36 +8,42 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super();
 
-    this.controller.setupWidget("kiosks", {listTemplate: "locate-movie/kiosks", itemTemplate: "locate-movie/kiosk"}, this.kiosks);
+    var listAttributes = {
+      listTemplate: "locate-movie/kiosks",
+      itemTemplate: "locate-movie/kiosk",
+      dividerTemplate: "locate-movie/divider",
+  		dividerFunction: this.divide,
+    }
+
+    this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
     this.controller.setupWidget("address", {modelProperty: "address"}, this);
     this.controller.setupWidget("locate-address", {type: Mojo.Widget.activityButton}, this.button);
 
     this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped.bind(this));
     this.controller.listen("locate-address", Mojo.Event.tap, this.locateAddress.bind(this));
   },
-  
+
   ready: function() {
     this.controller.update("name", this.movie.name);
     this.spinnerOn("getting current location");
     this.locateGps();
   },
 
+  divide: function(kiosk) {
+    return kiosk.distanceRange;
+  },
+
   kioskTapped: function(event) {
-    /*
-    if(event.originalEvent.target.hasClassName("reserve")) {
-    }
-    */
-    
     this.controller.popupSubmenu({
       onChoose: this.kioskPopupTapped.bind(this, event.item),
       placeNear: event.originalEvent.target,
       items: [{label: 'Reserve', command: 'reserve'}]
     });
   },
-  
+
   kioskPopupTapped: function(kiosk, command) {
     if(command === "reserve") {
-      this.controller.stageController.pushScene("reserve-movie", event.item, this.movie);    
+      this.controller.stageController.pushScene("reserve-movie", kiosk, this.movie);
     }
   },
 
@@ -73,13 +79,13 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   addressLocateFailure: function() {
+    this.controller.get("gps-failure").hide();
     this.enableButton();
   },
 
   disableButton: function() {
     this.button.disabled = true;
     this.controller.modelChanged(this.button);
-    this.controller.get("address-failure").hide();
   },
 
   enableButton: function() {
@@ -90,13 +96,17 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   locateKioskAt: function(latitude, longitude) {
-    this.spinnerOn("locating movie")
+    this.spinnerOn("locating movie");
     Kiosk.locate(this.movie.id, latitude, longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this));
   },
 
   kioskSuccess: function(kiosks) {
+    kiosks.each(function(kiosk) {
+      kiosk.calculateDistanceRange();
+      this.kiosks.items.push(kiosk);
+    }.bind(this));
+
     this.spinnerOff();
-    this.kiosks.items.push.apply(this.kiosks.items, kiosks);
     this.controller.modelChanged(this.kiosks);
   },
 

@@ -1,4 +1,25 @@
 Kiosk = Class.create({
+  initialize: function() {
+    this.distanceRange = "FUMULLINS";
+  },
+
+  calculateDistanceRange: function() {
+    if(this.distance < 1) {
+      this.distanceRange = "less than 1 mile";
+    }
+    else if(this.distance < 5) {
+      this.distanceRange = "less than 5 miles";
+    }
+    else if(this.distance < 15) {
+      this.distanceRange = "less than 15 miles";
+    }
+    else if(this.distance < 30) {
+      this.distanceRange = "less than 30 miles";
+    }
+    else {
+      this.distanceRange = "more than 30 miles";
+    }
+  }
 });
 
 Kiosk.locate = function(id, lat, long, success, failure) {

@@ -5,8 +5,12 @@
 </div>
 
 <div id="address-input" style="display: none;">
-  <div id="gps-failure" class="palm-info-text">
-    Couldn't get your current location, you can try entering an address
+  <div class="palm-inline-error" id="gps-failure">
+  	<div class="error-message">Unable to find your current location, try entering an address.</div>
+  </div>
+
+  <div class="palm-inline-error" id="address-failure" style="display: none;">
+    <div class="error-message">Unable to find that location.</div>
   </div>
 
   <div class="palm-group">
@@ -20,10 +24,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div id="address-failure" class="palm-info-text" style="display: none;">
-    Couldn't find that location
   </div>
 
   <div x-mojo-element="Button" id="locate-address"></div>

@@ -2,10 +2,11 @@ BaseAssistant = Class.create({
   setup: function() {
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
   },
-  
+
   spinnerOn: function(message) {
     var spinner = $$(".spinner").first()
     spinner.mojo.start();
+    $$(".palm-scrim").first().show();
 
     var spinnerMessage = $("spinner-message");
 
@@ -21,5 +22,9 @@ BaseAssistant = Class.create({
     $("spinner-message").remove();
     $$(".spinner").first().mojo.stop();
     $$(".palm-scrim").first().hide();
+  }, 
+  
+  update: function(element, content) {
+    this.controller.get(element).update(content);
   }
 });

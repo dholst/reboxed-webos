@@ -5,9 +5,9 @@ Ajax.Responders.register({
   	}
   },
 
-  onComplete: function(response) {
-  	if(response.url.startsWith("http")) {
-      Mojo.Log.info("ajax request completed with", response.getStatus());
+  onComplete: function(request) {
+  	if(request.url.startsWith("http")) {
+      Mojo.Log.info("ajax request completed with", request.getStatus());
     }
   },
 

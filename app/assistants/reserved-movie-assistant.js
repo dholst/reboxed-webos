@@ -1,0 +1,3 @@
+ReservedMovieAssistant = Class.create({
+  
+});
