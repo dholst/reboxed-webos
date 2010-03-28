@@ -104,7 +104,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
       message: message,
       preventCancel: true,
       template: 'dialog/error',
-      assistant: new ErrorDialogAssistant(function() {
+      assistant: new ErrorDialogAssistant(this, function() {
         this.controller.stageController.popScene();
       }.bind(this))
     });

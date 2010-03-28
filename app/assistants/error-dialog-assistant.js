@@ -1,16 +1,17 @@
 ErrorDialogAssistant = Class.create(BaseAssistant, {
-  initialize: function(callback) {
+  initialize: function(assistant, callback) {
+    this.controller = assistant.controller;
     this.callback = callback;
   },
 
   setup: function(widget) {
     this.widget = widget;
     this.ok = this.ok.bind(this);
-    Mojo.Event.listen("error-message-callback", Mojo.Event.tap, this.ok);
+    this.controller.listen("error-message-callback", Mojo.Event.tap, this.ok);
   },
 
   ok: function() {
-    Mojo.Event.stopListening("error-message-callback", Mojo.Event.tap, this.ok);
+    this.controller.stopListening("error-message-callback", Mojo.Event.tap, this.ok);
     this.widget.mojo.close();
     this.callback();
   }
