@@ -4,7 +4,7 @@ describe("Movie Sync", function() {
 
     MovieSync.sync();
 
-    expect(Ajax.Request).wasCalledWith("http://reboxed-proxy.heroku.com/movies", {
+    expect(Ajax.Request).wasCalledWith("http://reboxed.semicolonapps.com/movies", {
       method: "get",
       onSuccess: jasmine.any(Function),
       onFailure: jasmine.any(Function)

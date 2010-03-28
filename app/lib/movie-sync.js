@@ -13,7 +13,7 @@ MovieSync = {
         parameters.since = "03/01/2010"
       }
 
-      new Ajax.Request("http://reboxed-proxy.heroku.com/movies", {
+      new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
         method: "get",
         parameters: parameters,
         onSuccess: this.syncMovies.bind(this),
