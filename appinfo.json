@@ -1,9 +1,9 @@
 {
-	"id": "com.1912apps.reboxed",
+	"id": "com.semicolonapps.reboxed",
 	"version": "0.0.1",
-	"vendor": "1912apps",
+	"vendor": "semicolonapps",
 	"type": "web",
 	"main": "index.html",
-	"title": "reboxed",
+	"title": "Reboxed",
 	"icon": "icon.png"
 }
