@@ -7,7 +7,7 @@ MoviesAssistant = Class.create({
   setup: function() {
     this.controller.setupWidget("movies", {
       renderLimit: 10,
-      lookahead: 7,
+      lookahead: 20,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
