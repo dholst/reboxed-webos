@@ -105,10 +105,14 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   kioskSuccess: function(kiosks) {
+    $("nothing-found").hide();
+
     kiosks.each(function(kiosk) {
       kiosk.calculateDistanceRange();
       this.kiosks.items.push(kiosk);
     }.bind(this));
+
+    $("nothing-found")[kiosks.length ? "hide" : "show"]()
 
     this.spinnerOff();
     this.controller.modelChanged(this.kiosks);

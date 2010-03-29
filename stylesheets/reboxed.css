@@ -100,6 +100,14 @@ div.palm-row.kiosk .icon {
   background: url(../images/details.png) center center no-repeat;
 }
 
+#nothing-found {
+  padding: 15px;
+}
+
+#nothing.found .palm-body-text {
+  font-size: 20px;
+}
+
 /*
  * RESERVE MOVIE
  */

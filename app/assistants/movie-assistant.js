@@ -4,8 +4,8 @@ MovieAssistant = Class.create(BaseAssistant, {
   },
 
   setup: function() {
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {label:"Locate", command:"locate"}]});
     this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached = this.imageCached.bind(this));
+    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {label:"Locate", command:"locate"}]});
   },
 
   ready: function() {
@@ -19,7 +19,6 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.update("actors", this.movie.actors);
     this.update("genre", this.movie.genre);
     this.update("description", this.movie.description);
-    this.update("yahoo", this.movie.yahooRating);
   },
 
   activate: function(cart) {

@@ -29,6 +29,9 @@ MovieSync = {
 
   syncMovie: function(movies, index) {
     if(index >= movies.length) {
+      this.syncComplete();
+      return;
+
       if(this.movies_sunk == 0) {
         this.syncComplete();
       }
