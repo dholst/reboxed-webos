@@ -12,7 +12,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
       listTemplate: "locate-movie/kiosks",
       itemTemplate: "locate-movie/kiosk",
       dividerTemplate: "locate-movie/divider",
-  		dividerFunction: this.divide,
+  		dividerFunction: this.divide
     }
 
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);

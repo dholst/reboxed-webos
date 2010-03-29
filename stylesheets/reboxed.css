@@ -43,7 +43,7 @@
  * MOVIE LIST
  */
 div.palm-row.movie div.palm-row-wrapper {
-  background: url(../images/gradient.png) repeat-x 0% 100%;
+  background: url(../images/gradient.png) repeat-x 0 0;
 }
 
 div.palm-row.movie img {
@@ -84,8 +84,9 @@ div img {
  */
 
 div.palm-row.kiosk div.palm-row-wrapper {
- margin: 0;
- padding: 10px;
+  margin: 0;
+  padding: 10px;
+  background: url(../images/gradient.png) repeat-x 0 0;
 }
 
 div.palm-row.kiosk div.palm-info-text {
