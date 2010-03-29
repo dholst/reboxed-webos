@@ -11,7 +11,9 @@ MoviesAssistant = Class.create({
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
-      itemsCallback: this.itemsCallback.bind(this)
+      itemsCallback: this.itemsCallback.bind(this),
+      dividerTemplate: "movies/divider",
+  		dividerFunction: this.divide
     };
 
     this.controller.setupWidget("movies", this.listAttributes);
@@ -22,6 +24,10 @@ MoviesAssistant = Class.create({
     this.movieTapped = this.movieTapped.bind(this);
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped);
     this.paginate(0, 30);
+  },
+
+  divide: function(movie) {
+    return movie.releasedDisplay;
   },
 
   cleanup: function() {

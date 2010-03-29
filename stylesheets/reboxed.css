@@ -43,7 +43,7 @@
  * MOVIE LIST
  */
 div.palm-row.movie div.palm-row-wrapper {
-  /*background: url(../images/gradient.png) repeat-x 0% 100%;*/
+  background: url(../images/gradient.png) repeat-x 0% 100%;
 }
 
 div.palm-row.movie img {
