@@ -123,7 +123,7 @@ Redbox = {
       return Object.toJSON({
         latitude: lat,
         longitude: long,
-        radius: 30,
+        radius: 50,
         maxKiosks: 50,
         mcdOnly: false,
         getInv: false,

@@ -50,13 +50,17 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   locateGps: function() {
     this.controller.serviceRequest('palm://com.palm.location', {
       method: "getCurrentPosition",
-      parameters: {maximumAge: 300},
+      parameters: {
+        responseTime: 1,
+        maximumAge: 300
+      },
       onSuccess: this.gpsSuccess.bind(this),
       onFailure: this.gpsFailure.bind(this)
     });
   },
 
   gpsSuccess: function(response) {
+    console.log(Object.toJSON(response));
     this.locateKioskAt(response.latitude, response.longitude);
   },
 

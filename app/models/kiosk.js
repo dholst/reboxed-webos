@@ -1,24 +1,23 @@
 Kiosk = Class.create({
-  initialize: function() {
-    this.distanceRange = "FUMULLINS";
-  },
-
   calculateDistanceRange: function() {
-    if(this.distance < 1) {
-      this.distanceRange = "less than 1 mile";
+    var ranges = [1, 5, 10, 20, 30, 40, 50];
+    var range;
+
+    for(var i = 0; i < ranges.length; i++) {
+      if(this.distance < ranges[i]) {
+        range = ranges[i];
+        break;
+      }
     }
-    else if(this.distance < 5) {
-      this.distanceRange = "less than 5 miles";
-    }
-    else if(this.distance < 15) {
-      this.distanceRange = "less than 15 miles";
-    }
-    else if(this.distance < 30) {
-      this.distanceRange = "less than 30 miles";
+
+    if(range) {
+      this.distanceRange = range + " mile" + (range == 1 ? "" : "s") + " or less"
     }
     else {
-      this.distanceRange = "more than 30 miles";
+      this.distanceRange = "more than " + ranges.last() + " miles";
     }
+
+    return this.distanceRange;
   }
 });
 
