@@ -124,5 +124,11 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   checkoutFailed: function() {
     this.reserveError("Unable to complete reservation. Check your card and card verification code and try again.");
+  },
+
+  handleCommand: function(event) {
+    if(this.button.disabled) {
+      event.stop();
+    }
   }
 });
