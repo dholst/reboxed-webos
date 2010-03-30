@@ -1,22 +1,5 @@
 LoginAssistant = Class.create({
   initialize: function() {
-
-
-
-
-
-
-    var cookie = new Mojo.Model.Cookie(LoginAssistant.COOKIE);
-    cookie.put({
-      username: Mojo.Model.encrypt(LoginAssistant.KEY, "darrinholst@gmail.com"),
-      password: Mojo.Model.encrypt(LoginAssistant.KEY, "i9uuZOEXEo8y")
-    });
-
-
-
-
-
-
     this.user = {username: "", password: ""};
     this.button = {buttonLabel: "Login", disabled: true};
     this.rememberMe = {};
