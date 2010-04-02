@@ -1,6 +1,22 @@
-<div id="main" class="palm-hasheader">
-  <div class="palm-header center" id="main-hdr">All Movies</div>
+<div id="menu-panel-scrim" class="palm-scrim menu-panel" x-mojo-menupanel-scrim=""></div>
+
+<div class="palm-menu-panel" x-mojo-menupanel="">
+	<div class="palm-menu-panel-wrapper" x-mojo-element="Scroller">
+    <div class="palm-row">
+      <div class="palm-row-wrapper textfield-group focused">
+        <div class="title">
+          <div id="search-text" x-mojo-element="TextField"></div>
+        </div>
+      </div>
+    </div>
+    <div id="search-cancel" x-mojo-element="Button"></div>
+    <div id="search-all" x-mojo-element="Button"></div>
+    <div id="search-submit" x-mojo-element="Button"></div>
+  </div>
 </div>
 
-<div id="movies" x-mojo-element="List"></div>
-<div class="my-scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+<div>
+  <div id="all-movies" x-mojo-element="List"></div>
+  <div id="movies" x-mojo-element="List"></div>
+  <div class="my-scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+</div>

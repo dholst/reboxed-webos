@@ -1,7 +1,7 @@
 .my-scene-fade-top {
 	position: fixed;
 	top: 0;
-	z-index: 97000;
+	z-index: 18000;
 	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-top.png) top center repeat-x;
@@ -14,7 +14,7 @@
 .my-scene-fade-bottom {
 	position: fixed;
 	bottom: 0;
-	z-index: 97000;
+	z-index: 18000;
 	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-bottom.png) bottom center repeat-x;
@@ -69,6 +69,23 @@ div.palm-row.movie div.palm-body-text.movie-name {
 div.palm-row.movie .movie-info {
   height: 108px;
   background: url(../images/details.png) center center no-repeat;
+}
+
+.movies-scene .palm-menu {
+  z-index: 19200;
+}
+
+.movies-scene .palm-menu-panel {
+  z-index: 19100;
+}
+
+.movies-scene .palm-menu-panel .palm-menu-panel-wrapper {
+  padding-top: 32px;
+}
+
+.movies-scene #search-submit, .movies-scene #search-cancel, .movies-scene #search-all {
+  width: 33%;
+  float: left;
 }
 
 /*

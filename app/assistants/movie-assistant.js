@@ -3,22 +3,11 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.movie = movie;
   },
 
-  setup: function() {
+  setup: function($super) {
+    $super();
+    this.update("main", Mojo.View.render({object: this.movie, template: "movie/movie"}));
     this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached = this.imageCached.bind(this));
     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {label:"Locate", command:"locate"}]});
-  },
-
-  ready: function() {
-    //TODO: make this a template
-    $("image").src = "file://" + this.movie.cacheDirectory + "/" + this.movie.image;
-
-    this.update("name", this.movie.name)
-    this.update("rating", this.movie.rating);
-    this.update("released", this.movie.releasedDisplay);
-    this.update("running-time", this.movie.runningTime);
-    this.update("actors", this.movie.actors);
-    this.update("genre", this.movie.genre);
-    this.update("description", this.movie.description);
   },
 
   activate: function(cart) {

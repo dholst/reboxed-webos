@@ -74,6 +74,25 @@ Movie.paginate = function(offset, count, success, failure) {
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
+Movie.search = function(query, success, failure) {
+  var onSuccess = function(resultSet) {
+    var movies = [];
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      movies.push(Movie.fromJson(resultSet.rows.item(i)));
+    }
+
+    success(movies);
+  }
+
+  var onFailure = function(message) {
+    failure(message);
+  }
+
+  var sql = "select * from movies where name like '%" + query + "%' order by released desc, name limit 200"
+  Database.getInstance().execute(sql, [], onSuccess, onFailure);
+};
+
 Movie.find = function(id, success, failure) {
   var onSuccess = function(resultSet) {
     if(resultSet.rows.length != 1) {
