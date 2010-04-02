@@ -1,7 +1,7 @@
 .my-scene-fade-top {
 	position: fixed;
 	top: 0;
-	z-index: 100000;
+	z-index: 97000;
 	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-top.png) top center repeat-x;
@@ -14,7 +14,7 @@
 .my-scene-fade-bottom {
 	position: fixed;
 	bottom: 0;
-	z-index: 100000;
+	z-index: 97000;
 	height: 54px;
 	width: 100%;
 	background: url(../images/my-scene-fade-bottom.png) bottom center repeat-x;
@@ -107,6 +107,27 @@ div.palm-row.kiosk .icon {
 #nothing.found .palm-body-text {
   font-size: 20px;
 }
+
+.locate-movie-scene .palm-header #name {
+  float: left;
+  width: 245px;
+}
+
+.locate-movie-scene #address-drawer {
+  float: right;
+  margin: 8px -12px 0px 0px;
+  height: 35px;
+  width: 35px;
+}
+
+.locate-movie-scene #address-drawer.closed {
+  background: url(../images/open.png) center center no-repeat;
+}
+
+.locate-movie-scene #address-drawer.opened {
+  background: url(../images/close.png) center center no-repeat;
+}
+
 
 /*
  * RESERVE MOVIE

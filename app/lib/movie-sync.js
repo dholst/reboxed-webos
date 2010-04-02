@@ -8,6 +8,10 @@ MovieSync = {
       if(date) {
         parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
       }
+      else {
+        //TODO REMOVE
+        //parameters.since = "03/01/2010"
+      }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
         method: "get",

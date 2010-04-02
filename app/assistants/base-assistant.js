@@ -19,11 +19,13 @@ BaseAssistant = Class.create({
   },
 
   spinnerOff: function() {
-    $("spinner-message").remove();
-    $$(".spinner").first().mojo.stop();
-    $$(".palm-scrim").first().hide();
-  }, 
-  
+    if($("spinner-message")) {
+      $("spinner-message").remove();
+      $$(".spinner").first().mojo.stop();
+      $$(".palm-scrim").first().hide();
+    }
+  },
+
   update: function(element, content) {
     this.controller.get(element).update(content);
   }
