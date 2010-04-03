@@ -65,7 +65,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
     this.button = {buttonLabel: "Confirm Reservation", buttonClass: 'affirmative'};
 
     this.controller.setupWidget("cardSelector", {choices: choices}, this.selectedCard);
-    this.controller.setupWidget("cvc", {hintText: "Enter verification code...", maxLength: 3}, this.cvc);
+    this.controller.setupWidget("cvc", {hintText: "Enter verification code...", maxLength: 10}, this.cvc);
     this.controller.setupWidget("eighteen", {}, this.eighteen);
     this.controller.setupWidget("confirm", {type: Mojo.Widget.activityButton}, this.button);
   },
