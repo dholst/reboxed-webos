@@ -83,8 +83,8 @@ div.palm-row.movie .movie-info {
   padding-top: 32px;
 }
 
-.movies-scene #search-submit, .movies-scene #search-cancel, .movies-scene #search-all {
-  width: 33%;
+.movies-scene #search-submit, .movies-scene #search-cancel {
+  width: 50%;
   float: left;
 }
 

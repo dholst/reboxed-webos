@@ -1,36 +1,39 @@
-MoviesAssistant = Class.create({
+MoviesAssistant = Class.create(BaseMoviesAssistant, {
   initialize: function() {
     MovieSync.sync();
     this.panelOpen = false;
     this.movieSearchText = {value: ""};
-    this.cachedImages = {};
-    this.movies = {items: []};
-
-    this.viewMenu = [
-      {label: "All Movies", width: 260, command: "n/a"},
-      {label: "Search", iconPath: "images/search.png", command: "search"}
-    ];
+    this.viewMenu = {items: [
+      {},
+      {items: [
+        {label: "All Movies", width: 260, command: "n/a"},
+        {label: "Search", iconPath: "images/search.png", command: "search"}
+      ]},
+      {}
+    ]};
   },
 
-  setup: function() {
-    this.setupMenu();
-    this.setupMovieList();
-    this.setupSearchPanel();
-    this.paginate(0, 30);
+  setup: function($super) {
+    $super();
+    this.setupMenuPanel();
+    this.setupWidgets();
+    this.setupListeners();
   },
 
-  setupMenu: function() {
-    this.controller.setupWidget(Mojo.Menu.viewMenu, {}, {
-      items:[
-        {},
-        {items: this.viewMenu},
-        {}
-      ]
-    });
+  setupMenuPanel: function() {
+  	this.scrim = this.controller.sceneElement.querySelector("div[x-mojo-menupanel-scrim]");
+  	this.scrim.hide();
+  	this.scrim.style.opacity = 0;
+
+    this.menuPanel = this.controller.sceneElement.querySelector("div[x-mojo-menupanel]");
+  	this.menuPanelVisibleTop = this.menuPanel.offsetTop;
+  	this.menuPanel.style.top = (0 - this.menuPanel.offsetHeight - this.menuPanel.offsetTop) + "px";
+  	this.menuPanelHiddenTop = this.menuPanel.offsetTop;
+    this.menuPanel.hide();
   },
 
-  setupMovieList: function() {
-    this.controller.setupWidget("all-movies", {
+  setupWidgets: function() {
+    var listAttributes = {
       renderLimit: 10,
       lookahead: 20,
 			listTemplate: "movies/movies",
@@ -38,146 +41,103 @@ MoviesAssistant = Class.create({
       onItemRendered: this.itemRendered.bind(this),
       itemsCallback: this.itemsCallback.bind(this),
       dividerTemplate: "movies/divider",
-  		dividerFunction: this.divide
-    });
+  		dividerFunction: this.divideMovies
+    };
 
-    this.controller.setupWidget("movies", {
-      renderLimit: 10,
-			listTemplate: "movies/movies",
-      itemTemplate: "movies/movie",
-      onItemRendered: this.itemRendered.bind(this),
-      dividerTemplate: "movies/divider",
-  		dividerFunction: this.divide
-    }, this.movies);
-
-    this.movieTapped = this.movieTapped.bind(this);
-    this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped);
-    this.controller.listen("all-movies", Mojo.Event.listTap, this.movieTapped);
-    this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached = this.imageCached.bind(this));
-  },
-
-  setupSearchPanel: function() {
-    this.controller.setupWidget("search-text", {hintText: "Movie search..."}, this.movieSearchText);
+    this.controller.setupWidget("movies", listAttributes);
+    this.controller.setupWidget(Mojo.Menu.viewMenu, {}, this.viewMenu);
+    this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Movie search..."}, this.movieSearchText);
     this.controller.setupWidget("search-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
     this.controller.setupWidget("search-submit", {}, {buttonLabel: "Search"});
     this.controller.setupWidget("search-all", {}, {buttonLabel: "All"});
+  },
 
-    this.menuPanel = this.controller.sceneElement.querySelector('div[x-mojo-menupanel]');
-  	this.scrim = this.controller.sceneElement.querySelector('div[x-mojo-menupanel-scrim]');
-
-  	this.menuPanelVisibleTop = this.menuPanel.offsetTop;
-  	this.menuPanel.style.top = (0 - this.menuPanel.offsetHeight - this.menuPanel.offsetTop)+'px';
-  	this.menuPanelHiddenTop = this.menuPanel.offsetTop;
-
-    this.menuPanel.hide();
-  	this.scrim.hide();
-  	this.scrim.style.opacity = 0;
-
-    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
+  setupListeners: function() {
   	this.dragHandler = this.dragHandler.bind(this);
+    this.movieTapped = this.movieTapped.bind(this);
+    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
   	this.searchMovies = this.searchMovies.bind(this);
+  	this.searchTextEntry = this.searchTextEntry.bind(this);
 
+    this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped);
   	this.controller.listen(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies);
+  	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
   },
 
-  divide: function(movie) {
+  cleanup: function($super) {
+    $super();
+    this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
+  	this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.stopListening("search-cancel", Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.stopListening("search-submit", Mojo.Event.tap, this.searchMovies);
+  	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
+  },
+
+  activate: function() {
+    $("search-text").mojo.setConsumesEnterKey(false);
+  },
+
+  searchTextEntry: function(event) {
+    if(Mojo.Char.enter === event.originalEvent.keyCode) {
+      this.searchMovies();
+      return;
+    }
+  },
+
+  divideMovies: function(movie) {
     return movie.releasedDisplay;
   },
 
-  cleanup: function() {
-    this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCached);
-    this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
-  },
-
-  movieTapped: function(event) {
-    this.controller.stageController.pushScene("movie", event.item);
-  },
-
-  imageCached: function(event) {
-    var img = this.controller.get("img-" + event.movie.id);
-
-    if(img) {
-      img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
-    }
-  },
-
-  itemRendered: function(listWidget, movie, node) {
-    if(!this.cachedImages[movie.id]) {
-      this.cachedImages[movie.id] = true;
-      movie.cacheImage();
-    }
-  },
-
   itemsCallback: function(listWidget, offset, count) {
-    Mojo.Log.info("need", count, "more at", offset);
-    this.paginate(offset, count);
-  },
+    Movie.paginate(
+      offset,
+      count,
 
-  paginate: function(offset, count) {
-    Movie.paginate(offset, count, this.moviesFound.bind(this, offset), this.findError.bind(this));
-  },
+      function(movies) {
+        $("movies").mojo.noticeUpdatedItems(offset, movies);
+        Movie.count(function(count){$("movies").mojo.setLength(count)});
+      },
 
-  moviesFound: function(offset, movies) {
-    $("all-movies").mojo.noticeUpdatedItems(offset, movies);
-    Movie.count(function(count){$("all-movies").mojo.setLength(count)}.bind(this));
-  },
-
-  searchMoviesFound: function(movies) {
-    this.movies.items.clear();
-    this.movies.items.push.apply(this.movies.items, movies);
-    this.hideAllMovies();
-    this.controller.modelChanged(this.movies);
-    this.menuPanelOff();
-  },
-
-  findError: function() {
-    Mojo.Log.error("paginate error");
+      function(message) {
+        Mojo.Log.error("damn, database error:", message);
+      }
+    );
   },
 
   handleCommand: function(event) {
-    if (event.type === Mojo.Event.command) {
-      switch (event.command) {
-        case "search":
-          this.toggleMenuPanel();
-          break;
-      }
+    if (event.type === Mojo.Event.command && event.command === "search") {
+      this.toggleMenuPanel();
     }
   },
 
   searchMovies: function() {
-    if(this.movieSearchText.value && this.movieSearchText.value.length > 0) {
-      Movie.search(this.movieSearchText.value, this.searchMoviesFound.bind(this), this.findError.bind(this));
+    if(this.movieSearchText.value && this.movieSearchText.value.length) {
+      this.controller.stageController.pushScene("search-movies", this.movieSearchText.value);
     }
-    else {
-      this.menuPanelOff();
-      this.showAllMovies();
-    }
+
+    this.menuPanelOff();
   },
 
-  hideAllMovies: function() {
-    $("all-movies").hide();
-    $("movies").show();
-  },
-
-  showAllMovies: function() {
-    $("all-movies").show();
-    $("movies").hide();
-  },
+  /*
+   * MENU PANEL STUFF THAT CAN PROBABLY BE MOVED TO BASE
+   */
 
 	animateMenuPanel : function(panel, reverse, callback){
-		Mojo.Animation.animateStyle(panel, 'top', 'bezier', {
+		Mojo.Animation.animateStyle(panel, "top", "bezier", {
 			from: this.menuPanelHiddenTop,
 			to: this.menuPanelVisibleTop,
 			duration: 0.12,
-			curve: 'over-easy',
+			curve: "over-easy",
 			reverse: reverse,
 			onComplete: callback
 		});
 	},
 
 	menuPanelOn : function(){
+	  this.movieSearchText.value = "";
+	  this.controller.modelChanged(this.movieSearchText);
 		this.panelOpen = true;
 		this.scrim.style.opacity = 0;
 		this.scrim.show();
@@ -185,8 +145,10 @@ MoviesAssistant = Class.create({
 
 		Mojo.Animation.Scrim.animate(this.scrim, 0, 1, function() {
 		  this.menuPanel.show();
-			this.animateMenuPanel(this.menuPanel, false, Mojo.doNothing);
+			this.animateMenuPanel(this.menuPanel, false, function() {});
 		}.bind(this));
+
+		$("search-text").mojo.focus.delay(.5);
 	},
 
 	menuPanelOff :function(){
