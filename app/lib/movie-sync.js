@@ -10,7 +10,7 @@ MovieSync = {
       }
       else {
         //TODO REMOVE
-        parameters.since = "02/01/2010"
+        //parameters.since = "02/01/2010"
       }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
