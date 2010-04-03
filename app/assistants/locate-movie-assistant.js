@@ -7,7 +7,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     this.viewMenu = {items: [
       {},
       {items: [
-        {label: "Locate " + movie.name, width: 260, command: "n/a"},
+        {label: "Locate: " + movie.name, width: 260, command: "n/a"},
         {label: "Locate", iconPath: "images/search.png", command: "locate"}
       ]},
       {}
