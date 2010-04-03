@@ -1,8 +1,18 @@
 LocateMovieAssistant = Class.create(BaseAssistant, {
-  initialize: function(movie) {
+  initialize: function(movie, address) {
     this.movie = movie;
+    this.addressText = {value: address};
     this.kiosks = {items: []};
-    this.addressLocateButton = {buttonLabel: "Locate"};
+    this.addressSubmitButton = {buttonLabel: "Locate"};
+    this.viewMenu = {items: [
+      {},
+      {items: [
+        {label: "Locate " + movie.name, width: 260, command: "n/a"},
+        {label: "Locate", iconPath: "images/search.png", command: "locate"}
+      ]},
+      {}
+    ]};
+
   },
 
   setup: function($super) {
@@ -15,51 +25,53 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   		dividerFunction: this.divide
     }
 
+    this.setupMenuPanel();
+    this.controller.setupWidget(Mojo.Menu.viewMenu, {}, this.viewMenu);
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
-    this.controller.setupWidget("address", {modelProperty: "address", hintText: "Enter address..."}, this);
-    this.controller.setupWidget('address-submit', {type: Mojo.Widget.activityButton}, this.addressLocateButton);
-    this.controller.setupWidget("the-address-drawer", {}, this.addressDrawer = {open: false});
+    this.controller.setupWidget("address-text", {changeOnKeyPress: true, hintText: "Address..."}, this.addressText);
+    this.controller.setupWidget("address-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
+    this.controller.setupWidget("address-submit", {type: Mojo.Widget.activityButton}, this.addressSubmitButton);
 
-    this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped = this.kioskTapped.bind(this));
-    this.controller.listen("address-submit", Mojo.Event.tap, this.locateAddress = this.locateAddress.bind(this));
-    this.controller.listen("address-drawer", Mojo.Event.tap, this.toggleAddressDrawer = this.toggleAddressDrawer.bind(this));
+    this.kioskTapped = this.kioskTapped.bind(this)
+    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
+    this.locateByAddress = this.locateByAddress.bind(this);
+    this.addressTextEntry = this.addressTextEntry.bind(this);
+
+    this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped);
+    this.controller.listen(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.listen("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.listen("address-submit", Mojo.Event.tap, this.locateByAddress);
+  	this.controller.listen("address-text", Mojo.Event.propertyChange, this.addressTextEntry);
   },
 
-  cleanup: function() {
+  cleanup: function($super) {
+    $super();
     this.controller.stopListening("kiosks", Mojo.Event.listTap, this.kioskTapped);
-    this.controller.stopListening("locate-address", Mojo.Event.tap, this.locateAddress);
-    this.controller.stopListening("address-drawer", Mojo.Event.tap, this.toggleAddressDrawer);
-  },
-
-  toggleAddressDrawer: function(event) {
-    if (this.addressDrawer.open === true) {
-      this.hideAddressDrawer();
-    }
-    else {
-      this.showAddressDrawer();
-    }
-  },
-
-  showAddressDrawer: function() {
-    $("the-address-drawer").show();
-    this.addressDrawer.open = true;
-    $("address-drawer").className = "opened";
-    this.controller.modelChanged(this.addressDrawer);
-  },
-
-  hideAddressDrawer: function() {
-    $("the-address-drawer").hide();
-    this.addressDrawer.open = false;
-    $("address-drawer").className = "closed";
-    this.controller.modelChanged(this.addressDrawer);
-    $("gps-failure").hide();
-    $("address-failure").hide();
+    this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.stopListening("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
+  	this.controller.stopListening("address-submit", Mojo.Event.tap, this.locateByAddress);
+  	this.controller.stopListening("address-text", Mojo.Event.propertyChange, this.addressTextEntry);
   },
 
   ready: function() {
-    this.controller.update("name", this.movie.name);
-    this.spinnerOn("getting current location");
-    this.locateGps();
+    if(this.addressText.value && this.addressText.value.length > 0) {
+      this.spinnerOn("locating address");
+      this.locateByAddress();
+    }
+    else {
+      this.spinnerOn("getting current location");
+      this.locateByGps();
+    }
+  },
+
+  activate: function() {
+    $("address-text").mojo.setConsumesEnterKey(false);
+  },
+
+  addressTextEntry: function(event) {
+    if(Mojo.Char.enter === event.originalEvent.keyCode) {
+      this.locateByAddress();
+    }
   },
 
   divide: function(kiosk) {
@@ -80,7 +92,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  locateGps: function() {
+  locateByGps: function() {
     this.controller.serviceRequest('palm://com.palm.location', {
       method: "getCurrentPosition",
       parameters: {
@@ -93,25 +105,18 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   gpsSuccess: function(response) {
-    console.log(Object.toJSON(response));
     this.spinnerOn("locating movie");
     this.locateKioskAt(response.latitude, response.longitude);
   },
 
   gpsFailure: function() {
     Mojo.Log.info("gps locate failed");
-    this.spinnerOff();
-    $("gps-failure").show();
-    this.showAddressDrawer();
+    this.menuPanelOn("Could not locate you, try entering an address");
   },
 
-  locateAddress: function() {
-    Mojo.Log.info("locating " + this.address);
-    this.addressLocateButton.disabled = true;
-    this.controller.modelChanged(this.addressLocateButton);
-    $("gps-failure").hide();
-    $("address-failure").hide();
-    Yahoo.geocode(this.address, this.addressLocateSuccess.bind(this), this.addressLocateFailure.bind(this));
+  locateByAddress: function() {
+    this.disableButton();
+    Yahoo.geocode(this.addressText.value, this.addressLocateSuccess.bind(this), this.addressLocateFailure.bind(this));
   },
 
   addressLocateSuccess: function(latitude, longitude) {
@@ -120,14 +125,11 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
   },
 
   addressLocateFailure: function() {
-    this.spinnerOff();
-    this.enableButton();
-    $("address-failure").show();
+    Mojo.Log.info("address locate failed");
+    this.menuPanelOn("Could not locate that address");
   },
 
   locateKioskAt: function(latitude, longitude) {
-    $("nothing-found").hide();
-    $("kiosks-error").hide();
     this.kiosks.items.clear();
     this.controller.modelChanged(this.kiosks);
     Kiosk.locate(this.movie.id, latitude, longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this));
@@ -140,21 +142,56 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     }.bind(this));
 
     $("nothing-found")[kiosks.length ? "hide" : "show"]()
+    this.menuPanelOff();
     this.spinnerOff();
-    this.enableButton();
-
     this.controller.modelChanged(this.kiosks);
   },
 
   kioskFailure: function() {
+    this.menuPanelOff();
     this.spinnerOff();
-    this.enableButton();
     $("kiosks-error").show();
   },
 
+  handleCommand: function(event) {
+    if("locate" === event.command) {
+      this.toggleMenuPanel();
+    }
+  },
+
+  menuPanelOn: function($super, errorMessage) {
+    this.spinnerOff();
+
+    if(errorMessage) {
+      this.showError(errorMessage)
+    }
+    else {
+      this.clearError();
+    }
+
+    this.enableButton();
+    $super();
+  },
+
+  disableButton: function() {
+    this.addressSubmitButton.disabled = true;
+    this.controller.modelChanged(this.addressSubmitButton);
+    $("address-submit").mojo.activate();
+  },
+
   enableButton: function() {
-    this.addressLocateButton.disabled = false;
-    this.controller.modelChanged(this.addressLocateButton);
+    this.addressSubmitButton.disabled = false;
+    this.controller.modelChanged(this.addressSubmitButton);
     $("address-submit").mojo.deactivate();
+  },
+
+  showError: function(message) {
+    $("locate-error-message").update(message);
+    $("locate-error").show();
+  },
+
+  clearError: function() {
+    $("locate-error-message").update("");
+    $("locate-error").hide();
   }
 })

@@ -1,7 +1,6 @@
 MoviesAssistant = Class.create(BaseMoviesAssistant, {
   initialize: function() {
     MovieSync.sync();
-    this.panelOpen = false;
     this.movieSearchText = {value: ""};
     this.viewMenu = {items: [
       {},
@@ -18,18 +17,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.setupMenuPanel();
     this.setupWidgets();
     this.setupListeners();
-  },
-
-  setupMenuPanel: function() {
-  	this.scrim = this.controller.sceneElement.querySelector("div[x-mojo-menupanel-scrim]");
-  	this.scrim.hide();
-  	this.scrim.style.opacity = 0;
-
-    this.menuPanel = this.controller.sceneElement.querySelector("div[x-mojo-menupanel]");
-  	this.menuPanelVisibleTop = this.menuPanel.offsetTop;
-  	this.menuPanel.style.top = (0 - this.menuPanel.offsetHeight - this.menuPanel.offsetTop) + "px";
-  	this.menuPanelHiddenTop = this.menuPanel.offsetTop;
-    this.menuPanel.hide();
   },
 
   setupWidgets: function() {
@@ -49,7 +36,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Movie search..."}, this.movieSearchText);
     this.controller.setupWidget("search-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
     this.controller.setupWidget("search-submit", {}, {buttonLabel: "Search"});
-    this.controller.setupWidget("search-all", {}, {buttonLabel: "All"});
   },
 
   setupListeners: function() {
@@ -82,7 +68,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   searchTextEntry: function(event) {
     if(Mojo.Char.enter === event.originalEvent.keyCode) {
       this.searchMovies();
-      return;
     }
   },
 
@@ -120,59 +105,9 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.menuPanelOff();
   },
 
-  /*
-   * MENU PANEL STUFF THAT CAN PROBABLY BE MOVED TO BASE
-   */
-
-	animateMenuPanel : function(panel, reverse, callback){
-		Mojo.Animation.animateStyle(panel, "top", "bezier", {
-			from: this.menuPanelHiddenTop,
-			to: this.menuPanelVisibleTop,
-			duration: 0.12,
-			curve: "over-easy",
-			reverse: reverse,
-			onComplete: callback
-		});
-	},
-
-	menuPanelOn : function(){
+  menuPanelOn: function($super) {
 	  this.movieSearchText.value = "";
 	  this.controller.modelChanged(this.movieSearchText);
-		this.panelOpen = true;
-		this.scrim.style.opacity = 0;
-		this.scrim.show();
-		this.disableSceneScroller();
-
-		Mojo.Animation.Scrim.animate(this.scrim, 0, 1, function() {
-		  this.menuPanel.show();
-			this.animateMenuPanel(this.menuPanel, false, function() {});
-		}.bind(this));
-
-		$("search-text").mojo.focus.delay(.5);
-	},
-
-	menuPanelOff :function(){
-		this.panelOpen = false;
-		this.enableSceneScroller();
-		this.animateMenuPanel(this.menuPanel, true, function() {
-			this.menuPanel.hide();
-			Mojo.Animation.Scrim.animate(this.scrim, 1, 0, this.scrim.hide.bind(this.scrim));
-		}.bind(this));
-	},
-
-	toggleMenuPanel: function(e){
-	  this[this.panelOpen ? "menuPanelOff" : "menuPanelOn"]()
-	},
-
-  disableSceneScroller : function() {
-		this.controller.listen(this.controller.sceneElement, Mojo.Event.dragStart, this.dragHandler);
-	},
-
-	dragHandler: function(event) {
-		event.stop(); //prevents the scene from scrolling.
-	},
-
-	enableSceneScroller : function() {
-		this.controller.stopListening(this.controller.sceneElement, Mojo.Event.dragStart, this.dragHandler);
-	}
+    $super();
+  }
 });

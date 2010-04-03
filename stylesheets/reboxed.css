@@ -1,3 +1,6 @@
+/*
+ * SCENE SCROLLER
+ */
 .my-scene-fade-top {
 	position: fixed;
 	top: 0;
@@ -24,6 +27,9 @@
 	background-image: url(../images/my-scene-fade-bottom-dark.png);
 }
 
+/*
+ * GENERIC
+ */
 .spinner-message {
   color: #333;
   text-align: center;
@@ -40,6 +46,26 @@
 }
 
 /*
+ * MENUBAR
+ */
+.view-menu.palm-menu {
+  z-index: 19200;
+}
+
+.palm-menu-panel {
+  z-index: 19100;
+}
+
+.palm-menu-panel .palm-menu-panel-wrapper {
+  padding-top: 32px;
+}
+
+.palm-menu-panel .button {
+   width: 50%;
+   float: left;
+ }
+
+/*
  * MOVIE LIST
  */
 div.palm-row.movie div.palm-row-wrapper {
@@ -49,7 +75,8 @@ div.palm-row.movie div.palm-row-wrapper {
 div.palm-row.movie img {
   float: left;
   width: 75px;
-  height: 108px
+  height: 108px;
+  padding-right: 10px;
 }
 
 div.palm-row.movie div.palm-body-text {
@@ -71,27 +98,10 @@ div.palm-row.movie .movie-info {
   background: url(../images/details.png) center center no-repeat;
 }
 
-.movies-scene .palm-menu {
-  z-index: 19200;
-}
-
-.movies-scene .palm-menu-panel {
-  z-index: 19100;
-}
-
-.movies-scene .palm-menu-panel .palm-menu-panel-wrapper {
-  padding-top: 32px;
-}
-
-.movies-scene #search-submit, .movies-scene #search-cancel {
-  width: 50%;
-  float: left;
-}
-
 /*
  * MOVIE DETAIL
  */
-div img {
+.movie-scene img {
  float: right;
  padding-right: 10px;
 }
@@ -112,7 +122,6 @@ div.palm-row.kiosk div.palm-info-text {
 }
 
 div.palm-row.kiosk .icon {
-  background-color: red;
   height: 70px;
   background: url(../images/details.png) center center no-repeat;
 }
@@ -124,27 +133,6 @@ div.palm-row.kiosk .icon {
 #nothing.found .palm-body-text {
   font-size: 20px;
 }
-
-.locate-movie-scene .palm-header #name {
-  float: left;
-  width: 245px;
-}
-
-.locate-movie-scene #address-drawer {
-  float: right;
-  margin: 8px -12px 0px 0px;
-  height: 35px;
-  width: 35px;
-}
-
-.locate-movie-scene #address-drawer.closed {
-  background: url(../images/open.png) center center no-repeat;
-}
-
-.locate-movie-scene #address-drawer.opened {
-  background: url(../images/close.png) center center no-repeat;
-}
-
 
 /*
  * RESERVE MOVIE

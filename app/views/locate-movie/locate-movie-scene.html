@@ -1,30 +1,22 @@
-<div class="palm-scrim" style="display: none;"><div x-mojo-element="Spinner" name="spinner" class="spinner"></div></div>
+<div id="spinner-scrim" class="palm-scrim" style="display: none;"><div x-mojo-element="Spinner" name="spinner" class="spinner"></div></div>
+<div id="menu-panel-scrim" class="palm-scrim menu-panel" x-mojo-menupanel-scrim=""></div>
 
-<div class="palm-header left">
-  <div id="address-drawer" class="closed"></div>
-  <div id="name" class="truncating-text"></div>
-</div>
-
-<div class="palm-header-spacer"></div>
-
-<div x-mojo-element="Drawer" id="the-address-drawer" style="display: none;">
-  <div class="form-wrapper">
+<div class="palm-menu-panel" x-mojo-menupanel="">
+	<div class="palm-menu-panel-wrapper" x-mojo-element="Scroller">
     <div class="palm-row">
       <div class="palm-row-wrapper textfield-group focused">
         <div class="title">
-          <div id="address" x-mojo-element="TextField"></div>
+          <div id="address-text" x-mojo-element="TextField"></div>
         </div>
       </div>
     </div>
-    <div id="address-submit" x-mojo-element="Button"></div>
-  </div>
 
-  <div class="palm-inline-error" id="gps-failure" style="display: none;">
-  	<div class="error-message">Unable to find your current location, try entering an address.</div>
-  </div>
+    <div id="locate-error" class="palm-inline-error" style="display:none; padding-top: 10px;">
+    	<div id="locate-error-message" class="error-message"></div>
+    </div>
 
-  <div class="palm-inline-error" id="address-failure" style="display: none;">
-    <div class="error-message">Unable to find that location.</div>
+    <div id="address-cancel" class="button" x-mojo-element="Button"></div>
+    <div id="address-submit" class="button" x-mojo-element="Button"></div>
   </div>
 </div>
 
