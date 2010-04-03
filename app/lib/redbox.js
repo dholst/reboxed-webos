@@ -90,10 +90,10 @@ Redbox = {
       cart.kiosk.state = cart.original.Kiosk.State;
       cart.kiosk.zip = cart.original.Kiosk.Zip;
 
-      if(cart.original.Items.length == 1) {
+      if(cart.original.Items.length > 0) {
         cart.movie = new Movie();
-        cart.movie.name = cart.original.Items[0].Name;
-        cart.movie.rating = cart.original.Items[0].Rating;
+        cart.movie.name = cart.original.Items.last().Name;
+        cart.movie.rating = cart.original.Items.last().Rating;
       }
 
       return cart;
