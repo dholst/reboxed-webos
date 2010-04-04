@@ -105,5 +105,12 @@ BaseAssistant = Class.create({
 
 	enableSceneScroller : function() {
 		this.controller.stopListening(this.controller.sceneElement, Mojo.Event.dragStart, this.dragHandler);
-	}
+	},
+
+	handleCommand: function(event) {
+	  if(Mojo.Event.back === event.type && this.panelOpen) {
+	    this.toggleMenuPanel();
+	    event.stop();
+	  }
+  }
 });

@@ -126,7 +126,9 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
     this.reserveError("Unable to complete reservation. Check your card and card verification code and try again.");
   },
 
-  handleCommand: function(event) {
+  handleCommand: function($super, event) {
+    $super(event);
+    
     if(this.button.disabled) {
       event.stop();
     }

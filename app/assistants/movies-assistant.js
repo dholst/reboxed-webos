@@ -91,7 +91,9 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     );
   },
 
-  handleCommand: function(event) {
+  handleCommand: function($super, event) {
+    $super(event);
+    
     if (event.type === Mojo.Event.command && event.command === "search") {
       this.toggleMenuPanel();
     }

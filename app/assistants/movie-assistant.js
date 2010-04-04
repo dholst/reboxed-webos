@@ -6,7 +6,7 @@ MovieAssistant = Class.create(BaseAssistant, {
       {},
       {items: [
         {label: movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/pushpin.png", command: "locate"}
+        {label: "Locate", iconPath: "images/compass.png", command: "locate"}
       ]},
       {}
     ]};
@@ -56,7 +56,9 @@ MovieAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  handleCommand: function(event) {
+  handleCommand: function($super, event) {
+    $super(event);
+    
     if("locate" === event.command) {
       this.toggleMenuPanel();
     }

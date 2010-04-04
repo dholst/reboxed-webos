@@ -8,11 +8,10 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
       {},
       {items: [
         {label: "Locate: " + movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/pushpin.png", command: "locate"}
+        {label: "Locate", iconPath: "images/compass.png", command: "locate"}
       ]},
       {}
     ]};
-
   },
 
   setup: function($super) {
@@ -153,7 +152,9 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     $("kiosks-error").show();
   },
 
-  handleCommand: function(event) {
+  handleCommand: function($super, event) {
+    $super(event);
+    
     if("locate" === event.command) {
       this.toggleMenuPanel();
     }
