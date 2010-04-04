@@ -8,7 +8,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
       {},
       {items: [
         {label: "Locate: " + movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/search.png", command: "locate"}
+        {label: "Locate", iconPath: "images/pushpin.png", command: "locate"}
       ]},
       {}
     ]};

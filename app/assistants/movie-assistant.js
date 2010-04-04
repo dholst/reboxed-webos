@@ -6,7 +6,7 @@ MovieAssistant = Class.create(BaseAssistant, {
       {},
       {items: [
         {label: movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/search.png", command: "locate"}
+        {label: "Locate", iconPath: "images/pushpin.png", command: "locate"}
       ]},
       {}
     ]};
@@ -47,7 +47,7 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("locate-submit", Mojo.Event.tap, this.locateMovie);
-  	this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.addressTextEntry);
+  	this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.locateTextEntry);
   },
 
   locateTextEntry: function(event) {

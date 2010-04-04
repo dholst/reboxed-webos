@@ -30,6 +30,10 @@
 /*
  * GENERIC
  */
+.menu-bar-spacer {
+  height: 5px;
+}
+
 .spinner-message {
   color: #333;
   text-align: center;
