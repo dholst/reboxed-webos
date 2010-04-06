@@ -81,7 +81,10 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     this.controller.popupSubmenu({
       onChoose: this.kioskPopupTapped.bind(this, event.item),
       placeNear: event.originalEvent.target,
-      items: [{label: 'Reserve', command: 'reserve'}]
+      items: [
+        {label: "Reserve", command: "reserve"},
+        {label: "Show On Map", command: "map"}
+      ]
     });
   },
 
@@ -89,10 +92,21 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
     if(command === "reserve") {
       this.controller.stageController.pushScene("reserve-movie", kiosk, this.movie);
     }
+    else if(command === "map") {
+      this.controller.serviceRequest("palm://com.palm.applicationManager", {
+       	method: "open",
+       	parameters: {
+       	  id: "com.palm.app.maps",
+         	params: {
+        	  query: kiosk.address + " " + kiosk.city + ", " + kiosk.state + " " + kiosk.zip
+         	}
+       	}
+      });
+    }
   },
 
   locateByGps: function() {
-    this.controller.serviceRequest('palm://com.palm.location', {
+    this.controller.serviceRequest("palm://com.palm.location", {
       method: "getCurrentPosition",
       parameters: {
         responseTime: 1,
@@ -154,7 +168,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
 
   handleCommand: function($super, event) {
     $super(event);
-    
+
     if("locate" === event.command) {
       this.toggleMenuPanel();
     }
