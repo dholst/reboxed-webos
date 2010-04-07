@@ -83,7 +83,7 @@ LocateMovieAssistant = Class.create(BaseAssistant, {
       placeNear: event.originalEvent.target,
       items: [
         {label: "Reserve", command: "reserve"},
-        {label: "Show On Map", command: "map"}
+        {label: "Map", command: "map"}
       ]
     });
   },
