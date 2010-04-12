@@ -120,7 +120,7 @@ Redbox = {
     locateUrl: "http://www.redbox.com/ajax.svc/Kiosk/GetNearbyKiosks/",
 
     buildLocateRequest: function(lat, long, movieId) {
-      return Object.toJSON({
+      var json = {
         latitude: lat,
         longitude: long,
         radius: 50,
@@ -128,9 +128,14 @@ Redbox = {
         mcdOnly: false,
         getInv: false,
         pageSize: 50,
-        page: 1,
-        titleID: movieId
-      });
+        page: 1
+      };
+
+      if(movieId) {
+        json.titleID = movieId;
+      }
+
+      return Object.toJSON(json);
     },
 
     parseLocateResponse: function(json) {
@@ -141,7 +146,7 @@ Redbox = {
       profiles.each(function(profile, index) {
         var state = states[index];
 
-        if(state.Online && state.Inv.length && state.Inv.first().Qty) {
+        if(state.Online && (!state.Inv || (state.Inv.length && state.Inv.first().Qty))) {
           kiosks.push(Redbox.Kiosk.buildFromJson(profile));
         }
       });

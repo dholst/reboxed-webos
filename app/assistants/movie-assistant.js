@@ -58,7 +58,7 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   handleCommand: function($super, event) {
     $super(event);
-    
+
     if("locate" === event.command) {
       this.toggleMenuPanel();
     }
@@ -75,5 +75,10 @@ MovieAssistant = Class.create(BaseAssistant, {
     if(img) {
       img.src = "file://" + event.movie.cacheDirectory + "/" + event.movie.image;
     }
-  }
+  },
+
+  menuPanelOn : function($super){
+    $super();
+		$("locate-text").mojo.focus.delay(.5);
+	}
 });

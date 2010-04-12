@@ -74,8 +74,6 @@ BaseAssistant = Class.create({
 		  this.menuPanel.show();
 			this.animateMenuPanel(this.menuPanel, false, function() {});
 		}.bind(this));
-
-		$("search-text").mojo.focus.delay(.5);
 	},
 
 	menuPanelOff :function(){

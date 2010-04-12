@@ -1,0 +1,31 @@
+<div id="menu-panel-scrim" class="palm-scrim menu-panel" x-mojo-menupanel-scrim=""></div>
+
+<div class="palm-menu-panel" x-mojo-menupanel="" style="display: none;">
+	<div class="palm-menu-panel-wrapper" x-mojo-element="Scroller">
+    <div class="palm-row">
+      <div class="palm-row-wrapper textfield-group focused">
+        <div class="title">
+          <div id="address-text" x-mojo-element="TextField"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="locate-error" class="palm-inline-error" style="display:none; padding-top: 10px;">
+    	<div id="locate-error-message" class="error-message"></div>
+    </div>
+
+    <div id="address-cancel" class="button" x-mojo-element="Button"></div>
+    <div id="address-submit" class="button" x-mojo-element="Button"></div>
+  </div>
+</div>
+
+<div id="nothing-found" style = "display: none;">
+  <div class="palm-body-text">No kiosks were found at that location</div>
+</div>
+
+<div id="kiosks-error" style = "display: none;">
+  <div class="palm-body-text">There was a problem locating kiosks</div>
+</div>
+
+<div id="kiosks" x-mojo-element="List"></div>
+<div class="my-scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>

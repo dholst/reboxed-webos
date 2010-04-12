@@ -1,6 +1,7 @@
-MoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function() {
-    MovieSync.sync();
+KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
+  initialize: function(kiosk) {
+    this.kiosk = kiosk;
+    this.movies = {items: []};
     this.movieSearchText = {value: ""};
   },
 
@@ -14,11 +15,9 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   setupWidgets: function() {
     var listAttributes = {
       renderLimit: 10,
-      lookahead: 20,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
-      itemsCallback: this.itemsCallback.bind(this),
       dividerTemplate: "movies/divider",
   		dividerFunction: this.divideMovies
     };
@@ -26,13 +25,13 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     var viewMenu = {items: [
       {},
       {items: [
-        {label: "Movies", width: 260, command: "kiosks"},
+        {label: this.kiosk.vendor, width: 260, command: "n/a"},
         {label: "Search", iconPath: "images/search.png", command: "search"}
       ]},
       {}
     ]};
 
-    this.controller.setupWidget("movies", listAttributes);
+    this.controller.setupWidget("movies", listAttributes, this.movies);
     this.controller.setupWidget(Mojo.Menu.viewMenu, {}, viewMenu);
     this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Movie search..."}, this.movieSearchText);
     this.controller.setupWidget("search-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
@@ -51,6 +50,10 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies);
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
+  },
+
+  ready: function() {
+    this.spinnerOn("retrieving kiosk inventory");
   },
 
   cleanup: function($super) {
@@ -76,38 +79,15 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     return movie.releasedDisplay;
   },
 
-  itemsCallback: function(listWidget, offset, count) {
-    Movie.paginate(
-      offset,
-      count,
-
-      function(movies) {
-        $("movies").mojo.noticeUpdatedItems(offset, movies);
-        Movie.count(function(count){$("movies").mojo.setLength(count)});
-      },
-
-      function(message) {
-        Mojo.Log.error("damn, database error:", message);
-      }
-    );
-  },
-
   handleCommand: function($super, event) {
     $super(event);
 
     if("search" === event.command) {
       this.toggleMenuPanel();
     }
-    else if("kiosks" === event.command) {
-      this.controller.stageController.swapScene("kiosks");
-    }
   },
 
   searchMovies: function() {
-    if(this.movieSearchText.value && this.movieSearchText.value.length) {
-      this.controller.stageController.pushScene("search-movies", this.movieSearchText.value);
-    }
-
     this.menuPanelOff();
   },
 
