@@ -4,7 +4,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
     this.addressText = {value: ""};
     this.addressSubmitButton = {buttonLabel: "Search"};
   },
-  
+
   setupViewMenu: function() {
     this.controller.setupWidget(Mojo.Menu.viewMenu, {}, {items: [
       {},
@@ -15,7 +15,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
       {}
     ]});
   },
-  
+
   getAddressHintText: function() {
     return "Use current location...";
   },
@@ -34,7 +34,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
       ]
     });
   },
-  
+
   kioskPopupTapped: function(kiosk, command) {
     if(command === "movies") {
       this.controller.stageController.pushScene("kiosk-movies", kiosk);
@@ -43,7 +43,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
       this.showOnMap(kiosk)
     }
   },
-  
+
   handleCommand: function($super, event) {
     $super(event);
 

@@ -154,6 +154,30 @@ Redbox = {
       return kiosks;
     },
 
+    inventoryUrl: "http://www.redbox.com/data.svc/TitleAvailability/",
+
+    buildInventoryRequest: function(kioskId) {
+      var json = {
+        type: "TitleAvailability",
+        pk: "ID",
+        statements: [{filters: {KioskID: kioskId}}]
+      }
+
+      return Object.toJSON(json);
+    },
+
+    parseInventoryResponse: function(json) {
+      var ids = [];
+
+      for(var i = 0; i < json.d.length; i++) {
+        if(json.d[i].QtyRange) {
+          ids.push(json.d[i].ID)
+        }
+      }
+
+      return ids;
+    },
+
     buildFromJson: function(json) {
       var kiosk = new Kiosk();
       kiosk.id = json.ID;
@@ -172,6 +196,23 @@ Redbox = {
     }
   }
 }
+
+/*
+data.svc/TitleAvailability
+{"type":"TitleAvailability","pk":"ID","statements":[{"filters":{"KioskID":10365},"sort":null,"flags":null}],"__K":"UNKNOWN"}
+{
+    "d":[
+      {"ID":1079,"QtyRange":0,"Buy":false},
+      {"ID":1115,"QtyRange":0,"Buy":false},
+      {"ID":1185,"QtyRange":0,"Buy":false},
+      {"ID":1277,"QtyRange":0,"Buy":false},
+      {"ID":1298,"QtyRange":0,"Buy":false},
+      {"ID":1390,"QtyRange":0,"Buy":false},
+      {"ID":2100,"QtyRange":0,"Buy":false},
+      {"ID":2111,"QtyRange":1000,"Buy":false},
+    ]
+}
+*/
 
 /* cart refresh
  {

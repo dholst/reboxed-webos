@@ -14,9 +14,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   		dividerFunction: this.divide
     }
 
-    console.log("setting up menu panel")
     this.setupMenuPanel();
-    console.log("setting up view menu")
     this.setupViewMenu();
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
     this.controller.setupWidget("address-text", {changeOnKeyPress: true, hintText: this.getAddressHintText()}, this.addressText);
@@ -46,10 +44,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
 
   activate: function() {
     $("address-text").mojo.setConsumesEnterKey(false);
-  },
-
-  kioskTapped: function() {
-
   },
 
   addressTextEntry: function() {
@@ -159,17 +153,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
     this.addressSubmitButton.disabled = true;
     this.controller.modelChanged(this.addressSubmitButton);
     $("address-submit").mojo.activate();
-  },
-
-  handleCommand: function($super, event) {
-    $super(event);
-
-    if("locate" === event.command) {
-      this.toggleMenuPanel();
-    }
-    else if("movies" === event.command) {
-      this.controller.stageController.swapScene("movies");
-    }
   },
 
   clearError: function() {

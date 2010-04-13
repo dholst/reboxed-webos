@@ -1,7 +1,7 @@
 KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
   initialize: function(kiosk) {
     this.kiosk = kiosk;
-    this.movies = {items: []};
+    this.movieList = {items: []};
     this.movieSearchText = {value: ""};
   },
 
@@ -14,7 +14,6 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   setupWidgets: function() {
     var listAttributes = {
-      renderLimit: 10,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
@@ -31,9 +30,9 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
       {}
     ]};
 
-    this.controller.setupWidget("movies", listAttributes, this.movies);
+    this.controller.setupWidget("movies", listAttributes, this.movieList);
     this.controller.setupWidget(Mojo.Menu.viewMenu, {}, viewMenu);
-    this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Movie search..."}, this.movieSearchText);
+    this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Show all..."}, this.movieSearchText);
     this.controller.setupWidget("search-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
     this.controller.setupWidget("search-submit", {}, {buttonLabel: "Search"});
   },
@@ -54,6 +53,19 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   ready: function() {
     this.spinnerOn("retrieving kiosk inventory");
+    this.kiosk.getInventory(this.inventorySuccess.bind(this), this.inventoryFailure.bind(this));
+  },
+
+  inventorySuccess: function(movies) {
+    this.movies = movies;
+    this.movieList.items.push.apply(this.movieList.items, movies);
+    this.controller.modelChanged(this.movieList);
+    this.spinnerOff();
+  },
+
+  inventoryFailure: function() {
+    this.spinnerOff();
+    this.controller.get("inventory-failure").show();
   },
 
   cleanup: function($super) {
@@ -82,12 +94,29 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
   handleCommand: function($super, event) {
     $super(event);
 
-    if("search" === event.command) {
+    if("search" === event.command && this.movies && this.movies.length) {
       this.toggleMenuPanel();
     }
   },
 
   searchMovies: function() {
+    this.movieList.items.clear();
+
+    if(this.movieSearchText.value.length) {
+      var searchFor = this.movieSearchText.value.toLowerCase();
+
+      this.movies.each(function(movie) {
+        if(movie.name.toLowerCase().include(searchFor)) {
+          this.movieList.items.push(movie);
+        }
+      }.bind(this));
+    }
+    else {
+      this.movieList.items.push.apply(this.movieList.items, this.movies);
+    }
+
+    this.controller.get("nothing-found")[this.movieList.items.length ? "hide" : "show"]();
+    this.controller.modelChanged(this.movieList);
     this.menuPanelOff();
   },
 

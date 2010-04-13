@@ -40,7 +40,6 @@ BaseAssistant = Class.create({
   setupMenuPanel: function() {
   	this.scrim = this.controller.sceneElement.querySelector("div[x-mojo-menupanel-scrim]");
   	this.scrim.hide();
-  	this.scrim.style.opacity = 0;
 
     this.menuPanel = this.controller.sceneElement.querySelector("div[x-mojo-menupanel]");
   	this.menuPanelVisibleTop = this.menuPanel.offsetTop;
@@ -66,7 +65,6 @@ BaseAssistant = Class.create({
 	  }
 
 		this.panelOpen = true;
-		this.scrim.style.opacity = 0;
 		this.scrim.show();
 		this.disableSceneScroller();
 

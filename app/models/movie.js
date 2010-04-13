@@ -111,6 +111,30 @@ Movie.find = function(id, success, failure) {
   Database.getInstance().execute("select * from movies where id = ?", [id], onSuccess, onFailure);
 };
 
+Movie.findAll = function(ids, success, failure) {
+  var onSuccess = function(resultSet) {
+    var results = [];
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      results.push(Movie.fromJson(resultSet.rows.item(i)));
+    }
+
+    success(results)
+  }
+
+  var onFailure = function(message) {
+    Mojo.Log.error("find all failed", message)
+    failure(message);
+  }
+
+  if(ids.length) {
+    Database.getInstance().execute("select * from movies where id in (" + ids.join(",") + ") order by released desc, name", [], onSuccess, onFailure);
+  }
+  else {
+    success([]);
+  }
+}
+
 Movie.fromJson = function(json) {
   var movie = new Movie();
   movie.id = json.id;

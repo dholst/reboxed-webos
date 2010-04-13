@@ -1,8 +1,7 @@
 Cart = Class.create({
   checkoutWith: function(card, verificationCode, success, failure) {
     var postBody = Redbox.Cart.buildReserveRequest(this, card, verificationCode);
-    console.log(postBody);
-    
+
     new Ajax.Request(Redbox.Cart.reserveUrl(), {
       method: "post",
       contentType: "application/json",
@@ -13,8 +12,6 @@ Cart = Class.create({
   },
 
   checkoutSuccess: function(success, failure, response) {
-    console.log(Object.toJSON(response.responseJSON));
-
     if(Redbox.Cart.parseReserveResponse(response.responseJSON)) {
       success();
     }
