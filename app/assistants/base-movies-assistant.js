@@ -25,7 +25,32 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
   },
 
   movieTapped: function(event) {
-    this.controller.stageController.pushScene("movie", event.item);
+    var popupItems = [{label: "Details", command: "details"}];
+
+    if(this.kiosk) {
+      popupItems.push({label: "Reserve", command: "reserve"});
+    }
+    else {
+      popupItems.push({label: "Locate", command: "locate"});
+    }
+
+    var onChoose = function(movie, command) {
+      if("details" === command) {
+        this.controller.stageController.pushScene("movie", movie);
+      }
+      else if("locate" === command) {
+        this.controller.stageController.pushScene("locate-movie", movie);
+      }
+      else if("reserve" === command) {
+        this.controller.stageController.pushScene("reserve-movie", this.kiosk, movie);
+      }
+    }.bind(this)
+
+    this.controller.popupSubmenu({
+      onChoose: onChoose.bind(this, event.item),
+      placeNear: event.originalEvent.target,
+      items: popupItems
+    });
   },
 });
 
