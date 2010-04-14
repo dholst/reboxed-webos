@@ -14,7 +14,6 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super();
-    this.setupMenuPanel();
     this.update("content", Mojo.View.render({object: this.movie, template: "movie/movie"}));
 
     this.controller.setupWidget(Mojo.Menu.viewMenu, {}, this.viewMenu);
@@ -23,12 +22,10 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.controller.setupWidget("locate-submit", {}, {buttonLabel: "Locate"});
 
     this.imageCached = this.imageCached.bind(this)
-    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
     this.locateMovie = this.locateMovie.bind(this);
     this.locateTextEntry = this.locateTextEntry.bind(this);
 
     this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached);
-    this.controller.listen(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("locate-submit", Mojo.Event.tap, this.locateMovie);
   	this.controller.listen("locate-text", Mojo.Event.propertyChange, this.locateTextEntry);
@@ -44,7 +41,6 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   cleanup: function() {
     this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCached);
-    this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("locate-submit", Mojo.Event.tap, this.locateMovie);
   	this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.locateTextEntry);
@@ -77,8 +73,7 @@ MovieAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  menuPanelOn : function($super){
-    $super();
-		$("locate-text").mojo.focus.delay(.5);
+  menuPanelOn: function($super){
+    $super("locate-text");
 	}
 });

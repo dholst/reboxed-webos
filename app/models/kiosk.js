@@ -20,19 +20,25 @@ Kiosk = Class.create({
     return this.distanceRange;
   },
 
-  getInventory: function(success, failure) {
+  loadInventory: function(success, failure) {
     new Ajax.Request(Redbox.Kiosk.inventoryUrl, {
       method: "post",
       contentType: "application/json",
       postBody: Redbox.Kiosk.buildInventoryRequest(this.id),
-      onSuccess: this.getInventorySuccess.bind(this, success, failure),
+      onSuccess: this.loadInventorySuccess.bind(this, success, failure),
       onFailure: failure
     });
   },
 
-  getInventorySuccess: function(success, failure, response) {
+  loadInventorySuccess: function(success, failure, response) {
     var ids = Redbox.Kiosk.parseInventoryResponse(response.responseJSON);
-    Movie.findAll(ids, success, failure);
+
+    var findAllSuccess = function(movies) {
+      this.movies = movies;
+      success();
+    }.bind(this);
+
+    this.movies = Movie.findAll(ids, findAllSuccess, failure);
   }
 });
 

@@ -5,11 +5,23 @@ BaseAssistant = Class.create({
 
   setup: function() {
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
+
+    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
+    var scrim = this.getMenuScrim();
+
+    if(scrim) {
+      this.controller.listen(scrim, Mojo.Event.tap, this.toggleMenuPanel);
+    }
   },
 
   cleanup: function() {
-  },
+    var scrim = this.getMenuScrim();
 
+    if(scrim) {
+      this.controller.stopListening(scrim, Mojo.Event.tap, this.toggleMenuPanel);
+    }
+  },
+  
   spinnerOn: function(message) {
     var spinner = $$(".spinner").first()
     spinner.mojo.start();
@@ -37,61 +49,42 @@ BaseAssistant = Class.create({
     this.controller.get(element).update(content);
   },
 
-  setupMenuPanel: function() {
-  	this.scrim = this.controller.sceneElement.querySelector("div[x-mojo-menupanel-scrim]");
-  	this.scrim.hide();
+	menuPanelOn: function(focusOn) {
+		this.panelOpen = true;
+		this.getMenuScrim().show();
+		this.getMenuPanel().show();
+		this.disableSceneScroller();
+		
+		if(focusOn) {
+		  this.controller.get(focusOn).focus();
+		}
+	},
 
-    this.menuPanel = this.controller.sceneElement.querySelector("div[x-mojo-menupanel]");
-  	this.menuPanelVisibleTop = this.menuPanel.offsetTop;
-  	this.menuPanel.style.top = (0 - this.menuPanel.offsetHeight - this.menuPanel.offsetTop) + "px";
-  	this.menuPanelHiddenTop = this.menuPanel.offsetTop;
-    this.menuPanel.hide();
+	menuPanelOff: function(){
+		this.panelOpen = false;
+		this.getMenuPanel().hide();
+		this.getMenuScrim().hide();
+		this.enableSceneScroller();
+	},
+
+  getMenuScrim: function() {
+    return this.controller.sceneElement.querySelector("div[x-mojo-menupanel-scrim]");
   },
 
-	animateMenuPanel : function(panel, reverse, callback){
-		Mojo.Animation.animateStyle(panel, "top", "bezier", {
-			from: this.menuPanelHiddenTop,
-			to: this.menuPanelVisibleTop,
-			duration: 0.12,
-			curve: "over-easy",
-			reverse: reverse,
-			onComplete: callback
-		});
+	getMenuPanel: function() {
+  	return this.controller.sceneElement.querySelector("div[x-mojo-menupanel]")
 	},
 
-	menuPanelOn : function(){
+	toggleMenuPanel: function() {
 	  if(this.panelOpen) {
-	    return;
+	    this.menuPanelOff();
 	  }
-
-		this.panelOpen = true;
-		this.scrim.show();
-		this.disableSceneScroller();
-
-		Mojo.Animation.Scrim.animate(this.scrim, 0, 1, function() {
-		  this.menuPanel.show();
-			this.animateMenuPanel(this.menuPanel, false, function() {});
-		}.bind(this));
-	},
-
-	menuPanelOff :function(){
-	  if(!this.panelOpen) {
-	    return;
+	  else {
+	    this.menuPanelOn();
 	  }
-
-		this.panelOpen = false;
-		this.enableSceneScroller();
-		this.animateMenuPanel(this.menuPanel, true, function() {
-			this.menuPanel.hide();
-			Mojo.Animation.Scrim.animate(this.scrim, 1, 0, this.scrim.hide.bind(this.scrim));
-		}.bind(this));
 	},
 
-	toggleMenuPanel: function(e){
-	  this[this.panelOpen ? "menuPanelOff" : "menuPanelOn"]()
-	},
-
-  disableSceneScroller : function() {
+  disableSceneScroller: function() {
 		this.controller.listen(this.controller.sceneElement, Mojo.Event.dragStart, this.dragHandler);
 	},
 
@@ -108,5 +101,21 @@ BaseAssistant = Class.create({
 	    this.toggleMenuPanel();
 	    event.stop();
 	  }
+  },
+
+  swapTo: function(target, scene) {
+    this.controller.popupSubmenu({
+      placeNear: target,
+
+      onChoose: function(command) {
+        if(scene === command) {
+          this.controller.stageController.swapScene(scene);
+        }
+      }.bind(this),
+
+      items: [
+        {label: scene.capitalize(), command: scene}
+      ]
+    });
   }
 });

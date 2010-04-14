@@ -14,7 +14,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   		dividerFunction: this.divide
     }
 
-    this.setupMenuPanel();
     this.setupViewMenu();
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
     this.controller.setupWidget("address-text", {changeOnKeyPress: true, hintText: this.getAddressHintText()}, this.addressText);
@@ -22,12 +21,10 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
     this.controller.setupWidget("address-submit", {type: Mojo.Widget.activityButton}, this.addressSubmitButton);
 
     this.kioskTapped = this.kioskTapped.bind(this)
-    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
     this.locate = this.locate.bind(this);
     this.addressTextEntry = this.addressTextEntry.bind(this);
 
     this.controller.listen("kiosks", Mojo.Event.listTap, this.kioskTapped);
-    this.controller.listen(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("address-submit", Mojo.Event.tap, this.locate);
   	this.controller.listen("address-text", Mojo.Event.propertyChange, this.addressTextEntry);
@@ -36,7 +33,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   cleanup: function($super) {
     $super();
     this.controller.stopListening("kiosks", Mojo.Event.listTap, this.kioskTapped);
-    this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("address-submit", Mojo.Event.tap, this.locate);
   	this.controller.stopListening("address-text", Mojo.Event.propertyChange, this.addressTextEntry);

@@ -1,6 +1,7 @@
 SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(query) {
-    this.query = query;
+  initialize: function(query, kiosk) {
+    this.query = query.toLowerCase();
+    this.kiosk = kiosk;
     this.movies = {items: []};
     this.viewMenu = {items: [
       {},
@@ -26,14 +27,36 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped = this.movieTapped.bind(this));
   },
 
-  ready: function() {
-    this.spinnerOn();
-    Movie.search(this.query, this.moviesFound.bind(this), this.searchError.bind(this));
-  },
-
   cleanup: function($super) {
     $super();
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
+  },
+
+  ready: function() {
+    this.spinnerOn();
+
+    if(this.kiosk) {
+      this.searchKioskInventory();
+    }
+    else {
+      this.searchAllMovies();
+    }
+  },
+
+  searchKioskInventory: function() {
+    var movies = [];
+
+    this.kiosk.movies.each(function(movie) {
+      if(movie.name.toLowerCase().include(this.query)) {
+        movies.push(movie);
+      }
+    }.bind(this));
+
+    this.moviesFound(movies);
+  },
+
+  searchAllMovies: function() {
+    Movie.search(this.query, this.moviesFound.bind(this), this.searchError.bind(this));
   },
 
   moviesFound: function(movies) {

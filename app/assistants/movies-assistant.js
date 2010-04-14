@@ -6,7 +6,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   setup: function($super) {
     $super();
-    this.setupMenuPanel();
     this.setupWidgets();
     this.setupListeners();
   },
@@ -42,12 +41,10 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   setupListeners: function() {
   	this.dragHandler = this.dragHandler.bind(this);
     this.movieTapped = this.movieTapped.bind(this);
-    this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
   	this.searchMovies = this.searchMovies.bind(this);
   	this.searchTextEntry = this.searchTextEntry.bind(this);
 
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped);
-  	this.controller.listen(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies);
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
@@ -56,7 +53,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   cleanup: function($super) {
     $super();
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
-  	this.controller.stopListening(this.scrim, Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("search-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("search-submit", Mojo.Event.tap, this.searchMovies);
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
@@ -99,7 +95,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
       this.toggleMenuPanel();
     }
     else if("kiosks" === event.command) {
-      this.controller.stageController.swapScene("kiosks");
+      this.swapTo(event.originalEvent.target, "kiosks");
     }
   },
 
@@ -114,7 +110,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   menuPanelOn: function($super) {
 	  this.movieSearchText.value = "";
 	  this.controller.modelChanged(this.movieSearchText);
-    $super();
-    $("search-text").mojo.focus.delay(.5);
+    $super("search-text");
   }
 });

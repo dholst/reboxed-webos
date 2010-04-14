@@ -51,7 +51,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
       this.toggleMenuPanel();
     }
     else if("movies" === event.command) {
-      this.controller.stageController.swapScene("movies");
+      this.swapTo(event.originalEvent.target, "movies");
     }
   }
 });
