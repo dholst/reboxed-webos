@@ -1,12 +1,23 @@
 MovieAssistant = Class.create(BaseAssistant, {
-  initialize: function(movie) {
+  initialize: function(movie, kiosk) {
     this.movie = movie;
+    this.kiosk = kiosk;
     this.locateText = {value: ""};
+
+    var button
+
+    if(this.kiosk) {
+      button = {label: "Reserve", iconPath: "images/reserve.png", command: "reserve"};
+    }
+    else {
+      button = {label: "Locate", iconPath: "images/compass.png", command: "locate"}
+    }
+
     this.viewMenu = {items: [
       {},
       {items: [
         {label: movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/compass.png", command: "locate"}
+        button
       ]},
       {}
     ]};
@@ -57,6 +68,9 @@ MovieAssistant = Class.create(BaseAssistant, {
 
     if("locate" === event.command) {
       this.toggleMenuPanel();
+    }
+    else if("reserve" === event.command) {
+      this.controller.stageController.pushScene("reserve-movie", this.kiosk, this.movie);
     }
   },
 

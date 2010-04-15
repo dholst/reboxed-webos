@@ -53,8 +53,7 @@
   width: 10px;
   height: 12px;
   padding-left: 5px;
-  vertical-align: middle;
-  vertical-align: baseline;
+  vertical-align: -2px;
 }
 
 /*

@@ -51,8 +51,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   ready: function() {
-    var menuText = this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
-    menuText.insert({bottom: '<img src="images/down.png">'});
+    this.addDownArrowToMenuText();
   },
 
   cleanup: function($super) {

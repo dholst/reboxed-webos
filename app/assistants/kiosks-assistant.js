@@ -21,8 +21,7 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
   },
 
   ready: function() {
-    var menuText = this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
-    menuText.insert({bottom: '<img src="images/down.png">'});
+    this.addDownArrowToMenuText();
     this.menuPanelOn();
   },
 

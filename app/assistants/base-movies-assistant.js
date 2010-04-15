@@ -36,7 +36,7 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
 
     var onChoose = function(movie, command) {
       if("details" === command) {
-        this.controller.stageController.pushScene("movie", movie);
+        this.controller.stageController.pushScene("movie", movie, this.kiosk);
       }
       else if("locate" === command) {
         this.controller.stageController.pushScene("locate-movie", movie);

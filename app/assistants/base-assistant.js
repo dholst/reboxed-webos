@@ -117,5 +117,10 @@ BaseAssistant = Class.create({
         {label: scene.capitalize(), command: scene}
       ]
     });
+  },
+  
+  addDownArrowToMenuText: function() {
+    var menuText = this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
+    menuText.insert({bottom: '<img src="images/down.png">'});
   }
 });
