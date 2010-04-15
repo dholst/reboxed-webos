@@ -50,6 +50,11 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry);
   },
 
+  ready: function() {
+    var menuText = this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
+    menuText.insert({bottom: '<img src="images/down.png">'});
+  },
+
   cleanup: function($super) {
     $super();
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped);
