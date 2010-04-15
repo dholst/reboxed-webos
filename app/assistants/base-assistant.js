@@ -21,7 +21,7 @@ BaseAssistant = Class.create({
       this.controller.stopListening(scrim, Mojo.Event.tap, this.toggleMenuPanel);
     }
   },
-  
+
   spinnerOn: function(message) {
     var spinner = $$(".spinner").first()
     spinner.mojo.start();
@@ -54,7 +54,7 @@ BaseAssistant = Class.create({
 		this.getMenuScrim().show();
 		this.getMenuPanel().show();
 		this.disableSceneScroller();
-		
+
 		if(focusOn) {
 		  this.controller.get(focusOn).focus();
 		}
@@ -105,7 +105,7 @@ BaseAssistant = Class.create({
 
   swapTo: function(target, scene) {
     this.controller.popupSubmenu({
-      placeNear: target,
+      placeNear: this.menuTextElement(),
 
       onChoose: function(command) {
         if(scene === command) {
@@ -118,9 +118,12 @@ BaseAssistant = Class.create({
       ]
     });
   },
-  
+
   addDownArrowToMenuText: function() {
-    var menuText = this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
-    menuText.insert({bottom: '<img src="images/down.png">'});
+    this.menuTextElement().insert({bottom: '<img src="images/down.png">'});
+  },
+
+  menuTextElement: function() {
+    return this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
   }
 });
