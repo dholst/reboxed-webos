@@ -42,7 +42,7 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
         this.controller.stageController.pushScene("locate-movie", movie);
       }
       else if("reserve" === command) {
-        this.controller.stageController.pushScene("reserve-movie", this.kiosk, movie);
+        this.controller.stageController.pushScene("reserve-movie", this.kiosk, movie, this.currentScene());
       }
     }.bind(this)
 

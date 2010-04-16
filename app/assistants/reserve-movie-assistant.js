@@ -119,7 +119,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   checkoutComplete: function() {
-    this.controller.stageController.popScenesTo("movie", this.cart);
+    this.controller.stageController.swapScene("reserved-movie", this.cart);
   },
 
   checkoutFailed: function() {
@@ -128,7 +128,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   handleCommand: function($super, event) {
     $super(event);
-    
+
     if(this.button.disabled) {
       event.stop();
     }

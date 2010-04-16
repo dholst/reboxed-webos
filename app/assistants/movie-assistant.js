@@ -42,12 +42,8 @@ MovieAssistant = Class.create(BaseAssistant, {
   	this.controller.listen("locate-text", Mojo.Event.propertyChange, this.locateTextEntry);
   },
 
-  activate: function(cart) {
+  activate: function() {
     $("locate-text").mojo.setConsumesEnterKey(false);
-
-    if(cart) {
-      this.controller.stageController.swapScene("reserved-movie", cart);
-    }
   },
 
   cleanup: function() {

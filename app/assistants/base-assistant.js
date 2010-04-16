@@ -125,5 +125,9 @@ BaseAssistant = Class.create({
 
   menuTextElement: function() {
     return this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
+  },
+  
+  currentScene: function() {
+    return this.controller.stageController.topScene().sceneName
   }
 });
