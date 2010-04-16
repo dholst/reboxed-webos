@@ -18,12 +18,17 @@ LoginAssistant = Class.create({
   },
 
   activate: function() {
+    $("password").mojo.setConsumesEnterKey(false);
     this.propertyChanged();
   },
 
-  propertyChanged: function() {
+  propertyChanged: function(event) {
     if(this.user.username.length && this.user.password.length) {
       this.enableButton();
+
+      if(Mojo.Char.enter === event.originalEvent.keyCode) {
+        this.login();
+      }
     }
     else {
       this.disableButton();
@@ -32,6 +37,7 @@ LoginAssistant = Class.create({
 
   login: function() {
     this.disableButton();
+    this.controller.get("login").mojo.activate();
     User.login(this.user.username, this.user.password, this.loginSuccess.bind(this), this.loginFailure.bind(this));
   },
 

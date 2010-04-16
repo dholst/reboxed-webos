@@ -1,12 +1,12 @@
 SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
   initialize: function(query, kiosk) {
-    this.query = query.toLowerCase();
+    this.query = query;
     this.kiosk = kiosk;
     this.movies = {items: []};
     this.viewMenu = {items: [
       {},
       {items: [
-        {label: "Movie Search: " + this.query, width: 320, command: "n/a"},
+        {label: "Search: " + this.query, width: 320, command: "n/a"},
       ]},
       {}
     ]};
@@ -45,6 +45,7 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   searchKioskInventory: function() {
     var movies = [];
+    var query = this.query.toLowerCase();
 
     this.kiosk.movies.each(function(movie) {
       if(movie.name.toLowerCase().include(this.query)) {

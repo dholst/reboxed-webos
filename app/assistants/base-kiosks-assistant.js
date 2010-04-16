@@ -42,7 +42,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
     $("address-text").mojo.setConsumesEnterKey(false);
   },
 
-  addressTextEntry: function() {
+  addressTextEntry: function(event) {
     if(Mojo.Char.enter === event.originalEvent.keyCode) {
       this.locate();
     }

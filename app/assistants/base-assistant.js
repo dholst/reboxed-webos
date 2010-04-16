@@ -56,7 +56,7 @@ BaseAssistant = Class.create({
 		this.disableSceneScroller();
 
 		if(focusOn) {
-		  this.controller.get(focusOn).focus();
+		  this.controller.get(focusOn).mojo.focus();
 		}
 	},
 
@@ -126,7 +126,7 @@ BaseAssistant = Class.create({
   menuTextElement: function() {
     return this.controller.sceneElement.querySelector("div.palm-menu-text .truncating-text");
   },
-  
+
   currentScene: function() {
     return this.controller.stageController.topScene().sceneName
   }

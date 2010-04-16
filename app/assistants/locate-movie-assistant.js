@@ -10,7 +10,7 @@ LocateMovieAssistant = Class.create(BaseKiosksAssistant, {
     this.controller.setupWidget(Mojo.Menu.viewMenu, {}, {items: [
       {},
       {items: [
-        {label: "Kiosks with " + this.movie.name, width: 260, command: "n/a"},
+        {label: this.movie.name, width: 260, command: "n/a"},
         {label: "Locate", iconPath: "images/compass.png", command: "locate"}
       ]},
       {}
