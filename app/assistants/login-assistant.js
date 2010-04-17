@@ -1,4 +1,4 @@
-LoginAssistant = Class.create({
+LoginAssistant = Class.create(BaseAssistant, {
   initialize: function() {
     this.user = {username: "", password: ""};
     this.button = {buttonLabel: "Login", disabled: true};
@@ -6,7 +6,8 @@ LoginAssistant = Class.create({
     this.readCookie();
   },
 
-  setup: function() {
+  setup: function($super) {
+    $super();
     this.controller.setupWidget("username", {modelProperty: "username", changeOnKeyPress: true, focus: true}, this.user);
     this.controller.setupWidget("password", {modelProperty: "password", changeOnKeyPress: true}, this.user);
     this.controller.setupWidget("login", {type: Mojo.Widget.activityButton}, this.button);

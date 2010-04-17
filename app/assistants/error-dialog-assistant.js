@@ -4,7 +4,8 @@ ErrorDialogAssistant = Class.create(BaseAssistant, {
     this.callback = callback;
   },
 
-  setup: function(widget) {
+  setup: function($super, widget) {
+    $super();
     this.widget = widget;
     this.ok = this.ok.bind(this);
     this.controller.listen("error-message-callback", Mojo.Event.tap, this.ok);

@@ -4,7 +4,8 @@ BailAssistant = Class.create(BaseAssistant, {
     this.nextScene = nextScene;
   },
 
-  setup: function() {
+  setup: function($super) {
+    $super();
     var message = this.message;
 
     if(this.nextScene) {

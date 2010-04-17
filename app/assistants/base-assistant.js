@@ -4,6 +4,12 @@ BaseAssistant = Class.create({
   },
 
   setup: function() {
+    this.controller.setupWidget(
+      Mojo.Menu.appMenu,
+      {omitDefaultItems: true},
+      {visible: true, items: [Mojo.Menu.editItem]}
+    );
+
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
 
     this.toggleMenuPanel = this.toggleMenuPanel.bind(this);

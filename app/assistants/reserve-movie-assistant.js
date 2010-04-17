@@ -7,7 +7,6 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super();
     this.update("movie-name", "Reserve: " + this.movie.name);
-
   },
 
   activate: function() {

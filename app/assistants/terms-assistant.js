@@ -3,7 +3,8 @@ TermsAssistant = Class.create(BaseAssistant, {
     this.nextScene = nextScene;
   },
 
-  setup: function() {
+  setup: function($super) {
+    $super();
     this.controller.listen("accept-terms", Mojo.Event.tap, this.accept = this.accept.bind(this));
   },
 

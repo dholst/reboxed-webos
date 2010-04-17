@@ -3,7 +3,8 @@ ReservedMovieAssistant = Class.create(BaseAssistant, {
     this.cart = cart;
   },
 
-  setup: function() {
+  setup: function($super) {
+    $super();
     this.update("movie-name", this.cart.movie.name);
     this.update("reserved", Mojo.View.render({object: this.cart, template: "reserved-movie/details"}));
     this.controller.listen("find-another", Mojo.Event.tap, this.backToWhereYaCameFrom = this.backToWhereYaCameFrom.bind(this));
