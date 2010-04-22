@@ -7,8 +7,16 @@ BaseAssistant = Class.create({
     this.controller.setupWidget(
       Mojo.Menu.appMenu,
       {omitDefaultItems: true},
-      {visible: true, items: [Mojo.Menu.editItem]}
+      {
+        visible: true,
+        items: [
+          Mojo.Menu.editItem,
+          {label: "Help", command: Mojo.Menu.helpCmd}
+        ]
+      }
     );
+
+    console.log(Object.toJSON(Mojo.Menu.helpItem))
 
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
 
@@ -107,6 +115,10 @@ BaseAssistant = Class.create({
 	    this.toggleMenuPanel();
 	    event.stop();
 	  }
+	  else if(Mojo.Menu.helpCmd == event.command) {
+	    this.controller.stageController.pushScene("help");
+	    event.stop();
+	  }
   },
 
   swapTo: function(target, scene) {
@@ -135,5 +147,9 @@ BaseAssistant = Class.create({
 
   currentScene: function() {
     return this.controller.stageController.topScene().sceneName
+  },
+  
+  noAppMenu: function() {
+    this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: false});
   }
 });

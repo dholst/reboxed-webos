@@ -1,4 +1,9 @@
 FullSyncAssistant = Class.create(BaseAssistant, {
+  setup: function($super) {
+    $super();
+    this.noAppMenu();
+  },
+  
   ready: function() {
     this.progress = {value: 0};
     this.controller.setupWidget("progress", {}, this.progress);
