@@ -16,8 +16,6 @@ BaseAssistant = Class.create({
       }
     );
 
-    console.log(Object.toJSON(Mojo.Menu.helpItem))
-
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {});
 
     this.toggleMenuPanel = this.toggleMenuPanel.bind(this);
