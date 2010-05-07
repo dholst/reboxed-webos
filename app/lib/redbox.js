@@ -77,7 +77,7 @@ Redbox = {
       var cart = new Cart();
       cart.original = json.d.cart;
 
-      cart.price = cart.original.Total;
+      cart.price = cart.original.SubTotal;
       cart.tax = cart.original.Tax;
       cart.total = cart.original.GrandTotal;
       cart.canCheckout = cart.original.CanCheckout;
