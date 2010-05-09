@@ -132,7 +132,16 @@ div.palm-row.kiosk div.palm-info-text {
   font-size: 16px;
 }
 
-div.palm-row.kiosk .icon {
+div.palm-row.kiosk .star {
+  height: 70px;
+  background: url(../images/notstarred.png) center center no-repeat;
+}
+
+div.palm-row.kiosk .star.on {
+  background: url(../images/starred.png) center center no-repeat;
+}
+
+div.palm-row.kiosk .details {
   height: 70px;
   background: url(../images/details.png) center center no-repeat;
 }

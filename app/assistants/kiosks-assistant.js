@@ -22,18 +22,22 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
 
   ready: function() {
     this.addDownArrowToMenuText();
-    this.menuPanelOn();
+
+    this.getFavorites(function(favorites) {
+      if(favorites.empty()) {
+        this.menuPanelOn()
+      }
+      else {
+        this.kioskSuccess(favorites.kiosks)
+      }
+    }.bind(this))
   },
 
   kioskTapped: function(event) {
-    this.controller.popupSubmenu({
-      onChoose: this.kioskPopupTapped.bind(this, event.item),
-      placeNear: event.originalEvent.target,
-      items: [
-        {label: "Movies", command: "movies"},
-        {label: "Map", command: "map"}
-      ]
-    });
+    this.handleKioskTap(event, [
+      {label: "Movies", command: "movies"},
+      {label: "Map", command: "map"}
+    ]);
   },
 
   kioskPopupTapped: function(kiosk, command) {

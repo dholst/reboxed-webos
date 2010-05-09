@@ -8,6 +8,8 @@
   {source: "app/models/card.js"},
   {source: "app/models/cart.js"},
   {source: "app/models/database.js"},
+  {source: "app/models/depot.js"},
+  {source: "app/models/favorite-kiosks.js"},
   {source: "app/models/kiosk.js"},
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},
@@ -29,5 +31,5 @@
   {source: "app/assistants/terms-assistant.js"},
   {source: "app/assistants/kiosks-assistant.js"},
   {source: "app/assistants/kiosk-movies-assistant.js"},
-  {source: "app/assistants/help-assistant.js"}  
+  {source: "app/assistants/help-assistant.js"}
 ]

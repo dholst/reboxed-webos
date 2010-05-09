@@ -33,14 +33,10 @@ LocateMovieAssistant = Class.create(BaseKiosksAssistant, {
   },
 
   kioskTapped: function(event) {
-    this.controller.popupSubmenu({
-      onChoose: this.kioskPopupTapped.bind(this, event.item),
-      placeNear: event.originalEvent.target,
-      items: [
-        {label: "Reserve", command: "reserve"},
-        {label: "Map", command: "map"}
-      ]
-    });
+    this.handleKioskTap(event, [
+      {label: "Reserve", command: "reserve"},
+      {label: "Map", command: "map"}
+    ]);
   },
 
   kioskPopupTapped: function(kiosk, command) {

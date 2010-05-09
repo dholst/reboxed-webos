@@ -1,7 +1,16 @@
 BaseKiosksAssistant = Class.create(BaseAssistant, {
   initialize: function($super) {
-    $super();
-    this.kiosks = {items: []};
+    $super()
+    this.kiosks = {items: []}
+  },
+
+  getFavorites: function(gotEm) {
+    if(this.favorites) {
+      gotEm(this.favorites)
+    }
+    else {
+      this.favorites = new FavoriteKiosks(gotEm)
+    }
   },
 
   setup: function($super) {
@@ -105,15 +114,25 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   kioskSuccess: function(kiosks) {
-    kiosks.each(function(kiosk) {
-      kiosk.calculateDistanceRange();
-      this.kiosks.items.push(kiosk);
-    }.bind(this));
+    this.getFavorites(function(favorites) {
+      kiosks.each(function(kiosk) {
+        kiosk.favorite = favorites.contains(kiosk) ? "on" : false
+        kiosk.calculateDistanceRange();
+        this.kiosks.items.push(kiosk);
+      }.bind(this));
 
-    $("nothing-found")[kiosks.length ? "hide" : "show"]()
-    this.menuPanelOff();
-    this.spinnerOff();
-    this.controller.modelChanged(this.kiosks);
+      $("nothing-found")[kiosks.length ? "hide" : "show"]()
+      this.menuPanelOff();
+      this.spinnerOff();
+      this.sortKiosks();
+      this.controller.modelChanged(this.kiosks);
+    }.bind(this))
+  },
+
+  sortKiosks: function() {
+    this.kiosks.items.sort(function(a, b) {
+      return a.distance - b.distance
+    });
   },
 
   kioskFailure: function() {
@@ -123,37 +142,37 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   menuPanelOn: function($super, errorMessage) {
-    this.spinnerOff();
+    this.spinnerOff()
 
     if(errorMessage) {
       this.showError(errorMessage)
     }
     else {
-      this.clearError();
+      this.clearError()
     }
 
-    this.enableButton();
+    this.enableButton()
 
-    $super();
+    $super()
 
-  	$("address-text").mojo.focus.delay(.5);
+  	$("address-text").mojo.focus.delay(.5)
   },
 
   enableButton: function() {
-    this.addressSubmitButton.disabled = false;
-    this.controller.modelChanged(this.addressSubmitButton);
-    $("address-submit").mojo.deactivate();
+    this.addressSubmitButton.disabled = false
+    this.controller.modelChanged(this.addressSubmitButton)
+    $("address-submit").mojo.deactivate()
   },
 
   disableButton: function() {
-    this.addressSubmitButton.disabled = true;
-    this.controller.modelChanged(this.addressSubmitButton);
-    $("address-submit").mojo.activate();
+    this.addressSubmitButton.disabled = true
+    this.controller.modelChanged(this.addressSubmitButton)
+    $("address-submit").mojo.activate()
   },
 
   clearError: function() {
-    $("locate-error-message").update("");
-    $("locate-error").hide();
+    $("locate-error-message").update("")
+    $("locate-error").hide()
   },
 
   showOnMap: function(kiosk) {
@@ -165,6 +184,24 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
       	  query: kiosk.address + " " + kiosk.city + ", " + kiosk.state + " " + kiosk.zip
        	}
      	}
-    });
+    })
+  },
+
+  handleKioskTap: function(event, subMenuItems) {
+    if(event.originalEvent.target.hasClassName('star')) {
+      event.originalEvent.target.toggleClassName('on')
+      var addOrRemove = event.originalEvent.target.hasClassName('on') ? 'add' : 'remove'
+
+      this.getFavorites(function(favorites) {
+        favorites[addOrRemove](event.item)
+      })
+    }
+    else {
+      this.controller.popupSubmenu({
+        onChoose: this.kioskPopupTapped.bind(this, event.item),
+        placeNear: event.originalEvent.target,
+        items: subMenuItems
+      })
+    }
   }
-});
+})
