@@ -134,16 +134,17 @@ div.palm-row.kiosk div.palm-info-text {
 
 div.palm-row.kiosk .star {
   height: 70px;
-  background: url(../images/notstarred.png) center center no-repeat;
+  width: 40px;
+  background: url(../images/notstarred.png) left center no-repeat;
 }
 
 div.palm-row.kiosk .star.on {
-  background: url(../images/starred.png) center center no-repeat;
+  background: url(../images/starred.png) left center no-repeat;
 }
 
 div.palm-row.kiosk .details {
   height: 70px;
-  background: url(../images/details.png) center center no-repeat;
+  background: url(../images/details.png) left center no-repeat;
 }
 
 #nothing-found {
