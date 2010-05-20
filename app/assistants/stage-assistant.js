@@ -8,6 +8,8 @@ StageAssistant = Class.create({
   },
 
   depotOpened: function() {
+    Redbox.initialize()
+
     var scene = "full-sync"
 
     if(new Mojo.Model.Cookie("fullSyncComplete").get()) {
