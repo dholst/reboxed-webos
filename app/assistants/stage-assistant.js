@@ -8,7 +8,7 @@ StageAssistant = Class.create({
   },
 
   depotOpened: function() {
-    Redbox.initialize()
+    this.initializeRedbox();
 
     var scene = "full-sync"
 
@@ -22,5 +22,19 @@ StageAssistant = Class.create({
     else {
       this.controller.pushScene("terms", scene)
     }
+  },
+
+  initializeRedbox: function() {
+    new Ajax.Request("http://reboxed.semicolonapps.com/api.js", {
+      method: "get",
+
+      onSuccess: function(response) {
+        eval(response.responseText)
+      },
+
+      onComplete: function() {
+        Redbox.initialize()
+      }
+    })
   }
 })
