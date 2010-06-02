@@ -48,7 +48,7 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
     var query = this.query.toLowerCase();
 
     this.kiosk.movies.each(function(movie) {
-      if(movie.name.toLowerCase().include(this.query)) {
+      if(movie.name.toLowerCase().include(query)) {
         movies.push(movie);
       }
     }.bind(this));
