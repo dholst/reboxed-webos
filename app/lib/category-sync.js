@@ -1,10 +1,13 @@
 CategorySync = {
   sync: function() {
-    Movie.findAllUncategorized(this.syncThese, function() {})
+    if(!CategorySync.syncing) {
+      CategorySync.syncing = true
+      Movie.findAllUncategorized(this.syncMovies, function() {CategorySync.syncing = false})
+    }
   },
 
-  syncThese: function(movies) {
-    var categories = {}
+  syncMovies: function(movies) {
+    var movieCategories = []
 
     movies.each(function(movie) {
       var genres = movie.genre.split(",")
@@ -13,20 +16,23 @@ CategorySync = {
         genre = genre.strip()
 
         if(genre.length) {
-          var movie_ids = categories[genre]
-
-          if(!movie_ids) {
-            movie_ids = []
-            categories[genre] = movie_ids
-          }
-
-          movie_ids.push(movie.id)
+          movieCategories.push([movie.id, genre])
         }
       })
     })
 
-    $H(categories).each(function(item) {
-      console.log(item[0] + " -> " + item[1].length)
-    })
+    CategorySync.syncMovie(movieCategories, 0)
+  },
+
+  syncMovie: function(movieCategories, index) {
+    if(index >= movieCategories.length) {
+      CategorySync.syncing = false
+      return
+    }
+
+    var movieId = movieCategories[index][0]
+    var category = movieCategories[index][1]
+
+    Category.addMovie(category, movieId, CategorySync.syncMovie.curry(movieCategories, index + 1))
   }
 }
