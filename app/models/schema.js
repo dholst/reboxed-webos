@@ -16,6 +16,22 @@ SCHEMA = {
         "'yahoo_rating' text",
         "'description' text"
       ]
+    },
+
+    {
+      name: "categories",
+      columns: [
+        "'id' integer primary key not null",
+        "'name' text"
+      ]
+    },
+
+    {
+      name: "movies_categories",
+      columns: [
+        "'movie_id' integer not null",
+        "'category_id' integer not null"
+      ]
     }
   ]
 };

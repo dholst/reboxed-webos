@@ -1,0 +1,3 @@
+Category = Class.create({
+  
+});

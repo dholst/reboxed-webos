@@ -135,6 +135,28 @@ Movie.findAll = function(ids, success, failure) {
   }
 }
 
+Movie.findAllUncategorized = function(success, failure) {
+  var onSuccess = function(resultSet) {
+    var results = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      var movie = new Movie()
+      movie.id = resultSet.rows.item(i).id
+      movie.genre = resultSet.rows.item(i).genre
+      results.push(movie)
+    }
+
+    success(results)
+  }
+
+  var onFailure = function(messae) {
+    Mojo.Log.error("find uncategorized failed", message)
+    failure(message)
+  }
+
+  Database.getInstance().execute("select m.id, m.genre from movies m left outer join movies_categories mc on mc.movie_id = m.id where mc.movie_id is null", [], onSuccess, onFailure)
+}
+
 Movie.fromJson = function(json) {
   var movie = new Movie();
   movie.id = json.id;

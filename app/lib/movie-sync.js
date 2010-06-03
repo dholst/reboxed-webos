@@ -55,6 +55,7 @@ MovieSync = {
   },
 
   syncComplete: function() {
+    CategorySync.sync()
     Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {});
   }
 };
