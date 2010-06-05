@@ -93,6 +93,26 @@ Movie.search = function(query, success, failure) {
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
+Movie.findAllForCategory = function(category, success, failure) {
+  var onSuccess = function(resultSet) {
+    var movies = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      movies.push(Movie.fromJson(resultSet.rows.item(i)))
+    }
+
+    success(movies)
+  }
+
+  var onFailure = function(message) {
+    Mojo.Log.error(message)
+    failure(message)
+  }
+
+  var sql = "select m.* from movies m, categories c, movies_categories mc where m.id = mc.movie_id and c.id = mc.category_id and c.id = ? order by released desc, name limit 200"
+  Database.getInstance().execute(sql, [category.id], onSuccess, onFailure)
+}
+
 Movie.find = function(id, success, failure) {
   var onSuccess = function(resultSet) {
     if(resultSet.rows.length != 1) {

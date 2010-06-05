@@ -119,20 +119,21 @@ BaseAssistant = Class.create({
 	  }
   },
 
-  swapTo: function(target, scene) {
+  swapTo: function(target, scenes) {
+    items = []
+
+    scenes.each(function(scene) {
+      items.push({label: scene.capitalize(), command: scene})
+    })
+
     this.controller.popupSubmenu({
       placeNear: this.menuTextElement(),
+      items: items,
 
       onChoose: function(command) {
-        if(scene === command) {
-          this.controller.stageController.swapScene(scene);
-        }
-      }.bind(this),
-
-      items: [
-        {label: scene.capitalize(), command: scene}
-      ]
-    });
+        this.controller.stageController.swapScene(command)
+      }.bind(this)
+    })
   },
 
   addDownArrowToMenuText: function() {
@@ -146,7 +147,7 @@ BaseAssistant = Class.create({
   currentScene: function() {
     return this.controller.stageController.topScene().sceneName
   },
-  
+
   noAppMenu: function() {
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: false});
   }

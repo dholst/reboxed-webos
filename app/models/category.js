@@ -1,6 +1,27 @@
 Category = Class.create({
 });
 
+Category.fromJson = function(json) {
+  var category = new Category()
+  category.id = json.id
+  category.name = json.name
+  return category
+}
+
+Category.findAll = function(onSuccess) {
+  var success = function(resultSet) {
+    var categories = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      categories.push(Category.fromJson(resultSet.rows.item(i)))
+    }
+
+    onSuccess(categories)
+  }
+
+  Database.getInstance().execute("select * from categories order by name", [], success, function() {})
+}
+
 Category.addMovie = function(category, movieId, onSuccess, onFailure) {
   Mojo.Log.info("movieId = " + movieId + ", category = " + category)
 
@@ -37,13 +58,7 @@ Category.findIdFor = function(name, onSuccess, onFailure) {
 Category.insertCategory = function(category, movieId, onSuccess, onFailure) {
   var success = function() {
     Category.findIdFor(category, function(id) {
-      if(id) {
         Category.addMovieForCategoryId(id, movieId, onSuccess, onFailure)
-      }
-      else {
-        Mojo.Log.error("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
-        onSuccess()
-      }
     }, onFailure);
   }
 

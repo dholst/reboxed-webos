@@ -1,7 +1,7 @@
 SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(query, kiosk) {
+  initialize: function(query, staticMovies) {
     this.query = query;
-    this.kiosk = kiosk;
+    this.staticMovies = staticMovies;
     this.movies = {items: []};
     this.viewMenu = {items: [
       {},
@@ -35,19 +35,19 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
   ready: function() {
     this.spinnerOn();
 
-    if(this.kiosk) {
-      this.searchKioskInventory();
+    if(this.staticMovies) {
+      this.searchStaticMovies();
     }
     else {
       this.searchAllMovies();
     }
   },
 
-  searchKioskInventory: function() {
+  searchStaticMovies: function() {
     var movies = [];
     var query = this.query.toLowerCase();
 
-    this.kiosk.movies.each(function(movie) {
+    this.staticMovies.each(function(movie) {
       if(movie.name.toLowerCase().include(query)) {
         movies.push(movie);
       }

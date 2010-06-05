@@ -192,3 +192,16 @@ div.palm-row.kiosk .details {
   padding: 1px;
   line-height: 16px;
 }
+
+/*
+ * CATEGORIES
+ */
+
+div.category div.palm-body-text {
+  line-height: 40px;
+}
+
+div.palm-row.category .details {
+  height: 40px;
+  background: url(../images/details.png) left center no-repeat;
+}

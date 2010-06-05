@@ -33,5 +33,7 @@
   {source: "app/assistants/terms-assistant.js"},
   {source: "app/assistants/kiosks-assistant.js"},
   {source: "app/assistants/kiosk-movies-assistant.js"},
+  {source: "app/assistants/categories-assistant.js"},
+  {source: "app/assistants/category-movies-assistant.js"},
   {source: "app/assistants/help-assistant.js"}
 ]
