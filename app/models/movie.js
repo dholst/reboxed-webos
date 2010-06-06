@@ -93,7 +93,7 @@ Movie.search = function(query, success, failure) {
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
-Movie.findAllForCategory = function(category, success, failure) {
+Movie.findAllForGenre = function(genre, success, failure) {
   var onSuccess = function(resultSet) {
     var movies = []
 
@@ -109,8 +109,8 @@ Movie.findAllForCategory = function(category, success, failure) {
     failure(message)
   }
 
-  var sql = "select m.* from movies m, categories c, movies_categories mc where m.id = mc.movie_id and c.id = mc.category_id and c.id = ? order by released desc, name limit 200"
-  Database.getInstance().execute(sql, [category.id], onSuccess, onFailure)
+  var sql = "select m.* from movies m, genres g, movies_genres mg where m.id = mg.movie_id and g.id = mg.genre_id and g.id = ? order by released desc, name limit 200"
+  Database.getInstance().execute(sql, [genre.id], onSuccess, onFailure)
 }
 
 Movie.find = function(id, success, failure) {
@@ -174,7 +174,7 @@ Movie.findAllUncategorized = function(success, failure) {
     failure(message)
   }
 
-  Database.getInstance().execute("select m.id, m.genre from movies m left outer join movies_categories mc on mc.movie_id = m.id where mc.movie_id is null", [], onSuccess, onFailure)
+  Database.getInstance().execute("select m.id, m.genre from movies m left outer join movies_genres mg on mg.movie_id = m.id where mg.movie_id is null", [], onSuccess, onFailure)
 }
 
 Movie.fromJson = function(json) {

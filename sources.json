@@ -1,6 +1,6 @@
 [
   {source: "app/lib/ajax.js"},
-  {source: "app/lib/category-sync.js"},
+  {source: "app/lib/genre-sync.js"},
   {source: "app/lib/download-manager.js"},
   {source: "app/lib/events.js"},
   {source: "app/lib/movie-sync.js"},
@@ -8,7 +8,7 @@
   {source: "app/lib/yahoo.js"},
   {source: "app/models/card.js"},
   {source: "app/models/cart.js"},
-  {source: "app/models/category.js"},
+  {source: "app/models/genre.js"},
   {source: "app/models/database.js"},
   {source: "app/models/depot.js"},
   {source: "app/models/favorite-kiosks.js"},
@@ -33,7 +33,7 @@
   {source: "app/assistants/terms-assistant.js"},
   {source: "app/assistants/kiosks-assistant.js"},
   {source: "app/assistants/kiosk-movies-assistant.js"},
-  {source: "app/assistants/categories-assistant.js"},
-  {source: "app/assistants/category-movies-assistant.js"},
+  {source: "app/assistants/genres-assistant.js"},
+  {source: "app/assistants/genre-movies-assistant.js"},
   {source: "app/assistants/help-assistant.js"}
 ]

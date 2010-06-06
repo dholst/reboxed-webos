@@ -1,6 +1,6 @@
-CategoryMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(category) {
-    this.category = category;
+GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
+  initialize: function(genre) {
+    this.genre = genre;
     this.movieList = {items: []}
     this.movieSearchText = {value: ""}
   },
@@ -23,7 +23,7 @@ CategoryMoviesAssistant = Class.create(BaseMoviesAssistant, {
     var viewMenu = {items: [
       {},
       {items: [
-        {label: this.category.name, width: 260, command: "n/a"},
+        {label: this.genre.name, width: 260, command: "n/a"},
         {label: "Search", iconPath: "images/search.png", command: "search"}
       ]},
       {}
@@ -49,7 +49,7 @@ CategoryMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   ready: function() {
-    Movie.findAllForCategory(this.category, this.findSuccess.bind(this), this.findFailure.bind(this))
+    Movie.findAllForGenre(this.genre, this.findSuccess.bind(this), this.findFailure.bind(this))
   },
 
   cleanup: function($super) {

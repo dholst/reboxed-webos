@@ -19,7 +19,7 @@ SCHEMA = {
     },
 
     {
-      name: "categories",
+      name: "genres",
       columns: [
         "'id' integer primary key not null",
         "'name' text"
@@ -27,10 +27,10 @@ SCHEMA = {
     },
 
     {
-      name: "movies_categories",
+      name: "movies_genres",
       columns: [
         "'movie_id' integer not null",
-        "'category_id' integer not null"
+        "'genre_id' integer not null"
       ]
     }
   ]

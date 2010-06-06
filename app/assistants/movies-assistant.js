@@ -99,7 +99,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
       this.toggleMenuPanel();
     }
     else if("kiosks" === event.command) {
-      this.swapTo(event.originalEvent.target, ["categories", "kiosks"]);
+      this.swapTo(event.originalEvent.target, ["genres", "kiosks"]);
     }
   },
 
