@@ -1,8 +1,8 @@
 KiosksAssistant = Class.create(BaseKiosksAssistant, {
   initialize: function($super) {
-    $super();
-    this.addressText = {value: ""};
-    this.addressSubmitButton = {buttonLabel: "Search"};
+    $super()
+    this.addressText = {value: ""}
+    this.addressSubmitButton = {buttonLabel: "Search"}
   },
 
   setupViewMenu: function() {
@@ -13,15 +13,15 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
         {label: "Locate", iconPath: "images/compass.png", command: "locate"}
       ]},
       {}
-    ]});
+    ]})
   },
 
   getAddressHintText: function() {
-    return "Use current location...";
+    return "Use current location..."
   },
 
   ready: function() {
-    this.addDownArrowToMenuText();
+    this.addDownArrowToMenuText()
 
     this.getFavorites(function(favorites) {
       if(favorites.empty()) {
@@ -35,28 +35,32 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
 
   kioskTapped: function(event) {
     this.handleKioskTap(event, [
+      {label: "Genres", command: "genres"},
       {label: "Movies", command: "movies"},
       {label: "Map", command: "map"}
-    ]);
+    ])
   },
 
   kioskPopupTapped: function(kiosk, command) {
     if(command === "movies") {
-      this.controller.stageController.pushScene("kiosk-movies", kiosk);
+      this.controller.stageController.pushScene("kiosk-movies", kiosk)
     }
     else if(command === "map") {
       this.showOnMap(kiosk)
     }
+    else if(command === "genres") {
+      this.controller.stageController.pushScene("kiosk-genres", kiosk)
+    }
   },
 
   handleCommand: function($super, event) {
-    $super(event);
+    $super(event)
 
     if("locate" === event.command) {
-      this.toggleMenuPanel();
+      this.toggleMenuPanel()
     }
     else if("movies" === event.command) {
-      this.swapTo(event.originalEvent.target, ["genres", "movies"]);
+      this.swapTo(event.originalEvent.target, ["genres", "movies"])
     }
   }
-});
+})

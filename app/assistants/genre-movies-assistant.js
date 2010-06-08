@@ -1,8 +1,15 @@
 GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(genre) {
-    this.genre = genre;
+  initialize: function(genre, kiosk) {
+    this.genre = genre
+    this.kiosk = kiosk
+    this.movies = []
     this.movieList = {items: []}
     this.movieSearchText = {value: ""}
+    this.menuTitle = genre.name
+
+    if(kiosk) {
+      this.menuTitle = kiosk.vendor + ": " + this.menuTitle
+    }
   },
 
   setup: function($super) {
@@ -23,7 +30,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
     var viewMenu = {items: [
       {},
       {items: [
-        {label: this.genre.name, width: 260, command: "n/a"},
+        {label: this.menuTitle, width: 260, command: "n/a"},
         {label: "Search", iconPath: "images/search.png", command: "search"}
       ]},
       {}
@@ -65,9 +72,25 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   findSuccess: function(movies) {
-    this.movies = movies
-    this.movieList.items.push.apply(this.movieList.items, movies)
+    this.movies.clear()
+
+    movies.each(function(movie) {
+      if(this.kiosk) {
+        if(this.kiosk.movies.any(function(kioskMovie) {return kioskMovie.id === movie.id})) {
+          this.movies.push(movie)
+        }
+      }
+      else {
+        this.movies.push(movie)
+      }
+    }.bind(this))
+
+    this.movieList.items.push.apply(this.movieList.items, this.movies)
     this.controller.modelChanged(this.movieList)
+
+    if(this.movies.length == 0) {
+      this.controller.get("nothing-found").show()
+    }
   },
 
   findFailure: function() {
