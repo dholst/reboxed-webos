@@ -22,7 +22,7 @@ FullSyncAssistant = Class.create(BaseAssistant, {
     this.moviesSynced = 0;
     this.moviesTotal = response.responseJSON.movies.count;
     this.listen();
-    MovieSync.sync();
+    new MovieSync().sync();
   },
 
   listen: function() {

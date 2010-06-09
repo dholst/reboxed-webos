@@ -13,6 +13,7 @@ StageAssistant = Class.create({
     var scene = "full-sync"
 
     if(new Mojo.Model.Cookie("fullSyncComplete").get()) {
+      new MovieSync().sync()
       scene = "movies"
     }
 

@@ -5,6 +5,7 @@
   {source: "app/lib/events.js"},
   {source: "app/lib/movie-sync.js"},
   {source: "app/lib/redbox.js"},
+  {source: "app/lib/reboxed.js"},
   {source: "app/lib/yahoo.js"},
   {source: "app/models/card.js"},
   {source: "app/models/cart.js"},

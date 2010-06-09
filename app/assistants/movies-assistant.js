@@ -1,6 +1,5 @@
 MoviesAssistant = Class.create(BaseMoviesAssistant, {
   initialize: function() {
-    MovieSync.sync();
     this.movieSearchText = {value: ""};
   },
 
@@ -101,6 +100,8 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     else if("kiosks" === event.command) {
       this.swapTo(event.originalEvent.target, ["genres", "kiosks"]);
     }
+
+    console.log("WTF!!!!!!!!!!!!!!!!!!")
   },
 
   searchMovies: function() {

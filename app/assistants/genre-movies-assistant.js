@@ -116,7 +116,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   searchMovies: function() {
     if(this.movieSearchText.value && this.movieSearchText.value.length) {
-      this.controller.stageController.pushScene("search-movies", this.movieSearchText.value, this.movies)
+      this.controller.stageController.pushScene("search-movies", this.movieSearchText.value, this.movies, this.kiosk)
     }
 
     this.menuPanelOff()
