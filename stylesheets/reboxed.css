@@ -194,14 +194,18 @@ div.palm-row.kiosk .details {
 }
 
 /*
- * CATEGORIES
+ * genres
  */
-
-div.category div.palm-body-text {
-  line-height: 40px;
+div.palm-row.genre div.palm-row-wrapper {
+  background: url(../images/gradient.png) repeat-x 0 0;
 }
 
-div.palm-row.category .details {
-  height: 40px;
-  background: url(../images/details.png) left center no-repeat;
+div.genre div.palm-body-text {
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+
+div.palm-row.genre .details {
+  height: 60px;
+  background: url(../images/details.png) center center no-repeat;
 }

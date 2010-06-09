@@ -104,7 +104,7 @@ Redbox = {
       cart.pickupBy = cart.original.PickupBy
 
       cart.kiosk = new Kiosk()
-      cart.kiosk.vendor = cart.original.Kiosk.Vendor
+      cart.kiosk.vendor = Redbox.Kiosk.buildNameFrom(cart.original.Kiosk.Vendor, cart.original.Kiosk.Name)
       cart.kiosk.address = cart.original.Kiosk.Address
       cart.kiosk.city = cart.original.Kiosk.City
       cart.kiosk.state = cart.original.Kiosk.State
@@ -212,11 +212,22 @@ Redbox = {
       kiosk.longitude = json.Lng
       kiosk.name = json.Name
       kiosk.state = json.St
-      kiosk.vendor = json.Vdr
+      kiosk.vendor = Redbox.Kiosk.buildNameFrom(json.Vdr, json.Name)
       kiosk.zip = json.Zip
       kiosk.indoor = json.Ind
       kiosk.driveup_maybe = json.Drv
       return kiosk;
+    },
+
+    buildNameFrom: function(vendor, name) {
+      name = name || ""
+      name = name.replace("Machine ", "")
+
+      if(name.length) {
+        name = " - " + name
+      }
+
+      return vendor + name
     }
   }
 }

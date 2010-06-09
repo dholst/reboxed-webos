@@ -133,7 +133,9 @@ BaseAssistant = Class.create({
       items: items,
 
       onChoose: function(command) {
-        this.controller.stageController.swapScene(command)
+        if(command) {
+          this.controller.stageController.swapScene(command)
+        }
       }.bind(this)
     })
   },
