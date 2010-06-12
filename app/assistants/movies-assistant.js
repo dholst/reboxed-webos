@@ -7,6 +7,8 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     $super();
     this.setupWidgets();
     this.setupListeners();
+
+    Reboxed.Metrix.checkBulletinBoard(this.controller);
   },
 
   setupWidgets: function() {

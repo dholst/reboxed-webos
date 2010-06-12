@@ -1,5 +1,6 @@
 StageAssistant = Class.create({
   setup: function() {
+    Reboxed.Metrix.postDeviceData();
     Database.getInstance().open(this.databaseOpened.bind(this))
   },
 

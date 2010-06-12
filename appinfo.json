@@ -1,6 +1,6 @@
 {
 	"id": "com.semicolonapps.reboxed",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"vendor": "Semicolon Apps",
 	"type": "web",
 	"main": "index.html",
