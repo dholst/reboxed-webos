@@ -14,7 +14,7 @@ MovieSync = Class.create({
         parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
       }
       else {
-        //parameters.since = "04/01/2010"
+        //parameters.since = "01/01/2010"
       }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
@@ -63,6 +63,6 @@ MovieSync = Class.create({
   syncComplete: function() {
     Reboxed.notify("sync complete, found " + this.total_sunk + " new movies")
     GenreSync.sync()
-    Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {})
+    Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {count: this.total_sunk})
   }
 })
