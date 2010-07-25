@@ -26,7 +26,6 @@ ReservedMovieAssistant = Class.create(BaseAssistant, {
     var scene = scenes[0].sceneName;
 
     for(var i = scenes.length - 1; i >= 0; i--) {
-      console.log(scenes[i].sceneName)
       if(scenes[i].sceneName.endsWith("movies")) {
         scene = scenes[i].sceneName;
         break;

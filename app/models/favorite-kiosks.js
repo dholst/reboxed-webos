@@ -31,7 +31,6 @@ FavoriteKiosks = Class.create({
   },
 
   save: function() {
-    console.log(this.kiosks.length)
     Depot.add("favorite-kiosks", this.kiosks)
   },
 

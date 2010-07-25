@@ -110,12 +110,10 @@ BaseAssistant = Class.create({
 
 	handleCommand: function(event) {
 	  if(Mojo.Event.back === event.type && this.panelOpen) {
-	    console.log("FUCK YOU")
 	    this.toggleMenuPanel();
 	    event.stop();
 	  }
 	  else if(Mojo.Menu.helpCmd == event.command) {
-	    console.log("FUCK YOU TOO")
 	    this.controller.stageController.pushScene("help");
 	    event.stop();
 	  }
