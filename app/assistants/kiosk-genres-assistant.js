@@ -2,9 +2,13 @@ KioskGenresAssistant = Class.create(BaseGenresAssistant, {
   initialize: function($super, kiosk) {
     $super()
     this.kiosk = kiosk
-    this.menuTitle = kiosk.vendor
   },
 
+  setup: function($super) {
+    $super()
+    this.controller.update("header", this.kiosk.vendor)
+  },
+  
   ready: function() {
     this.spinnerOn("retrieving kiosk inventory");
     this.kiosk.loadInventory(this.inventorySuccess.bind(this), this.inventoryFailure.bind(this));

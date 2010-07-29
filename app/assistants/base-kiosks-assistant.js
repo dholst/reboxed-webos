@@ -23,7 +23,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   		dividerFunction: this.divide
     }
 
-    this.setupViewMenu();
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
     this.controller.setupWidget("address-text", {changeOnKeyPress: true, hintText: this.getAddressHintText()}, this.addressText);
     this.controller.setupWidget("address-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"});
@@ -37,6 +36,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   	this.controller.listen("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.listen("address-submit", Mojo.Event.tap, this.locate);
   	this.controller.listen("address-text", Mojo.Event.propertyChange, this.addressTextEntry);
+    this.controller.listen("locate", Mojo.Event.tap, this.toggleMenuPanel);
   },
 
   cleanup: function($super) {
@@ -45,6 +45,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   	this.controller.stopListening("address-cancel", Mojo.Event.tap, this.toggleMenuPanel);
   	this.controller.stopListening("address-submit", Mojo.Event.tap, this.locate);
   	this.controller.stopListening("address-text", Mojo.Event.propertyChange, this.addressTextEntry);
+    this.controller.stopListening("locate", Mojo.Event.tap, this.toggleMenuPanel);
   },
 
   activate: function() {

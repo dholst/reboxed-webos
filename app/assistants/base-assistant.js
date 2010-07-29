@@ -119,7 +119,7 @@ BaseAssistant = Class.create({
 	  }
   },
 
-  swapTo: function(target, scenes) {
+  swapTo: function(scenes) {
     items = []
 
     scenes.each(function(scene) {
@@ -127,7 +127,7 @@ BaseAssistant = Class.create({
     })
 
     this.controller.popupSubmenu({
-      placeNear: this.menuTextElement(),
+      placeNear: $("switch"),
       items: items,
 
       onChoose: function(command) {

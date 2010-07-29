@@ -27,20 +27,11 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   		dividerFunction: this.divideMovies
     }
 
-    var viewMenu = {items: [
-      {},
-      {items: [
-        {label: this.menuTitle, width: 260, command: "n/a"},
-        {label: "Search", iconPath: "images/search.png", command: "search"}
-      ]},
-      {}
-    ]}
-
     this.controller.setupWidget("movies", listAttributes, this.movieList)
-    this.controller.setupWidget(Mojo.Menu.viewMenu, {}, viewMenu)
     this.controller.setupWidget("search-text", {changeOnKeyPress: true, hintText: "Movie search..."}, this.movieSearchText)
     this.controller.setupWidget("search-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"})
     this.controller.setupWidget("search-submit", {}, {buttonLabel: "Search"})
+    this.controller.update("header", this.menuTitle)
   },
 
   setupListeners: function() {
@@ -50,6 +41,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.searchTextEntry = this.searchTextEntry.bind(this)
 
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped)
+    this.controller.listen("search", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
@@ -62,6 +54,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   cleanup: function($super) {
     $super()
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped)
+    this.controller.stopListening("search", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.stopListening("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.stopListening("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
@@ -104,14 +97,6 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   divideMovies: function(movie) {
     return movie.releasedDisplay
-  },
-
-  handleCommand: function($super, event) {
-    $super(event)
-
-    if("search" === event.command && this.movies && this.movies.length) {
-      this.toggleMenuPanel()
-    }
   },
 
   searchMovies: function() {

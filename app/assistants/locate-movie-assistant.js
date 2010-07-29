@@ -6,19 +6,19 @@ LocateMovieAssistant = Class.create(BaseKiosksAssistant, {
     this.addressSubmitButton = {buttonLabel: "Locate"};
   },
 
-  setupViewMenu: function() {
-    this.controller.setupWidget(Mojo.Menu.viewMenu, {}, {items: [
-      {},
-      {items: [
-        {label: this.movie.name, width: 260, command: "n/a"},
-        {label: "Locate", iconPath: "images/compass.png", command: "locate"}
-      ]},
-      {}
-    ]});
-  },
-
   getAddressHintText: function() {
     return "Address...";
+  },
+
+  setup: function($super) {
+    $super()
+    this.controller.update("header", this.kiosk.vendor)
+    this.controller.listen("locate", Mojo.Event.tap, this.toggleMenuPanel)
+  },
+
+  cleanup: function($super) {
+    $super()
+    this.controller.stopListening("locate", Mojo.Event.tap, this.toggleMenuPanel)
   },
 
   ready: function() {
@@ -51,13 +51,5 @@ LocateMovieAssistant = Class.create(BaseKiosksAssistant, {
   gpsSuccess: function($super, response) {
     this.spinnerOn("locating movie");
     $super(response);
-  },
-
-  handleCommand: function($super, event) {
-    $super(event);
-
-    if("locate" === event.command) {
-      this.toggleMenuPanel();
-    }
   }
 })
