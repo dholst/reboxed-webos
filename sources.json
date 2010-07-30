@@ -19,6 +19,7 @@
   {source: "app/models/movie.js"},
   {source: "app/models/schema.js"},
   {source: "app/models/user.js"},
+  {source: "app/models/preferences.js"},
   {source: "app/assistants/base-assistant.js"},
   {source: "app/assistants/base-genres-assistant.js"},
   {source: "app/assistants/base-movies-assistant.js"},
@@ -40,5 +41,6 @@
   {source: "app/assistants/kiosk-genres-assistant.js"},
   {source: "app/assistants/genres-assistant.js"},
   {source: "app/assistants/genre-movies-assistant.js"},
-  {source: "app/assistants/help-assistant.js"}
+  {source: "app/assistants/help-assistant.js"},
+  {source: "app/assistants/preferences-assistant.js"}
 ]

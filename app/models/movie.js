@@ -52,7 +52,7 @@ Movie.count = function(result) {
     result(null);
   }
 
-  Database.getInstance().execute("select count(*) as count from movies", [], onSuccess, onFailure);
+  Database.getInstance().execute("select count(*) as count from movies m where " + this.blurayWhere(), [], onSuccess, onFailure);
 };
 
 Movie.paginate = function(offset, count, success, failure) {
@@ -70,7 +70,7 @@ Movie.paginate = function(offset, count, success, failure) {
     failure(message);
   }
 
-  var sql = "select * from movies order by released desc, name limit " + count + " offset " + offset;
+  var sql = "select * from movies m where " + this.blurayWhere() + " order by released desc, name limit " + count + " offset " + offset;
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
@@ -89,7 +89,7 @@ Movie.search = function(query, success, failure) {
     failure(message);
   }
 
-  var sql = "select * from movies where name like '%" + query + "%' order by released desc, name limit 200"
+  var sql = "select * from movies m where name like '%" + query + "%' and " + this.blurayWhere() + " order by released desc, name limit 200"
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
@@ -109,7 +109,7 @@ Movie.findAllForGenre = function(genre, success, failure) {
     failure(message)
   }
 
-  var sql = "select m.* from movies m, genres g, movies_genres mg where m.id = mg.movie_id and g.id = mg.genre_id and g.id = ? order by released desc, name limit 200"
+  var sql = "select m.* from movies m, genres g, movies_genres mg where m.id = mg.movie_id and g.id = mg.genre_id and g.id = ? and " + this.blurayWhere() + " order by released desc, name limit 200"
   Database.getInstance().execute(sql, [genre.id], onSuccess, onFailure)
 }
 
@@ -128,7 +128,7 @@ Movie.find = function(id, success, failure) {
     failure(message);
   }
 
-  Database.getInstance().execute("select * from movies where id = ?", [id], onSuccess, onFailure);
+  Database.getInstance().execute("select * from movies m where id = ?", [id], onSuccess, onFailure);
 };
 
 Movie.findAll = function(ids, success, failure) {
@@ -148,7 +148,7 @@ Movie.findAll = function(ids, success, failure) {
   }
 
   if(ids.length) {
-    Database.getInstance().execute("select * from movies where id in (" + ids.join(",") + ") order by released desc, name", [], onSuccess, onFailure);
+    Database.getInstance().execute("select * from movies m where id in (" + ids.join(",") + ") and " + this.blurayWhere() + " order by released desc, name", [], onSuccess, onFailure);
   }
   else {
     success([]);
@@ -175,6 +175,15 @@ Movie.findAllUncategorized = function(success, failure) {
   }
 
   Database.getInstance().execute("select m.id, m.genre from movies m left outer join movies_genres mg on mg.movie_id = m.id where mg.movie_id is null", [], onSuccess, onFailure)
+}
+
+Movie.blurayWhere = function() {
+  if(Preferences.showBluray()) {
+    return "1 = 1"
+  }
+  else {
+    return "m.name not like '%BLU-RAY%'"  
+  }
 }
 
 Movie.fromJson = function(json) {
