@@ -12,6 +12,10 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     Reboxed.Metrix.checkBulletinBoard(this.controller)
   },
 
+  ready: function() {
+    this.spinnerOn("retrieving movies...")
+  },
+
   setupWidgets: function() {
     var listAttributes = {
       renderLimit: 10,
@@ -105,7 +109,8 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
       function(movies) {
         $("movies").mojo.noticeUpdatedItems(offset, movies)
         Movie.count(function(count){$("movies").mojo.setLength(count)})
-      },
+        this.spinnerOff()
+      }.bind(this),
 
       function(message) {
         Mojo.Log.error("damn, database error:", message)
