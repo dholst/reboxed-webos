@@ -1,5 +1,6 @@
 LoginAssistant = Class.create(BaseAssistant, {
-  initialize: function() {
+  initialize: function($super) {
+    $super()
     this.user = {username: "", password: ""};
     this.button = {buttonLabel: "Login", disabled: true};
     this.rememberMe = {};

@@ -1,6 +1,8 @@
 BaseGenresAssistant = Class.create(BaseAssistant, {
-  initialize: function() {
+  initialize: function($super) {
+    $super()
     this.genreList = {items: []}
+    this.showPreferences = true
   },
 
   setup: function($super) {

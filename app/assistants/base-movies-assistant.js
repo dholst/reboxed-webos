@@ -1,4 +1,9 @@
 BaseMoviesAssistant = Class.create(BaseAssistant, {
+  initialize: function($super) {
+    $super()
+    this.showPreferences = true
+  },
+
   setup: function($super) {
     $super()
     this.imageCached = this.imageCached.bind(this)

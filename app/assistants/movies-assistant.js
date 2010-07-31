@@ -1,7 +1,7 @@
 MoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function() {
+  initialize: function($super) {
+    $super()
     this.movieSearchText = {value: ""}
-    this.showPreferences = true
   },
 
   setup: function($super) {
@@ -59,8 +59,11 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   activate: function(reload) {
-    console.log("RELOAD? " + reload)
     $("search-text").mojo.setConsumesEnterKey(false)
+
+    if(reload) {
+      this.controller.stageController.swapScene("movies")
+    }
   },
 
   movieSyncComplete: function(event) {

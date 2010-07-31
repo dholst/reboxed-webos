@@ -1,5 +1,6 @@
 var PreferencesAssistant = Class.create(BaseAssistant, {
-  initialize: function() {
+  initialize: function($super) {
+    $super()
     this.bluray = {}
     this.originalBlurayValue = Preferences.showBluray();
     this.bluray.value = this.originalBlurayValue;

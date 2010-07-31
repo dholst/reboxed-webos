@@ -1,5 +1,6 @@
 ReservedMovieAssistant = Class.create(BaseAssistant, {
-  initialize: function(cart) {
+  initialize: function($super, cart) {
+    $super()
     this.cart = cart;
   },
 

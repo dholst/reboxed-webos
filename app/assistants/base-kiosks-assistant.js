@@ -2,6 +2,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   initialize: function($super) {
     $super()
     this.kiosks = {items: []}
+    this.showPreferences = true
   },
 
   getFavorites: function(gotEm) {

@@ -1,5 +1,6 @@
 KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(kiosk) {
+  initialize: function($super, kiosk) {
+    $super()
     this.kiosk = kiosk
     this.movieList = {items: []}
     this.movieSearchText = {value: ""}
@@ -54,8 +55,12 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
   },
 
-  activate: function() {
+  activate: function(reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
+
+    if(reload) {
+      this.controller.stageController.swapScene("kiosk-movies", this.kiosk)
+    }
   },
 
   inventorySuccess: function() {

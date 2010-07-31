@@ -1,5 +1,6 @@
 GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(genre, kiosk) {
+  initialize: function($super, genre, kiosk) {
+    $super()
     this.genre = genre
     this.kiosk = kiosk
     this.movies = []
@@ -60,8 +61,12 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
   },
 
-  activate: function() {
+  activate: function(reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
+
+    if(reload) {
+      this.controller.stageController.swapScene('genre-movies', this.genre, this.kiosk)
+    }
   },
 
   findSuccess: function(movies) {

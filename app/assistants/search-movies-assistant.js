@@ -1,5 +1,6 @@
 SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
-  initialize: function(query, staticMovies, kiosk) {
+  initialize: function($super, query, staticMovies, kiosk) {
+    $super()
     this.query = query
     this.staticMovies = staticMovies
     this.movies = {items: []}
@@ -19,6 +20,12 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.controller.setupWidget("movies", listAttributes, this.movies)
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped = this.movieTapped.bind(this))
     this.controller.update("header", "Search: " + this.query)
+  },
+
+  activate: function(reload) {
+    if(reload) {
+      this.controller.stageController.swapScene("search-movies", this.query, this.staticMovies, this.kiosk)
+    }
   },
 
   cleanup: function($super) {

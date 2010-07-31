@@ -1,7 +1,4 @@
 HelpAssistant = Class.create(BaseAssistant, {
-  initialize: function() {
-  },
-
   setup: function($super) {
     $super();
     this.noAppMenu();

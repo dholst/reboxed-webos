@@ -1,5 +1,6 @@
 MovieAssistant = Class.create(BaseAssistant, {
-  initialize: function(movie, kiosk) {
+  initialize: function($super, movie, kiosk) {
+    $super()
     this.movie = movie
     this.kiosk = kiosk
     this.locateText = {value: ""}

@@ -157,7 +157,7 @@ div.palm-row.movie div.palm-body-text.movie-name {
 
 div.palm-row.movie .movie-info {
   height: 108px;
-  background: url(../images/details.png) center center no-repeat;
+  background: url(../images/rightarrow.png) center center no-repeat;
 }
 
 /*
@@ -195,7 +195,7 @@ div.palm-row.kiosk .star.on {
 
 div.palm-row.kiosk .details {
   height: 70px;
-  background: url(../images/details.png) left center no-repeat;
+  background: url(../images/rightarrow.png) left center no-repeat;
 }
 
 #nothing-found {
@@ -258,5 +258,5 @@ div.genre div.palm-body-text {
 
 div.palm-row.genre .details {
   height: 60px;
-  background: url(../images/details.png) center center no-repeat;
+  background: url(../images/rightarrow.png) center center no-repeat;
 }

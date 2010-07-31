@@ -1,5 +1,6 @@
 ErrorDialogAssistant = Class.create(BaseAssistant, {
-  initialize: function(assistant, callback) {
+  initialize: function($super, assistant, callback) {
+    $super()
     this.controller = assistant.controller;
     this.callback = callback;
   },

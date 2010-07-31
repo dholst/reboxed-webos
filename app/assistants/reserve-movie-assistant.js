@@ -1,5 +1,6 @@
 ReserveMovieAssistant = Class.create(BaseAssistant, {
-  initialize: function(kiosk, movie) {
+  initialize: function($super, kiosk, movie) {
+    $super()
     this.kiosk = kiosk;
     this.movie = movie;
   },
