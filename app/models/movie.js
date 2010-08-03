@@ -13,6 +13,15 @@ Movie = Class.create({
     );
   },
 
+  update: function(success, failure) {
+    Database.getInstance().execute(
+      "update movies set released = ? where id = ?",
+      [this.released.getTime(), this.id],
+      success,
+      failure
+    )
+  },
+
   cacheImage: function() {
     var movie = this;
 
@@ -182,7 +191,7 @@ Movie.blurayWhere = function() {
     return "1 = 1"
   }
   else {
-    return "m.name not like '%BLU-RAY%'"  
+    return "m.name not like '%BLU-RAY%'"
   }
 }
 
@@ -213,7 +222,7 @@ Movie.fromJson = function(json) {
     var match = /(\d{4})-(\d{1,2})-(\d{1,2})/.exec(value)
 
     if(match) {
-      return new Date(match[1], parseInt(match[2]) - 1, match[3]);
+      return new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
     }
     else {
       return new Date(value);

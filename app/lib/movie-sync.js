@@ -60,8 +60,27 @@ MovieSync = Class.create({
     Mojo.Event.send(document, Reboxed.Event.movieSyncFailed, {})
   },
 
+  fixStupidMistake: function() {
+    Movie.findAll([3531, 3535, 3547, 3243, 3543, 3461], function(movies) {
+      this.fixOne(movies)
+    }.bind(this),
+
+    function() {
+    })
+  },
+
+  fixOne: function(movies) {
+    var movie = movies.pop()
+
+    if(movie) {
+      movie.released = new Date("2010", "7", "3")
+      movie.update(this.fixOne.bind(this, movies), function() {console.log("WTF")})
+    }
+  },
+
   syncComplete: function() {
     Reboxed.notify("sync complete, found " + this.total_sunk + " new movies")
+    this.fixStupidMistake()
     GenreSync.sync()
     Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {count: this.total_sunk})
   }
