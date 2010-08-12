@@ -59,15 +59,11 @@ BaseAssistant = Class.create({
     this.controller.get(element).update(content)
   },
 
-  menuPanelOn: function(focusOn) {
+  menuPanelOn: function() {
     this.panelOpen = true
     this.getMenuScrim().show()
     this.getMenuPanel().show()
     this.disableSceneScroller()
-
-    if(focusOn) {
-      this.controller.get(focusOn).mojo.focus()
-    }
   },
 
   menuPanelOff: function() {
@@ -85,12 +81,12 @@ BaseAssistant = Class.create({
     return this.controller.sceneElement.querySelector("div[x-mojo-menupanel]")
   },
 
-  toggleMenuPanel: function(focusOn) {
+  toggleMenuPanel: function() {
     if(this.panelOpen) {
       this.menuPanelOff()
     }
     else {
-      this.menuPanelOn(focusOn)
+      this.menuPanelOn()
     }
   },
 

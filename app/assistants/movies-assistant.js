@@ -44,7 +44,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
 
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped)
     this.controller.listen("switch", Mojo.Event.tap, this.swapScenes)
-    this.controller.listen("search", Mojo.Event.tap, this.toggleMenuPanel.curry("search-text"))
+    this.controller.listen("search", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
