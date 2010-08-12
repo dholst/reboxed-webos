@@ -79,7 +79,7 @@ Movie.paginate = function(offset, count, success, failure) {
     failure(message);
   }
 
-  var sql = "select * from movies m where " + this.blurayWhere() + " order by released desc, name limit " + count + " offset " + offset;
+  var sql = "select * from movies m where " + this.blurayWhere() + " and " + this.currentWhere() + " order by released desc, name limit " + count + " offset " + offset;
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
@@ -98,8 +98,28 @@ Movie.search = function(query, success, failure) {
     failure(message);
   }
 
-  var sql = "select * from movies m where name like '%" + query + "%' and " + this.blurayWhere() + " order by released desc, name limit 200"
+  var sql = "select * from movies m where name like '%" + query + "%' and " + this.blurayWhere() + " and " + this.currentWhere() + " order by released desc, name limit 200"
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
+};
+
+Movie.findUpcoming = function(success, failure) {
+  var onSuccess = function(resultSet) {
+    var movies = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      movies.push(Movie.fromJson(resultSet.rows.item(i)))
+    }
+
+    success(movies)
+  }
+
+  var onFailure = function(message) {
+    Mojo.Log.error(message)
+    failure(message)
+  }
+
+  var sql = "select m.* from movies m where " + this.blurayWhere() + " and m.released > " + new Date().getTime() + " order by released asc, name"
+  Database.getInstance().execute(sql, [], onSuccess, onFailure)
 };
 
 Movie.findAllForGenre = function(genre, success, failure) {
@@ -118,7 +138,7 @@ Movie.findAllForGenre = function(genre, success, failure) {
     failure(message)
   }
 
-  var sql = "select m.* from movies m, genres g, movies_genres mg where m.id = mg.movie_id and g.id = mg.genre_id and g.id = ? and " + this.blurayWhere() + " order by released desc, name limit 200"
+  var sql = "select m.* from movies m, genres g, movies_genres mg where m.id = mg.movie_id and g.id = mg.genre_id and g.id = ? and " + this.blurayWhere() + " and " + this.currentWhere() + " order by released desc, name limit 200"
   Database.getInstance().execute(sql, [genre.id], onSuccess, onFailure)
 }
 
@@ -193,6 +213,10 @@ Movie.blurayWhere = function() {
   else {
     return "m.name not like '%BLU-RAY%'"
   }
+}
+
+Movie.currentWhere = function() {
+  return "m.released < " + new Date().getTime()
 }
 
 Movie.fromJson = function(json) {

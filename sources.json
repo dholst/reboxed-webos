@@ -42,5 +42,6 @@
   {source: "app/assistants/genres-assistant.js"},
   {source: "app/assistants/genre-movies-assistant.js"},
   {source: "app/assistants/help-assistant.js"},
-  {source: "app/assistants/preferences-assistant.js"}
+  {source: "app/assistants/preferences-assistant.js"},
+  {source: "app/assistants/upcoming-assistant.js"}
 ]

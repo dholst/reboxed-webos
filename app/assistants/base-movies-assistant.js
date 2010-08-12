@@ -69,7 +69,11 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
       placeNear: event.originalEvent.target,
       items: popupItems
     })
-  }
+  },
+  
+  divideMovies: function(movie) {
+    return movie.releasedDisplay
+  }  
 })
 
 BaseMoviesAssistant.CACHED_IMAGES = {}

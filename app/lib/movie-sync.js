@@ -14,7 +14,7 @@ MovieSync = Class.create({
         parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
       }
       else {
-        //parameters.since = "05/01/2010"
+        //parameters.since = "06/01/2010"
       }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {

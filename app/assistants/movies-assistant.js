@@ -44,7 +44,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
 
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped)
     this.controller.listen("switch", Mojo.Event.tap, this.swapScenes)
-    this.controller.listen("search", Mojo.Event.tap, this.toggleMenuPanel)
+    this.controller.listen("search", Mojo.Event.tap, this.toggleMenuPanel.curry("search-text"))
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
@@ -96,10 +96,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     }
   },
 
-  divideMovies: function(movie) {
-    return movie.releasedDisplay
-  },
-
   itemsCallback: function(listWidget, offset, count) {
     console.log("Getting " + count + " movies at offset " + offset)
     Movie.paginate(
@@ -119,7 +115,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   swapScenes: function() {
-    this.swapTo(["genres", "kiosks"])
+    this.swapTo(["kiosks", "genres", "upcoming"])
   },
 
   searchMovies: function() {
@@ -128,11 +124,5 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     }
 
     this.menuPanelOff()
-  },
-
-  menuPanelOn: function($super) {
-	  this.movieSearchText.value = ""
-	  this.controller.modelChanged(this.movieSearchText)
-    $super("search-text")
   }
 })

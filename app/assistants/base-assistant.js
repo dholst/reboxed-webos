@@ -6,11 +6,11 @@ BaseAssistant = Class.create({
   setup: function() {
     var appMenuItems = []
     appMenuItems.push(Mojo.Menu.editItem)
-    
+
     if(this.showPreferences) {
       appMenuItems.push({label: "Preferences", command: Mojo.Menu.prefsCmd})
     }
-    
+
     appMenuItems.push({label: "Help", command: Mojo.Menu.helpCmd})
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: true, items: appMenuItems})
@@ -85,12 +85,12 @@ BaseAssistant = Class.create({
     return this.controller.sceneElement.querySelector("div[x-mojo-menupanel]")
   },
 
-  toggleMenuPanel: function() {
+  toggleMenuPanel: function(focusOn) {
     if(this.panelOpen) {
       this.menuPanelOff()
     }
     else {
-      this.menuPanelOn()
+      this.menuPanelOn(focusOn)
     }
   },
 

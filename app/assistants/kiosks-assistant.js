@@ -51,6 +51,6 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
   },
 
   swapScene: function() {
-    this.swapTo(["genres", "movies"])
+    this.swapTo(["movies", "genres", "upcoming"])
   }
 })
