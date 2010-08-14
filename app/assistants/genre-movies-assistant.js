@@ -66,8 +66,12 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
     $("search-text").mojo.setConsumesEnterKey(false)
 
     if(reload) {
-      this.controller.stageController.swapScene('genre-movies', this.genre, this.kiosk)
+      this.refresh()
     }
+  },
+  
+  refresh: function() {
+    this.controller.stageController.swapScene('genre-movies', this.genre, this.kiosk)    
   },
 
   findSuccess: function(movies) {

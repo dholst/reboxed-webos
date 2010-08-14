@@ -19,7 +19,7 @@ MovieSync = Class.create({
         parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
       }
       else {
-        //parameters.since = "06/01/2010"
+        // parameters.since = "06/01/2010"
       }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
@@ -85,7 +85,12 @@ MovieSync = Class.create({
 
   syncComplete: function() {
     if(this.notify) {
-      Reboxed.notify("sync complete, found " + this.total_sunk + " new movies")
+      if(this.total_sunk) {
+        Reboxed.notify("new movies available, tap to reload", true)
+      }
+      else {
+        Reboxed.notify("no new movies available", true)
+      }
     }
 
     this.fixStupidMistake()

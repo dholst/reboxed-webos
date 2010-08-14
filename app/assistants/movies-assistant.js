@@ -39,7 +39,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.movieTapped = this.movieTapped.bind(this)
   	this.searchMovies = this.searchMovies.bind(this)
   	this.searchTextEntry = this.searchTextEntry.bind(this)
-  	this.movieSyncComplete = this.movieSyncComplete.bind(this)
     this.swapScenes = this.swapScenes.bind(this)
 
     this.controller.listen("movies", Mojo.Event.listTap, this.movieTapped)
@@ -48,7 +47,6 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.listen("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.listen("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
-  	this.controller.listen(document, Reboxed.Event.movieSyncComplete, this.movieSyncComplete)
   },
 
   cleanup: function($super) {
@@ -59,35 +57,18 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.stopListening("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
-  	this.controller.stopListening(document, Reboxed.Event.movieSyncComplete, this.movieSyncComplete)
   },
-
+  
   activate: function(reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
 
     if(reload) {
-      this.controller.stageController.swapScene("movies")
+      this.refresh()
     }
   },
 
-  movieSyncComplete: function(event) {
-    if(event.count) {
-      this.controller.showAlertDialog({
-          title: "New Movies Found",
-          message: "Would you like to refresh the list?",
-
-          choices:[
-              {label:"OK", value:"ok", type:'affirmative'},
-              {label:"Not right now", value:"cancel", type:'dismiss'}
-          ],
-
-          onChoose: function(value) {
-            if(value == "ok") {
-              this.controller.stageController.swapScene("movies")
-            }
-          }.bind(this)
-      })
-    }
+  refresh: function() {
+    this.controller.stageController.swapScene("movies")
   },
 
   searchTextEntry: function(event) {

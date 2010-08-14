@@ -59,8 +59,12 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
     $("search-text").mojo.setConsumesEnterKey(false)
 
     if(reload) {
-      this.controller.stageController.swapScene("kiosk-movies", this.kiosk)
+      this.refresh()
     }
+  },
+  
+  refresh: function() {
+    this.controller.stageController.swapScene("kiosk-movies", this.kiosk)    
   },
 
   inventorySuccess: function() {

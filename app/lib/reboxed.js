@@ -1,7 +1,7 @@
 Reboxed = Reboxed || {}
 
-Reboxed.notify = function(message) {
-  Mojo.Controller.getAppController().showBanner({messageText: message}, "", "reboxed")
+Reboxed.notify = function(message, refresh) {
+  Mojo.Controller.getAppController().showBanner({messageText: message}, (refresh ? "refresh" : ""), "reboxed")
 }
 
 Reboxed.Metrix = new Metrix()

@@ -38,8 +38,12 @@ var UpcomingAssistant = Class.create(BaseMoviesAssistant, {
 
   activate: function(reload) {
     if(reload) {
-      this.controller.stageController.swapScene('upcoming')
+      this.refresh()
     }
+  },
+
+  refresh: function() {
+    this.controller.stageController.swapScene('upcoming')
   },
   
   swapScene: function() {

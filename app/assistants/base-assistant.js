@@ -22,6 +22,8 @@ BaseAssistant = Class.create({
     if(scrim) {
       this.controller.listen(scrim, Mojo.Event.tap, this.toggleMenuPanel)
     }
+    
+    this.controller.listen(document, Reboxed.Event.refresh, this.refresh = this.refresh.bind(this))
   },
 
   activate: function() {
@@ -33,6 +35,11 @@ BaseAssistant = Class.create({
     if(scrim) {
       this.controller.stopListening(scrim, Mojo.Event.tap, this.toggleMenuPanel)
     }
+    
+    this.controller.stopListening(document, Reboxed.Event.refresh, this.refresh)
+  },
+  
+  refresh: function() {
   },
 
   spinnerOn: function(message) {
