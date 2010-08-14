@@ -1,11 +1,16 @@
 MovieSync = Class.create({
-  initialize: function() {
+  initialize: function(notify) {
     this.total_sunk = 0
-    Reboxed.notify("syncing movies")
+    this.notify = notify
+
+    if(this.notify) {
+      Reboxed.notify("syncing movies")
+    }
   },
 
-  sync: function() {
+  sync: function(syncGenres) {
     this.movies_sunk = 0
+    this.syncGenres = syncGenres
 
     Movie.syncDate(function(date) {
       var parameters = {}
@@ -79,9 +84,16 @@ MovieSync = Class.create({
   },
 
   syncComplete: function() {
-    Reboxed.notify("sync complete, found " + this.total_sunk + " new movies")
+    if(this.notify) {
+      Reboxed.notify("sync complete, found " + this.total_sunk + " new movies")
+    }
+
     this.fixStupidMistake()
-    GenreSync.sync()
+
+    if(this.syncGenres) {
+      GenreSync.sync()
+    }
+
     Mojo.Event.send(document, Reboxed.Event.movieSyncComplete, {count: this.total_sunk})
   }
 })

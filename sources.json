@@ -12,6 +12,7 @@
   {source: "app/models/card.js"},
   {source: "app/models/cart.js"},
   {source: "app/models/genre.js"},
+  {source: "app/models/genres.js"},
   {source: "app/models/database.js"},
   {source: "app/models/depot.js"},
   {source: "app/models/favorite-kiosks.js"},
