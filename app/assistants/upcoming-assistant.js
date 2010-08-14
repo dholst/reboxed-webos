@@ -27,9 +27,12 @@ var UpcomingAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   ready: function() {
+    this.spinnerOn("retrieving movies...")
+    
     Movie.findUpcoming(function(movies) {
       this.movieList.items.push.apply(this.movieList.items, movies)
       this.controller.modelChanged(this.movieList)
+      this.spinnerOff()
     }.bind(this))
   },
 

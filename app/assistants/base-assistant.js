@@ -24,6 +24,9 @@ BaseAssistant = Class.create({
     }
   },
 
+  activate: function() {
+  },
+  
   cleanup: function() {
     var scrim = this.getMenuScrim()
 

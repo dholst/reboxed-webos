@@ -5,7 +5,7 @@ Database = Class.create({
 
   open: function(callback) {
     this.db = openDatabase("ext:" + this.databaseName, SCHEMA.version, this.databaseName, 500000);
-    this._executeSchemaStatement(callback, 0);
+    this.createTable(this.seedData.bind(this, callback), 0);
   },
 
   execute: function(sql, values, success, failure) {
@@ -19,7 +19,7 @@ Database = Class.create({
     });
   },
 
-  _executeSchemaStatement: function(callback, index) {
+  createTable: function(callback, index) {
     if(index >= SCHEMA.tables.length) {
       callback();
     }
@@ -28,10 +28,34 @@ Database = Class.create({
         transaction.executeSql(
           this._buildSql(SCHEMA.tables[index]),
           [],
-          this._executeSchemaStatement.bind(this, callback, index + 1),
+          this.createTable.bind(this, callback, index + 1),
           this._ohShit
         );
       }.bind(this));
+    }
+  },
+  
+  seedData: function(callback) {
+    var onSuccess = function(resultSet) {
+      var count = resultSet.rows.item(0).count
+      
+      if(count > 0) {
+        callback()
+      }      
+      else {
+        this.insertData(callback, 0) 
+      }
+    }.bind(this)
+    
+    Database.getInstance().execute("select count(*) as count from genres", [], onSuccess, callback);
+  },
+  
+  insertData: function(callback, index) {
+    if(index >= SCHEMA.seedData.length) {
+      callback()
+    }
+    else {
+      Database.getInstance().execute(SCHEMA.seedData[index], [], this.insertData.bind(this, callback, index + 1), callback)
     }
   },
 

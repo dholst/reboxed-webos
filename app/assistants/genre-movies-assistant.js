@@ -49,6 +49,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   ready: function() {
+    this.spinnerOn("retrieving movies...")
     Movie.findAllForGenre(this.genre, this.findSuccess.bind(this), this.findFailure.bind(this))
   },
 
@@ -70,6 +71,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   findSuccess: function(movies) {
+    this.spinnerOff()
     this.movies.clear()
 
     movies.each(function(movie) {
@@ -92,6 +94,7 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   findFailure: function() {
+    this.controller.stageController.pushScene("bail", "Error")
   },
 
   searchTextEntry: function(event) {

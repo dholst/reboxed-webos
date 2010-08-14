@@ -23,8 +23,6 @@ Genre.findAll = function(onSuccess) {
 }
 
 Genre.addMovie = function(genre, movieId, onSuccess, onFailure) {
-  Mojo.Log.info("movieId = " + movieId + ", genre = " + genre)
-
   var success = function(id) {
     if(id) {
       Genre.addMovieForGenreId(id, movieId, onSuccess, onFailure)
