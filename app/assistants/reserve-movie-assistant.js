@@ -10,7 +10,9 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
     this.update("movie-name", "Reserve: " + this.movie.name);
   },
 
-  activate: function() {
+  activate: function($super) {
+    $super()
+    
     if(User.current) {
       this.addToCart();
     }

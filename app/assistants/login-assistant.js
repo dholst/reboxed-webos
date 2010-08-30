@@ -9,7 +9,7 @@ LoginAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super();
-    this.controller.setupWidget("username", {modelProperty: "username", changeOnKeyPress: true, focus: true}, this.user);
+    this.controller.setupWidget("username", {modelProperty: "username", changeOnKeyPress: true, focus: true, textCase: Mojo.Widget.steModeLowerCase}, this.user);
     this.controller.setupWidget("password", {modelProperty: "password", changeOnKeyPress: true}, this.user);
     this.controller.setupWidget("login", {type: Mojo.Widget.activityButton}, this.button);
     this.controller.setupWidget("remember-me", {}, this.rememberMe);
@@ -19,7 +19,8 @@ LoginAssistant = Class.create(BaseAssistant, {
     this.controller.listen("login", Mojo.Event.tap, this.login.bind(this));
   },
 
-  activate: function() {
+  activate: function($super) {
+    $super()
     $("password").mojo.setConsumesEnterKey(false);
     this.propertyChanged();
   },

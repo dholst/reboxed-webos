@@ -49,8 +49,9 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
     this.controller.stopListening("locate", Mojo.Event.tap, this.toggleMenuPanel);
   },
 
-  activate: function() {
+  activate: function($super, resync) {
     $("address-text").mojo.setConsumesEnterKey(false);
+    $super(resync)
   },
 
   addressTextEntry: function(event) {

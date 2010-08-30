@@ -59,10 +59,12 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
   },
   
-  activate: function(reload) {
+  activate: function($super, reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
 
-    if(reload) {
+    $super(reload)
+    
+    if(true == reload) {
       this.refresh()
     }
   },
@@ -78,7 +80,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   itemsCallback: function(listWidget, offset, count) {
-    console.log("Getting " + count + " movies at offset " + offset)
+    Log.debug("Getting " + count + " movies at offset " + offset)
     Movie.paginate(
       offset,
       count,

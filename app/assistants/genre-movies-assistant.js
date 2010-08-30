@@ -62,10 +62,12 @@ GenreMoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
   },
 
-  activate: function(reload) {
+  activate: function($super, reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
 
-    if(reload) {
+    $super(reload)
+
+    if(true == reload) {
       this.refresh()
     }
   },

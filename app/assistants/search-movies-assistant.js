@@ -22,7 +22,9 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.controller.update("header", "Search: " + this.query)
   },
 
-  activate: function(reload) {
+  activate: function($super, reload) {
+    $super()
+    
     if(reload) {
       this.controller.stageController.swapScene("search-movies", this.query, this.staticMovies, this.kiosk)
     }

@@ -1,6 +1,7 @@
 GenreSync = {
   sync: function() {
     if(!GenreSync.syncing) {
+      Log.debug("syncing genres")
       GenreSync.syncing = true
       Movie.findAllUncategorized(this.syncMovies, function() {GenreSync.syncing = false})
     }

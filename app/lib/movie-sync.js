@@ -1,11 +1,7 @@
 MovieSync = Class.create({
-  initialize: function(notify) {
+  initialize: function() {
+    Log.debug("syncing movies")
     this.total_sunk = 0
-    this.notify = notify
-
-    if(this.notify) {
-      Reboxed.notify("syncing movies")
-    }
   },
 
   sync: function(syncGenres) {
@@ -19,7 +15,7 @@ MovieSync = Class.create({
         parameters.since = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
       }
       else {
-        // parameters.since = "06/01/2010"
+        //parameters.since = "06/01/2010"
       }
 
       new Ajax.Request("http://reboxed.semicolonapps.com/movies", {
@@ -65,35 +61,8 @@ MovieSync = Class.create({
     Mojo.Event.send(document, Reboxed.Event.movieSyncFailed, {})
   },
 
-  fixStupidMistake: function() {
-    Movie.findAll([3531, 3535, 3547, 3243, 3543, 3461], function(movies) {
-      this.fixOne(movies)
-    }.bind(this),
-
-    function() {
-    })
-  },
-
-  fixOne: function(movies) {
-    var movie = movies.pop()
-
-    if(movie) {
-      movie.released = new Date("2010", "7", "3")
-      movie.update(this.fixOne.bind(this, movies), function() {console.log("WTF")})
-    }
-  },
-
   syncComplete: function() {
-    if(this.notify) {
-      if(this.total_sunk) {
-        Reboxed.notify("new movies available, tap to reload", true)
-      }
-      else {
-        Reboxed.notify("no new movies available", true)
-      }
-    }
-
-    this.fixStupidMistake()
+    Log.debug("found " + this.total_sunk + " new movies")
 
     if(this.syncGenres) {
       GenreSync.sync()

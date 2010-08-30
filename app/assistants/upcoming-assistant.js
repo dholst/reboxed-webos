@@ -36,8 +36,10 @@ var UpcomingAssistant = Class.create(BaseMoviesAssistant, {
     }.bind(this))
   },
 
-  activate: function(reload) {
-    if(reload) {
+  activate: function($super, reload) {
+    $super(reload)
+    
+    if(true == reload) {
       this.refresh()
     }
   },

@@ -34,6 +34,26 @@ Database = Class.create({
       }.bind(this))
     }
   },
+  
+  clear: function(callback) {
+    this.clearTable(callback, 0)
+  },
+  
+  clearTable: function(callback, index) {
+    if(index >= SCHEMA.tables.length) {
+      callback()
+    }
+    else {
+      this.db.transaction(function(transaction) {
+        transaction.executeSql(
+          "delete from " + SCHEMA.tables[index].name,
+          [],
+          this.clearTable.bind(this, callback, index + 1),
+          this._ohShit
+        )
+      }.bind(this))      
+    }
+  },
 
   _buildSql: function(table) {
     return "create table if not exists '" + table.name + "' (" + table.columns.join(", ") + ")"

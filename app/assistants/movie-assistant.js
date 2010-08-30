@@ -61,8 +61,9 @@ MovieAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  activate: function() {
+  activate: function($super, reload) {
     $("locate-text").mojo.setConsumesEnterKey(false)
+    $super(reload)
   },
 
   cleanup: function() {

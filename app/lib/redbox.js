@@ -7,7 +7,7 @@ Redbox = {
 
         if(match && match.length > 1) {
           Redbox.key = match[1]
-          console.log(Redbox.key)
+          Log.debug("found redbox key - " + Redbox.key)
         }
       }
     })

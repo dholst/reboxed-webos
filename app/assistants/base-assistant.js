@@ -9,8 +9,9 @@ BaseAssistant = Class.create({
 
     if(this.showPreferences) {
       appMenuItems.push({label: "Preferences", command: Mojo.Menu.prefsCmd})
+      appMenuItems.push({label: "Re-Sync", command: "resync"})
     }
-
+    
     appMenuItems.push({label: "Help", command: Mojo.Menu.helpCmd})
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: true, items: appMenuItems})
@@ -26,7 +27,10 @@ BaseAssistant = Class.create({
     this.controller.listen(document, Reboxed.Event.refresh, this.refresh = this.refresh.bind(this))
   },
 
-  activate: function() {
+  activate: function(resync) {
+    if("RESYNC" == resync) {
+      this.controller.stageController.swapScene("resync")
+    }
   },
   
   cleanup: function() {
@@ -126,9 +130,19 @@ BaseAssistant = Class.create({
         this.controller.stageController.pushScene("preferences")
         event.stop()
       }
+      else if("resync" == event.command) {
+        this.resync()
+        event.stop()
+      }
     }
   },
 
+  resync: function() {
+    var scenes = this.controller.stageController.getScenes();
+    var firstScene = scenes[0].sceneName
+    this.controller.stageController.popScenesTo(firstScene, "RESYNC");
+  },
+  
   swapTo: function(scenes) {
     items = []
 

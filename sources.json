@@ -1,4 +1,5 @@
 [
+  {source: "app/lib/log.js"},
   {source: "app/models/metrix.js"},
   {source: "app/models/asyncWrappers.js"},
   {source: "app/lib/ajax.js"},
@@ -28,8 +29,10 @@
   {source: "app/assistants/base-movies-assistant.js"},
   {source: "app/assistants/base-kiosks-assistant.js"},
   {source: "app/assistants/bail-assistant.js"},
+  {source: "app/assistants/debug-assistant.js"},
   {source: "app/assistants/error-dialog-assistant.js"},
   {source: "app/assistants/full-sync-assistant.js"},
+  {source: "app/assistants/resync-assistant.js"},
   {source: "app/assistants/locate-movie-assistant.js"},
   {source: "app/assistants/login-assistant.js"},
   {source: "app/assistants/movies-assistant.js"},
