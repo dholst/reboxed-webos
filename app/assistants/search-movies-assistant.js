@@ -74,6 +74,6 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   searchError: function(message) {
-    Mojo.Log.error(message)
+    Log.debug(message)
   }
 })

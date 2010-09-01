@@ -47,8 +47,8 @@ Cart.refreshSuccess = function(kiosk, movie, successCallback, failureCallback, r
 }
 
 Cart.failure = function(failureCallback, response) {
-  Mojo.Log.info("cart failure, status:", response.getStatus());
-  Mojo.Log.info(response.responseJSON);
-  Mojo.Log.info(Object.toJSON(response));
+  Log.debug("cart failure, status: " + response.getStatus());
+  Log.debug(response.responseJSON);
+  Log.debug(Object.toJSON(response));
   failureCallback();
 }

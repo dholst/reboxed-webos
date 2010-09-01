@@ -114,7 +114,7 @@ Movie.findUpcoming = function(success, failure) {
   }
 
   var onFailure = function(message) {
-    Mojo.Log.error(message)
+    Log.debug(message)
     failure(message)
   }
 
@@ -134,7 +134,7 @@ Movie.findAllForGenre = function(genre, success, failure) {
   }
 
   var onFailure = function(message) {
-    Mojo.Log.error(message)
+    Log.debug(message)
     failure(message)
   }
 
@@ -153,7 +153,7 @@ Movie.find = function(id, success, failure) {
   }
 
   var onFailure = function(message) {
-    Mojo.Log.error("find failed", message)
+    Log.debug("find failed " + message)
     failure(message);
   }
 
@@ -172,7 +172,7 @@ Movie.findAll = function(ids, success, failure) {
   }
 
   var onFailure = function(message) {
-    Mojo.Log.error("find all failed", message)
+    Log.debug("find all failed " + message)
     failure(message);
   }
 
@@ -199,7 +199,7 @@ Movie.findAllUncategorized = function(success, failure) {
   }
 
   var onFailure = function(messae) {
-    Mojo.Log.error("find uncategorized failed", message)
+    Log.debug("find uncategorized failed", message)
     failure(message)
   }
 

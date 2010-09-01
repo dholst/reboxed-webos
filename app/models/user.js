@@ -24,6 +24,6 @@ User.loginSuccess = function(success, failure, response) {
 };
 
 User.loginFailure = function(failure, response) {
-  Mojo.Log.info("Login failed, status:", response.getStatus());
+  Log.debug("Login failed, status:", response.getStatus());
   failure();
 };

@@ -2,7 +2,7 @@ var Log = {
   items: [],
 
   debug: function(message) {
-    console.log(message)
+    Mojo.Log.info(message)
     this.items.push({message: message})
   }
 }

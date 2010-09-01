@@ -92,7 +92,7 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   gpsFailure: function() {
-    Mojo.Log.info("gps locate failed");
+    Log.debug("gps locate failed");
     this.menuPanelOn("Could not locate you, try entering an address");
   },
 
@@ -101,12 +101,12 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   addressLocateSuccess: function(latitude, longitude) {
-    Mojo.Log.info("found " + latitude + ", " + longitude)
+    Log.debug("found " + latitude + ", " + longitude)
     this.locateKioskAt(latitude, longitude);
   },
 
   addressLocateFailure: function() {
-    Mojo.Log.info("address locate failed");
+    Log.debug("address locate failed");
     this.menuPanelOn("Could not locate that address");
   },
 

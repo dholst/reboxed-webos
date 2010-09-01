@@ -25,7 +25,7 @@ Yahoo = {
   },
 
   geoLocateFailure: function(failure, response) {
-    Mojo.Log.info("geolocate failed, status:", response.getStatus());
+    Log.debug("geolocate failed, status: " + response.getStatus());
     failure();
   }
 };

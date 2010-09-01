@@ -60,7 +60,7 @@ Database = Class.create({
   },
 
   _ohShit: function(transaction, error) {
-    Mojo.Log.error("Database error:", error.message)
+    Log.debug("Database error: " + error.message)
   }
 })
 

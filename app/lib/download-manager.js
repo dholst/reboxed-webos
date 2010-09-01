@@ -1,6 +1,6 @@
 DownloadManager = {
   download: function(source, targetDirectory, targetFile, callback) {
-    Mojo.Log.info("downloading", source, "to", targetDirectory + "/" + targetFile);
+    Log.debug("downloading " + source, " to " + targetDirectory + "/" + targetFile);
 
     new Mojo.Service.Request("palm://com.palm.downloadmanager/", {
       method: 'download',

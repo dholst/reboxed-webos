@@ -46,7 +46,7 @@ Genre.findIdFor = function(name, onSuccess, onFailure) {
   }
 
   var failure = function(message) {
-    Mojo.Log.error("find id for genre failure", message)
+    Log.debug("find id for genre failure " + message)
     onFailure()
   }
 
@@ -61,7 +61,7 @@ Genre.insertGenre = function(genre, movieId, onSuccess, onFailure) {
   }
 
   var failure = function(message) {
-    Mojo.Log.error("insert genre failure", message)
+    Log.debug("insert genre failure " + message)
     onFailure()
   }
 
