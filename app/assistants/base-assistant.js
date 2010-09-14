@@ -1,15 +1,15 @@
 BaseAssistant = Class.create({
   initialize: function() {
     this.panelOpen = false
+  },
 
+  setup: function() {
     Movie.upcomingCount(function(count) {
       if(count) {
         this.upcomingMoviesAvailable = true
       }
     }.bind(this))
-  },
 
-  setup: function() {
     var appMenuItems = []
     appMenuItems.push(Mojo.Menu.editItem)
 
@@ -158,7 +158,7 @@ BaseAssistant = Class.create({
       }
 
       items.push({label: scene.capitalize(), command: scene})
-    })
+    }.bind(this))
 
     this.controller.popupSubmenu({
       placeNear: $("switch"),
