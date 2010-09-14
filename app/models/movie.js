@@ -102,6 +102,18 @@ Movie.search = function(query, success, failure) {
   Database.getInstance().execute(sql, [], onSuccess, onFailure);
 };
 
+Movie.upcomingCount = function(result) {
+  var onSuccess = function(resultSet) {
+    result(resultSet.rows.item(0).count);
+  }
+
+  var onFailure = function(message) {
+    result(null);
+  }
+
+  Database.getInstance().execute("select count(*) as count from movies m where " + this.blurayWhere() + " and m.released > " + new Date().getTime(), [], onSuccess, onFailure);
+};
+
 Movie.findUpcoming = function(success, failure) {
   var onSuccess = function(resultSet) {
     var movies = []

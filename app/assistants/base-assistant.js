@@ -1,6 +1,12 @@
 BaseAssistant = Class.create({
   initialize: function() {
     this.panelOpen = false
+
+    Movie.upcomingCount(function(count) {
+      if(count) {
+        this.upcomingMoviesAvailable = true
+      }
+    }.bind(this))
   },
 
   setup: function() {
@@ -11,7 +17,7 @@ BaseAssistant = Class.create({
       appMenuItems.push({label: "Preferences", command: Mojo.Menu.prefsCmd})
       appMenuItems.push({label: "Re-Sync", command: "resync"})
     }
-    
+
     appMenuItems.push({label: "Help", command: Mojo.Menu.helpCmd})
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: true, items: appMenuItems})
@@ -23,7 +29,7 @@ BaseAssistant = Class.create({
     if(scrim) {
       this.controller.listen(scrim, Mojo.Event.tap, this.toggleMenuPanel)
     }
-    
+
     this.controller.listen(document, Reboxed.Event.refresh, this.refresh = this.refresh.bind(this))
   },
 
@@ -32,17 +38,17 @@ BaseAssistant = Class.create({
       this.controller.stageController.swapScene("resync")
     }
   },
-  
+
   cleanup: function() {
     var scrim = this.getMenuScrim()
 
     if(scrim) {
       this.controller.stopListening(scrim, Mojo.Event.tap, this.toggleMenuPanel)
     }
-    
+
     this.controller.stopListening(document, Reboxed.Event.refresh, this.refresh)
   },
-  
+
   refresh: function() {
   },
 
@@ -142,11 +148,15 @@ BaseAssistant = Class.create({
     var firstScene = scenes[0].sceneName
     this.controller.stageController.popScenesTo(firstScene, "RESYNC");
   },
-  
+
   swapTo: function(scenes) {
     items = []
 
     scenes.each(function(scene) {
+      if(scene == "upcoming" && !this.upcomingMoviesAvailable) {
+        return
+      }
+
       items.push({label: scene.capitalize(), command: scene})
     })
 

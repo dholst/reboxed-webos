@@ -1,6 +1,7 @@
 MovieSync = Class.create({
-  initialize: function() {
+  initialize: function(notify) {
     Log.debug("syncing movies")
+    this.notify = notify
     this.total_sunk = 0
   },
 
@@ -63,6 +64,10 @@ MovieSync = Class.create({
 
   syncComplete: function() {
     Log.debug("found " + this.total_sunk + " new movies")
+
+    if(this.notify && this.total_sunk) {
+      Reboxed.notify("new movies available, tap to reload", true)
+    }
 
     if(this.syncGenres) {
       GenreSync.sync()
