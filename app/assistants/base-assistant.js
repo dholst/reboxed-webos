@@ -84,6 +84,12 @@ BaseAssistant = Class.create({
     this.getMenuScrim().show()
     this.getMenuPanel().show()
     this.disableSceneScroller()
+
+    var inputField = this.controller.sceneElement.querySelector('.palm-menu-panel div[x-mojo-element=TextField]')
+
+    if(inputField) {
+      inputField.mojo.focus.delay(.5)
+    }
   },
 
   menuPanelOff: function() {
