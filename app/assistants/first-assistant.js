@@ -5,6 +5,9 @@ var FirstAssistant = Class.create(BaseAssistant, {
     Database.getInstance().open(this.databaseOpened.bind(this))
   },
 
+  setup: function($super) {
+  },
+  
   databaseOpened: function() {
     Depot.initialize(this.depotOpened.bind(this))
   },
