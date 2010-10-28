@@ -21,6 +21,7 @@ Database = Class.create({
 
   createTable: function(callback, index) {
     if(index >= SCHEMA.tables.length) {
+      this.initialized = true
       callback()
     }
     else {
@@ -34,11 +35,11 @@ Database = Class.create({
       }.bind(this))
     }
   },
-  
+
   clear: function(callback) {
     this.clearTable(callback, 0)
   },
-  
+
   clearTable: function(callback, index) {
     if(index >= SCHEMA.tables.length) {
       callback()
@@ -51,7 +52,7 @@ Database = Class.create({
           this.clearTable.bind(this, callback, index + 1),
           this._ohShit
         )
-      }.bind(this))      
+      }.bind(this))
     }
   },
 

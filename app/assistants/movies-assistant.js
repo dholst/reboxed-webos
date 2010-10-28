@@ -9,7 +9,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.setupWidgets()
     this.setupListeners()
 
-    Reboxed.Metrix.checkBulletinBoard(this.controller)
+    Reboxed.Metrix.checkBulletinBoard(this.controller, 67)
   },
 
   ready: function() {
@@ -58,12 +58,12 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   	this.controller.stopListening("search-submit", Mojo.Event.tap, this.searchMovies)
   	this.controller.stopListening("search-text", Mojo.Event.propertyChange, this.searchTextEntry)
   },
-  
+
   activate: function($super, reload) {
     $("search-text").mojo.setConsumesEnterKey(false)
 
     $super(reload)
-    
+
     if(true == reload) {
       this.refresh()
     }

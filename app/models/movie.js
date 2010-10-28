@@ -103,15 +103,20 @@ Movie.search = function(query, success, failure) {
 };
 
 Movie.upcomingCount = function(result) {
-  var onSuccess = function(resultSet) {
-    result(resultSet.rows.item(0).count);
-  }
+  if(Database.getInstance().initialized) {
+    var onSuccess = function(resultSet) {
+      result(resultSet.rows.item(0).count);
+    }
 
-  var onFailure = function(message) {
-    result(null);
-  }
+    var onFailure = function(message) {
+      result(null);
+    }
 
-  Database.getInstance().execute("select count(*) as count from movies m where " + this.blurayWhere() + " and m.released > " + new Date().getTime(), [], onSuccess, onFailure);
+    Database.getInstance().execute("select count(*) as count from movies m where " + this.blurayWhere() + " and m.released > " + new Date().getTime(), [], onSuccess, onFailure);
+  }
+  else {
+    result(null)
+  }
 };
 
 Movie.findUpcoming = function(success, failure) {
