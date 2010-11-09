@@ -20,14 +20,16 @@ KiosksAssistant = Class.create(BaseKiosksAssistant, {
   },
 
   ready: function() {
-    this.getFavorites(function(favorites) {
-      if(favorites.empty()) {
-        this.menuPanelOn()
+    var self = this
+
+    FavoriteKiosks.get(function(favorites) {
+      if(favorites.length) {
+        self.kioskSuccess(favorites)
       }
       else {
-        this.kioskSuccess(favorites.kiosks)
+        self.menuPanelOn()
       }
-    }.bind(this))
+    })
   },
 
   kioskTapped: function(event) {

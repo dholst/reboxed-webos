@@ -1,40 +1,49 @@
-FavoriteKiosks = Class.create({
-  initialize: function(initialized) {
-    Depot.get("favorite-kiosks", function(kiosks) {
-      this.kiosks = kiosks || []
+FavoriteKiosks = {
+  get: function(got) {
+    var self = this
 
-      this.kiosks = this.kiosks.map(function(json) {
-        return new Kiosk(json)
+    if(self.kiosks) {
+      got(self.kiosks)
+    }
+    else {
+      Depot.get("favorite-kiosks", function(kiosks) {
+        self.kiosks = kiosks || []
+
+        self.kiosks = kiosks.map(function(json) {
+          return new Kiosk(json)
+        })
+
+        got(self.kiosks)
       })
-
-      if(initialized) {
-        initialized(this);
-      }
-    }.bind(this))
+    }
   },
 
   add: function(kiosk) {
-    this.kiosks.push(kiosk.toJson())
-    this.save()
+    var self = this
+
+    self.get(function(kiosks) {
+      kiosks.push(kiosk)
+      self.save()
+    })
   },
 
   remove: function(kiosk) {
-    this.kiosks = this.kiosks.reject(function(k) {
-      return k.id == kiosk.id
+    var self = this
+
+    self.get(function(kiosks) {
+      var newKiosks = kiosks.reject(function(k) {
+        return k.id == kiosk.id
+      })
+
+      kiosks.clear()
+      kiosks.push.apply(kiosks, newKiosks)
+      self.save()
     })
-
-    this.save()
-  },
-
-  empty: function() {
-    return this.kiosks.length == 0
   },
 
   save: function() {
-    Depot.add("favorite-kiosks", this.kiosks)
-  },
-
-  contains: function(kiosk) {
-    return this.kiosks.any(function(k) {return k.id == kiosk.id})
+    this.get(function(kiosks) {
+      Depot.add("favorite-kiosks", kiosks.map(function(k) {return k.toJson()}))
+    })
   }
-})
+}

@@ -11,7 +11,7 @@ var FirstAssistant = Class.create(BaseAssistant, {
 
   depotOpened: function() {
     this.spinnerOff()
-    new FavoriteKiosks() //prime it so it isn't so slow when we really need it
+    FavoriteKiosks.get(function(){})
     this.initializeRedbox();
 
     var scene = "full-sync"

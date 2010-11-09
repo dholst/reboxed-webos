@@ -1,3 +1,7 @@
+body {
+  background-color: #e4e4e2 !important;
+}
+
 .palm-page-header {
     position: fixed;
     top: 0;

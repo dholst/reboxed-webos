@@ -18,7 +18,8 @@ Kiosk = Class.create({
       name: this.name,
       state: this.state,
       vendor: this.vendor,
-      zip: this.zip
+      zip: this.zip,
+      favorite: this.favorite
     }
   },
 

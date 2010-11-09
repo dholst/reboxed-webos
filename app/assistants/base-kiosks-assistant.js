@@ -5,15 +5,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
     this.showPreferences = true
   },
 
-  getFavorites: function(gotEm) {
-    if(this.favorites) {
-      gotEm(this.favorites)
-    }
-    else {
-      this.favorites = new FavoriteKiosks(gotEm)
-    }
-  },
-
   setup: function($super) {
     $super();
 
@@ -21,7 +12,8 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
       listTemplate: "kiosks/kiosks",
       itemTemplate: "kiosks/kiosk",
       dividerTemplate: "kiosks/divider",
-  		dividerFunction: this.divide
+  		dividerFunction: this.divide,
+      onItemRendered: this.itemRendered.bind(this)
     }
 
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);
@@ -117,25 +109,27 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   kioskSuccess: function(kiosks) {
-    this.getFavorites(function(favorites) {
+    var self = this
+
+    FavoriteKiosks.get(function(favorites) {
       kiosks.each(function(kiosk) {
-        kiosk.favorite = favorites.contains(kiosk) ? "on" : false
-        kiosk.calculateDistanceRange();
-        this.kiosks.items.push(kiosk);
-      }.bind(this));
+        kiosk.favorite = favorites.any(function(k) {return k.id == kiosk.id})
+        kiosk.calculateDistanceRange()
+        self.kiosks.items.push(kiosk)
+      })
 
       $("nothing-found")[kiosks.length ? "hide" : "show"]()
-      this.menuPanelOff();
-      this.spinnerOff();
-      this.sortKiosks();
-      this.controller.modelChanged(this.kiosks);
-    }.bind(this))
+      self.menuPanelOff()
+      self.spinnerOff()
+      self.sortKiosks()
+      self.controller.modelChanged(self.kiosks)
+    })
   },
 
   sortKiosks: function() {
     this.kiosks.items.sort(function(a, b) {
       return a.distance - b.distance
-    });
+    })
   },
 
   kioskFailure: function() {
@@ -193,11 +187,8 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   handleKioskTap: function(event, subMenuItems) {
     if(event.originalEvent.target.hasClassName('star')) {
       event.originalEvent.target.toggleClassName('on')
-      var addOrRemove = event.originalEvent.target.hasClassName('on') ? 'add' : 'remove'
-
-      this.getFavorites(function(favorites) {
-        favorites[addOrRemove](event.item)
-      })
+      event.item.favorite = event.originalEvent.target.hasClassName('on')
+      FavoriteKiosks[event.item.favorite ? "add" : "remove"](event.item)
     }
     else {
       this.controller.popupSubmenu({
@@ -205,6 +196,12 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
         placeNear: event.originalEvent.target,
         items: subMenuItems
       })
+    }
+  },
+
+  itemRendered: function(listWidget, itemModel, itemNode) {    
+    if(itemModel.favorite) {
+      itemNode.down(".star").addClassName("on")
     }
   }
 })
