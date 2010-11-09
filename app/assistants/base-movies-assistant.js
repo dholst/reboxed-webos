@@ -52,6 +52,8 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
       popupItems.push({label: "Locate", command: "locate"})
     }
 
+    popupItems.push({label: "YouTube Trailer", command: "youtube"});
+
     var onChoose = function(movie, command) {
       if("details" === command) {
         this.controller.stageController.pushScene("movie", movie, this.kiosk)
@@ -62,6 +64,17 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
       else if("reserve" === command) {
         this.controller.stageController.pushScene("reserve-movie", this.kiosk, movie, this.currentScene())
       }
+      else if("youtube" === command) {
+        this.controller.serviceRequest("palm://com.palm.applicationManager", {
+          method: "open",
+          parameters:  {
+            id: 'com.palm.app.youtube',
+            params: {
+              query: movie.name.gsub(/ \(BLU-RAY\)/, "") + " Trailer"
+            }
+          }
+        })
+      }
     }.bind(this)
 
     this.controller.popupSubmenu({
@@ -70,10 +83,10 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
       items: popupItems
     })
   },
-  
+
   divideMovies: function(movie) {
     return movie.releasedDisplay
-  }  
+  }
 })
 
 BaseMoviesAssistant.CACHED_IMAGES = {}
