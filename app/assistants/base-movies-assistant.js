@@ -22,7 +22,7 @@ BaseMoviesAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  itemRendered: function(listWidget, movie, node) {
+  itemRendered: function(listWidget, movie) {
     if(!BaseMoviesAssistant.CACHED_IMAGES[movie.id]) {
       BaseMoviesAssistant.CACHED_IMAGES[movie.id] = true
       movie.cacheImage()

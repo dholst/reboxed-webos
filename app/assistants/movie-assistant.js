@@ -4,24 +4,7 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.movie = movie
     this.kiosk = kiosk
     this.locateText = {value: ""}
-//
-//    var button
-//
-//    if(this.kiosk) {
-//      button = {label: "Reserve", iconPath: "images/reserve.png", command: "reserve"}
-//    }
-//    else {
-//      button = {label: "Locate", iconPath: "images/compass.png", command: "locate"}
-//    }
-//
-//    this.viewMenu = {items: [
-//      {},
-//      {items: [
-//        {label: movie.name, width: 260, command: "n/a"},
-//        button
-//      ]},
-//      {}
-//    ]}
+    this.youtube = {buttonLabel: "Find YouTube Trailer"};
   },
 
   setup: function($super) {
@@ -43,6 +26,7 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.controller.setupWidget("locate-text", {changeOnKeyPress: true, hintText: "Use current location..."}, this.locateText)
     this.controller.setupWidget("locate-cancel", {}, {buttonClass: "secondary", buttonLabel: "Cancel"})
     this.controller.setupWidget("locate-submit", {}, {buttonLabel: "Locate"})
+    this.controller.setupWidget("youtube", {}, this.youtube);
 
     this.imageCached = this.imageCached.bind(this)
     this.locateMovie = this.locateMovie.bind(this)
@@ -52,6 +36,7 @@ MovieAssistant = Class.create(BaseAssistant, {
   	this.controller.listen("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.listen("locate-submit", Mojo.Event.tap, this.locateMovie)
   	this.controller.listen("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
+    this.controller.listen("youtube", Mojo.Event.tap, this.showYoutubeTrailer = this.showYoutubeTrailer.bind(this))
 
     if(this.icon.id == "locate") {
       this.controller.listen("locate", Mojo.Event.tap, this.toggleMenuPanel)
@@ -71,6 +56,7 @@ MovieAssistant = Class.create(BaseAssistant, {
   	this.controller.stopListening("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.stopListening("locate-submit", Mojo.Event.tap, this.locateMovie)
   	this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
+    this.controller.stopListening("youtube", Mojo.Event.tap, this.showYoutubeTrailer)
 
     if(this.icon.id == "locate") {
       this.controller.stopListening("locate", Mojo.Event.tap, this.toggleMenuPanel)
@@ -88,7 +74,7 @@ MovieAssistant = Class.create(BaseAssistant, {
   reserve: function() {
     this.controller.stageController.pushScene("reserve-movie", this.kiosk, this.movie)
   },
-  
+
   locateMovie: function() {
     this.controller.stageController.pushScene("locate-movie", this.movie, this.locateText.value)
     this.menuPanelOff()
@@ -104,5 +90,17 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   menuPanelOn: function($super){
     $super("locate-text")
-	}
+	},
+
+  showYoutubeTrailer: function() {
+    this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method: "open",
+      parameters:  {
+        id: 'com.palm.app.youtube',
+        params: {
+          query: this.movie.name.gsub(/ \(BLU-RAY\)/, "") + " Trailer"
+        }
+      }
+    })
+  }
 })
