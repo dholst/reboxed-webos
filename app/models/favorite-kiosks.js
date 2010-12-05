@@ -9,7 +9,7 @@ FavoriteKiosks = {
       Depot.get("favorite-kiosks", function(kiosks) {
         self.kiosks = kiosks || []
 
-        self.kiosks = kiosks.map(function(json) {
+        self.kiosks = self.kiosks.map(function(json) {
           return new Kiosk(json)
         })
 

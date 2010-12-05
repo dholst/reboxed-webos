@@ -18,6 +18,7 @@ var FirstAssistant = Class.create(BaseAssistant, {
 
     if(new Mojo.Model.Cookie("fullSyncComplete").get()) {
       new MovieSync(true).sync(true)
+      new GameSync().sync()
       scene = "movies"
     }
 
