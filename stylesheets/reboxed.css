@@ -104,32 +104,32 @@ body {
 /*
  * MOVIE LIST
  */
-div.palm-row.movie div.palm-row-wrapper {
+div.palm-row.movie div.palm-row-wrapper, div.palm-row.game div.palm-row-wrapper {
   background: url(../images/gradient.png) repeat-x 0 0;
 }
 
-div.palm-row.movie img {
+div.palm-row.movie img, div.palm-row.game img {
   float: left;
   width: 75px;
   height: 108px;
   padding-right: 10px;
 }
 
-div.palm-row.movie div.palm-body-text {
+div.palm-row.movie div.palm-body-text, div.palm-row.game div.palm-body-text {
   margin: 0px;
   font-size: 14px;
   line-height: 22px;
   color: gray;
 }
 
-div.palm-row.movie div.palm-body-text.movie-name {
+div.palm-row.movie div.palm-body-text.movie-name, div.palm-row.game div.palm-body-text.game-name {
   font-size: 18px;
   line-height: 22px;
   font-weight: bold;
   color: #333;
 }
 
-div.palm-row.movie .movie-info {
+div.palm-row.movie .movie-info, div.palm-row.game .game-info {
   height: 108px;
   background: url(../images/rightarrow.png) center center no-repeat;
 }

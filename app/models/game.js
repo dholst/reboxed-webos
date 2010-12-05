@@ -22,6 +22,41 @@ Game.syncDate = function(result) {
   Database.getInstance().execute("select distinct released from games order by released desc", [], onSuccess, onFailure)
 }
 
+Game.paginate = function(offset, count, success, failure) {
+  var onSuccess = function(resultSet) {
+    var games = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      games.push(Movie.fromJson(resultSet.rows.item(i)))
+    }
+
+    success(games)
+  }
+
+  var onFailure = function(message) {
+    failure(message)
+  }
+
+  var sql = "select * from games g where " + this.currentWhere() + " order by released desc, name limit " + count + " offset " + offset
+  Database.getInstance().execute(sql, [], onSuccess, onFailure);
+}
+
+Game.count = function(result) {
+  var onSuccess = function(resultSet) {
+    result(resultSet.rows.item(0).count);
+  }
+
+  var onFailure = function(message) {
+    result(null);
+  }
+
+  Database.getInstance().execute("select count(*) as count from games g", [], onSuccess, onFailure);
+}
+
+Game.currentWhere = function() {
+  return "g.released < " + new Date().getTime()
+}
+
 Game.fromJson = function(json) {
   var game = new Game()
   game.id = json.id

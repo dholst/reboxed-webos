@@ -98,7 +98,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
   },
 
   swapScenes: function() {
-    this.swapTo(["kiosks", "genres", "upcoming"])
+    this.swapTo(["kiosks", "genres", "games", "upcoming"])
   },
 
   searchMovies: function() {
