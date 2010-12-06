@@ -41,6 +41,7 @@
   {"source": "app/assistants/game-assistant.js"},
   {"source": "app/assistants/games-assistant.js"},
   {"source": "app/assistants/search-movies-assistant.js"},
+  {"source": "app/assistants/search-games-assistant.js"},
   {"source": "app/assistants/movie-assistant.js"},
   {"source": "app/assistants/reserve-movie-assistant.js"},
   {"source": "app/assistants/reserved-movie-assistant.js"},

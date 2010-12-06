@@ -1,4 +1,9 @@
 var Game = Class.create({
+  initialize: function() {
+    this.imageSource = Redbox.Images.thumbnailUrl();
+    this.cacheDirectory = "/media/internal/files/.reboxed/.cache";
+  },
+
   save: function(success, failure) {
     Database.getInstance().execute(
       "insert into games(id, name, image, released, rating, description) values(?, ?, ?, ?, ?, ?)",
@@ -6,6 +11,22 @@ var Game = Class.create({
       success,
       failure
     )
+  },
+
+  cacheImage: function() {
+    var game = this
+
+    new Ajax.Request("file://" + this.cacheDirectory + "/" + this.image, {
+      method: "get",
+
+      onComplete: function(resp) {
+        if(resp.getStatus() != 200) {
+          DownloadManager.download(game.imageSource + "/" + game.image, game.cacheDirectory, game.image, function() {
+            Mojo.Event.send(document, Reboxed.Event.imageCached, {movie: game}) //temporary
+          })
+        }
+      }
+    })
   }
 })
 
@@ -27,7 +48,7 @@ Game.paginate = function(offset, count, success, failure) {
     var games = []
 
     for(var i = 0; i < resultSet.rows.length; i++) {
-      games.push(Movie.fromJson(resultSet.rows.item(i)))
+      games.push(Game.fromJson(resultSet.rows.item(i)))
     }
 
     success(games)
@@ -55,6 +76,25 @@ Game.count = function(result) {
 
 Game.currentWhere = function() {
   return "g.released < " + new Date().getTime()
+}
+
+Game.search = function(query, success, failure) {
+  var onSuccess = function(resultSet) {
+    var games = []
+
+    for(var i = 0; i < resultSet.rows.length; i++) {
+      games.push(Game.fromJson(resultSet.rows.item(i)))
+    }
+
+    success(games)
+  }
+
+  var onFailure = function(message) {
+    failure(message)
+  }
+
+  var sql = "select * from games g where name like '%" + query + "%' and " + this.currentWhere() + " order by released desc, name limit 200"
+  Database.getInstance().execute(sql, [], onSuccess, onFailure)
 }
 
 Game.fromJson = function(json) {
