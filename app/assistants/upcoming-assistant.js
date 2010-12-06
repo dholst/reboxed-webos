@@ -49,7 +49,7 @@ var UpcomingAssistant = Class.create(BaseMoviesAssistant, {
   },
   
   swapScene: function() {
-    this.swapTo(["movies", "kiosks", "genres"])
+    this.swapTo(["movies", "kiosks", "genres", "games"])
   },
 
   movieTapped: function(event) {

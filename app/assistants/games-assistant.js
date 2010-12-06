@@ -34,11 +34,13 @@ var GamesAssistant = Class.create(BaseMoviesAssistant, {
 
   setupListeners: function() {
     this.controller.listen("switch", Mojo.Event.tap, this.swapScenes = this.swapScenes.bind(this))
+    this.controller.listen("games", Mojo.Event.listTap, this.gameTapped = this.gameTapped.bind(this))
   },
 
   cleanup: function($super) {
     $super()
     this.controller.stopListening("switch", Mojo.Event.tap, this.swapScenes)
+    this.controller.stopListening("games", Mojo.Event.listTap, this.gameTapped)
   },
 
   activate: function($super, reload) {
@@ -70,5 +72,9 @@ var GamesAssistant = Class.create(BaseMoviesAssistant, {
 
   divideGames: function(movie) {
     return movie.releasedDisplay
+  },
+
+  gameTapped: function(event) {
+    this.controller.stageController.pushScene("game", event.item)
   }
 })

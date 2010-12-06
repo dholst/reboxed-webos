@@ -38,6 +38,7 @@
   {"source": "app/assistants/locate-movie-assistant.js"},
   {"source": "app/assistants/login-assistant.js"},
   {"source": "app/assistants/movies-assistant.js"},
+  {"source": "app/assistants/game-assistant.js"},
   {"source": "app/assistants/games-assistant.js"},
   {"source": "app/assistants/search-movies-assistant.js"},
   {"source": "app/assistants/movie-assistant.js"},

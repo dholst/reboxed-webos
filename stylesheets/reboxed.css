@@ -137,9 +137,10 @@ div.palm-row.movie .movie-info, div.palm-row.game .game-info {
 /*
  * MOVIE DETAIL
  */
-.movie-scene img {
+.movie-scene img, .game-scene img {
  float: right;
  padding-right: 10px;
+ padding-left: 10px;
 }
 
 /*

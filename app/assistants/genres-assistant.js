@@ -17,7 +17,7 @@ GenresAssistant = Class.create(BaseGenresAssistant, {
   },
 
   swapScene: function() {
-    this.swapTo(["movies", "kiosks", "upcoming"])
+    this.swapTo(["movies", "kiosks", "games", "upcoming"])
   },
 
   genreTapped: function(event) {
