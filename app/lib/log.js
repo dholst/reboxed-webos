@@ -3,6 +3,10 @@ var Log = {
 
   debug: function(message) {
     Mojo.Log.info(message)
-    this.items.splice(0, 0, {message: message})
+    this.items.push({message: message})
+
+    if(this.items.length > 50) {
+      this.items.splice(0, 1)
+    }
   }
 }

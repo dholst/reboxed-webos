@@ -162,17 +162,21 @@ Redbox = {
     },
 
     parseLocateResponse: function(json) {
+      Log.debug(Object.toJSON(json))
       var kiosks = []
-      var profiles = json.d.profiles
-      var states = json.d.states
 
-      profiles.each(function(profile, index) {
-        var state = states[index]
+      if(json.d) {
+        var profiles = json.d.profiles
+        var states = json.d.states
 
-        if(state.Online && (!state.Inv || (state.Inv.length && state.Inv.first().Qty))) {
-          kiosks.push(Redbox.Kiosk.buildFromJson(profile))
-        }
-      })
+        profiles.each(function(profile, index) {
+          var state = states[index]
+
+          if(state.Online && (!state.Inv || (state.Inv.length && state.Inv.first().Qty))) {
+            kiosks.push(Redbox.Kiosk.buildFromJson(profile))
+          }
+        })
+      }
 
       return kiosks
     },

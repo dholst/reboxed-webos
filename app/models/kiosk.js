@@ -29,12 +29,12 @@ Kiosk = Class.create({
       this.distanceRange = "Favorites"
     }
     else {
-      var ranges = [1, 5, 10, 20, 30, 40, 50];
+      var ranges = [1, 5, 10, 20, 30, 40, 50]
       var range;
 
       for(var i = 0; i < ranges.length; i++) {
         if(this.distance < ranges[i]) {
-          range = ranges[i];
+          range = ranges[i]
           break;
         }
       }
@@ -43,7 +43,7 @@ Kiosk = Class.create({
         this.distanceRange = range + " mile" + (range == 1 ? "" : "s") + " or less"
       }
       else {
-        this.distanceRange = "more than " + ranges.last() + " miles";
+        this.distanceRange = "more than " + ranges.last() + " miles"
       }
     }
 
@@ -57,7 +57,7 @@ Kiosk = Class.create({
       postBody: Redbox.Kiosk.buildInventoryRequest(this.id),
       onSuccess: this.loadInventorySuccess.bind(this, success, failure),
       onFailure: failure
-    });
+    })
   },
 
   loadInventorySuccess: function(success, failure, response) {
@@ -72,10 +72,8 @@ Kiosk = Class.create({
   }
 })
 
-Kiosk.locate = function(id, lat, long, success, failure, ass) {
-  if(ass) {
-    ass.debug("locating kiosk for movie id " + id)
-  }
+Kiosk.locate = function(id, lat, long, success, failure) {
+  Log.debug("locating kiosk for movie id " + id)
 
   var trim = function(position) {
     var parts = ("" + position).split(".")
@@ -85,10 +83,7 @@ Kiosk.locate = function(id, lat, long, success, failure, ass) {
 
   lat = trim(lat)
   long = trim(long)
-
-  if(ass) {
-    ass.debug("lat: " + lat + ", long: " + long)
-  }
+  Log.debug("lat: " + lat + ", long: " + long)
 
   new Ajax.Request(Redbox.Kiosk.locateUrl, {
     method: "post",
@@ -96,5 +91,5 @@ Kiosk.locate = function(id, lat, long, success, failure, ass) {
     postBody: Redbox.Kiosk.buildLocateRequest(lat, long, id),
     onSuccess: function(response) {success(Redbox.Kiosk.parseLocateResponse(response.responseJSON))},
     onFailure: failure
-  });
+  })
 }

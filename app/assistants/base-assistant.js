@@ -52,13 +52,6 @@ BaseAssistant = Class.create({
   refresh: function() {
   },
 
-  debug: function(message) {
-    if(true) {
-      Log.debug(message)
-      this.spinnerOn(message)
-    }
-  },
-
   spinnerOn: function(message) {
     var spinner = $$(".spinner").first()
 
