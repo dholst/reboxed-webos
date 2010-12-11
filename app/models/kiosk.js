@@ -87,6 +87,7 @@ Kiosk.locate = function(id, lat, long, success, failure) {
 
   new Ajax.Request(Redbox.Kiosk.locateUrl, {
     method: "post",
+    requestHeaders: {"Cookie": Redbox.apiCookie()},
     contentType: "application/json",
     postBody: Redbox.Kiosk.buildLocateRequest(lat, long, id),
     onSuccess: function(response) {success(Redbox.Kiosk.parseLocateResponse(response.responseJSON))},

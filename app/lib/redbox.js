@@ -1,8 +1,16 @@
 Redbox = {
+  API_VERSION: "2",
+
+  apiCookie: function() {
+    return "RB_" + this.API_VERSION + ".0=1"
+  },
+
   initialize: function() {
     new Ajax.Request("http://www.redbox.com/", {
       method: "get",
+      requestHeaders: {"Cookie": this.apiCookie()},
       onSuccess: function(response) {
+        Log.debug("redbox headers: " + response.getAllHeaders())
         var match = response.responseText.match(/__K.*value="(.*)"/)
 
         if(match && match.length > 1) {
