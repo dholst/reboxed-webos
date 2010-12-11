@@ -3,6 +3,6 @@ var Log = {
 
   debug: function(message) {
     Mojo.Log.info(message)
-    this.items.push({message: message})
+    this.items.splice(0, 0, {message: message})
   }
 }

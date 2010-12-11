@@ -12,7 +12,7 @@ LocateMovieAssistant = Class.create(BaseKiosksAssistant, {
 
   setup: function($super) {
     $super()
-    this.controller.update("header", this.kiosk.vendor)
+    this.controller.update("header", this.kiosk ? this.kiosk.vendor : "Locate")
     this.controller.listen("locate", Mojo.Event.tap, this.toggleMenuPanel)
   },
 

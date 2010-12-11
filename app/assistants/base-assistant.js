@@ -52,19 +52,29 @@ BaseAssistant = Class.create({
   refresh: function() {
   },
 
+  debug: function(message) {
+    if(true) {
+      Log.debug(message)
+      this.spinnerOn(message)
+    }
+  },
+
   spinnerOn: function(message) {
     var spinner = $$(".spinner").first()
-    spinner.mojo.start()
-    $("spinner-scrim").show()
 
-    var spinnerMessage = $("spinner-message")
+    if(spinner) {
+      spinner.mojo.start()
+      $("spinner-scrim").show()
 
-    if(!spinnerMessage) {
-      spinner.insert({after: '<div id="spinner-message" class="spinner-message palm-info-text"></div>'})
-      spinnerMessage = $("spinner-message")
+      var spinnerMessage = $("spinner-message")
+
+      if(!spinnerMessage) {
+        spinner.insert({after: '<div id="spinner-message" class="spinner-message palm-info-text"></div>'})
+        spinnerMessage = $("spinner-message")
+      }
+
+      spinnerMessage.update(message || "")
     }
-
-    spinnerMessage.update(message || "")
   },
 
   spinnerOff: function() {
@@ -160,6 +170,10 @@ BaseAssistant = Class.create({
 
     scenes.each(function(scene) {
       if(scene == "upcoming" && !this.upcomingMoviesAvailable) {
+        return
+      }
+
+      if(scene == "games") {
         return
       }
 

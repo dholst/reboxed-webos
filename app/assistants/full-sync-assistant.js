@@ -68,9 +68,10 @@ FullSyncAssistant = Class.create(BaseAssistant, {
   },
 
   syncComplete: function() {
-    this.spinnerOn("seeding games, please wait...")
+    this.spinnerOn("seeding genres, please wait...")
     this.updateProgress(0)
-    new GameSync().sync()
+    Genres.seed()
+    //new GameSync().sync()
   },
 
   gameSyncProgress: function(event) {

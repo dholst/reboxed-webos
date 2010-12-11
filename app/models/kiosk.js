@@ -72,7 +72,11 @@ Kiosk = Class.create({
   }
 })
 
-Kiosk.locate = function(id, lat, long, success, failure) {
+Kiosk.locate = function(id, lat, long, success, failure, ass) {
+  if(ass) {
+    ass.debug("locating kiosk for movie id " + id)
+  }
+
   var trim = function(position) {
     var parts = ("" + position).split(".")
     parts[parts.length - 1] = (parts.last() + "000000").slice(0, 6)
@@ -81,6 +85,10 @@ Kiosk.locate = function(id, lat, long, success, failure) {
 
   lat = trim(lat)
   long = trim(long)
+
+  if(ass) {
+    ass.debug("lat: " + lat + ", long: " + long)
+  }
 
   new Ajax.Request(Redbox.Kiosk.locateUrl, {
     method: "post",
