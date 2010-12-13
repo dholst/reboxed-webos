@@ -7,16 +7,17 @@ Ajax.Responders.register({
 
   onComplete: function(request) {
   	if(request.url.startsWith("http")) {
-      Log.debug("ajax request completed with " + request.getStatus());
+      Log.debug("ajax request completed with " + request.getStatus())
     }
   },
 
   onException: function(request, exception) {
-    Log.debug("ajax exception - " + exception.message);
+    Log.debug("ajax exception - " + exception.message)
+    Log.debug(Object.toJSON(exception))
   }
-});
+})
 
 Ajax.Request.prototype.success = function() {
   var status = this.getStatus();
-  return (status >= 200 && status < 300);
+  return (status >= 200 && status < 300)
 }

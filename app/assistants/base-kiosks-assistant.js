@@ -103,7 +103,6 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   },
 
   locateKioskAt: function(latitude, longitude) {
-    Log.debug("locating kiosk at " + latitude + ", " + longitude)
     this.kiosks.items.clear();
     this.controller.modelChanged(this.kiosks);
     Kiosk.locate(this.movie ? this.movie.id : null, latitude, longitude, this.kioskSuccess.bind(this), this.kioskFailure.bind(this), this);
@@ -112,16 +111,11 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
   kioskSuccess: function(kiosks) {
     var self = this
 
-    Log.debug("found " + kiosks.length + " kiosks")
-
     FavoriteKiosks.get(function(favorites) {
-      Log.debug("found " + favorites.length + " favorite kiosks")
-
       kiosks.each(function(kiosk) {
         kiosk.favorite = favorites.any(function(k) {return k.id == kiosk.id})
         kiosk.calculateDistanceRange()
         self.kiosks.items.push(kiosk)
-        Log.debug("adding kiosk " + kiosk.id)
       })
 
       $("nothing-found")[kiosks.length ? "hide" : "show"]()

@@ -1,24 +1,58 @@
 Redbox = {
-  API_VERSION: "2",
+  Api: {
+    findKiosks: function(lat, lng, movieId, success, failure) {
+      this.post(
+        Redbox.Kiosk.locateUrl,
+        Redbox.Kiosk.buildLocateRequest(lat, lng, movieId),
+        function(response) {success(Redbox.Kiosk.parseLocateResponse(response.responseJSON))},
+        failure
+      )
+    },
 
-  apiCookie: function() {
-    return "RB_" + this.API_VERSION + ".0=1"
+    getInventory: function(kioskId, success, failure) {
+      this.post(
+        Redbox.Kiosk.inventoryUrl,
+        Redbox.Kiosk.buildInventoryRequest(this.id),
+        function(response) {success(Redbox.Kiosk.parseInventoryResponse(response.responseJSON))},
+        failure
+      )
+    },
+
+    login: function(username, password, success, failure) {
+      this.post(
+        Redbox.Account.loginUrl(),
+        Redbox.Account.buildLoginRequest(username, password),
+        function(response) {(Redbox.Account.parseLoginResponse(response.responseJSON) ? success : failure)()},
+        failure
+      )
+    },
+
+    addToCart: function(kioskId, movieId, success, failure) {
+      Redbox.post(
+        Redbox.Cart.addItemUrl(movie.id),
+        Redbox.Cart.buildAddItemRequest(kiosk.id),
+        Cart.addSuccess.bind(this, kiosk, movie, success, failure),
+        Cart.failure.bind(this, failure)
+      )
+    },
+
+    post: function(url, body, success, failure, sendCookie) {
+      new Ajax.Request(url, {
+        method: "post",
+        requestHeaders: {"Cookie": "RB_2.0=1"},
+        contentType: "application/json",
+        postBody: body,
+        onSuccess: success,
+        onFailure: failure,
+        onComplete: function(response) {
+          Log.debug("redbox response: " + response.responseText)
+          //Log.debug("redbox headers: " + response.getAllHeaders())
+        }
+      })
+    }
   },
 
   initialize: function() {
-    new Ajax.Request("http://www.redbox.com/", {
-      method: "get",
-      requestHeaders: {"Cookie": this.apiCookie()},
-      onSuccess: function(response) {
-        Log.debug("redbox headers: " + response.getAllHeaders())
-        var match = response.responseText.match(/__K.*value="(.*)"/)
-
-        if(match && match.length > 1) {
-          Redbox.key = match[1]
-          Log.debug("found redbox key - " + Redbox.key)
-        }
-      }
-    })
   },
 
   Images: {
@@ -29,7 +63,7 @@ Redbox = {
 
   Account: {
     loginUrl: function() {
-      return "https://www.redbox.com/ajax.svc/Account/Login/"
+      return "https://www.redbox.com/api/Account/Login/"
     },
 
     buildLoginRequest: function(username, password) {
@@ -37,12 +71,12 @@ Redbox = {
         userName: username,
         password: password,
         createPersistentCookie: false,
-        '__K': Redbox.key
+        '__K': "UNKNOWN" 
       })
     },
 
     parseLoginResponse: function(json) {
-      return json.d.success
+      return json.d.data.loggedIn
     },
 
     getCardsUrl: function() {
@@ -97,6 +131,7 @@ Redbox = {
 
     buildRefreshRequest: function() {
       return Object.toJSON({
+        'applyCredit': false,
         '__K': Redbox.key
       })
     },
@@ -147,56 +182,61 @@ Redbox = {
   },
 
   Kiosk: {
-    locateUrl: "http://www.redbox.com/ajax.svc/Kiosk/GetNearbyKiosks/",
+    locateUrl: "http://www.redbox.com/api/Store/GetStores/",
 
-    buildLocateRequest: function(lat, long, movieId) {
+    buildLocateRequest: function(lat, lng, movieId) {
       var json = {
-        latitude: lat,
-        longitude: long,
-        radius: 50,
-        maxKiosks: 50,
-        mcdOnly: false,
-        getInv: false,
-        pageSize: 50,
-        page: 1,
-        '__K': Redbox.key
-      };
+        resultOptions: {
+          profile: true,
+          status: true,
+          proximity: true,
+          max: 50
+        },
+
+        filters: {
+          proximity: {
+            lat: lat,
+            lng: lng,
+            radius: 50
+          },
+
+          "__K": "UNKNOWN"
+        }
+      }
 
       if(movieId) {
-        json.titleID = movieId
+        json.resultOptions.inventory = true
+        json.resultOptions.inventoryProducts = [movieId]
       }
 
       return Object.toJSON(json)
     },
 
     parseLocateResponse: function(json) {
-      Log.debug(Object.toJSON(json))
       var kiosks = []
 
-      if(json.d) {
-        var profiles = json.d.profiles
-        var states = json.d.states
-
-        profiles.each(function(profile, index) {
-          var state = states[index]
-
-          if(state.Online && (!state.Inv || (state.Inv.length && state.Inv.first().Qty))) {
-            kiosks.push(Redbox.Kiosk.buildFromJson(profile))
-          }
-        })
-      }
+      json.d.data.each(function(kiosk) {
+        if(kiosk.status.online && (!kiosk.inventory || (kiosk.inventory.products.length && kiosk.inventory.products.first().stock))) {
+          kiosks.push(Redbox.Kiosk.buildFromJson(kiosk))
+        }
+      })
 
       return kiosks
     },
 
-    inventoryUrl: "http://www.redbox.com/data.svc/TitleAvailability/",
+    inventoryUrl: "http://www.redbox.com/api/Store/GetStores/",
 
     buildInventoryRequest: function(kioskId) {
       var json = {
-        type: "TitleAvailability",
-        pk: "ID",
-        statements: [{filters: {KioskID: kioskId}}],
-        '__K': Redbox.key
+        filters: {
+          ids: [kioskId]
+        },
+
+        resultOptions: {
+          inventory: true
+        },
+
+        "__K": "UNKNOWN"
       }
 
       return Object.toJSON(json)
@@ -205,29 +245,27 @@ Redbox = {
     parseInventoryResponse: function(json) {
       var ids = []
 
-      for(var i = 0; i < json.d.length; i++) {
-        if(json.d[i].QtyRange) {
-          ids.push(json.d[i].ID)
+      json.d.data.first().inventory.products.each(function(product) {
+        if(product.stock) {
+          ids.push(product.id)
         }
-      }
+      })
 
       return ids
     },
 
     buildFromJson: function(json) {
       var kiosk = new Kiosk()
-      kiosk.id = json.ID
-      kiosk.address = json.Addr
-      kiosk.city = json.City
-      kiosk.distance = json.Dist
-      kiosk.latitude = json.Lat
-      kiosk.longitude = json.Lng
-      kiosk.name = json.Name
-      kiosk.state = json.St
-      kiosk.vendor = Redbox.Kiosk.buildNameFrom(json.Vdr, json.Name)
-      kiosk.zip = json.Zip
-      kiosk.indoor = json.Ind
-      kiosk.driveup_maybe = json.Drv
+      kiosk.id = json.id
+      kiosk.address = json.profile.addr
+      kiosk.city = json.profile.city
+      kiosk.distance = json.proximity.dist
+      kiosk.latitude = json.proximity.lat
+      kiosk.longitude = json.proximity.lng
+      kiosk.name = json.profile.name
+      kiosk.state = json.profile.state
+      kiosk.vendor = Redbox.Kiosk.buildNameFrom(json.profile.vendor, json.profile.name)
+      kiosk.zip = json.profile.zip
       return kiosk;
     },
 

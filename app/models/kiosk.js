@@ -51,18 +51,10 @@ Kiosk = Class.create({
   },
 
   loadInventory: function(success, failure) {
-    new Ajax.Request(Redbox.Kiosk.inventoryUrl, {
-      method: "post",
-      contentType: "application/json",
-      postBody: Redbox.Kiosk.buildInventoryRequest(this.id),
-      onSuccess: this.loadInventorySuccess.bind(this, success, failure),
-      onFailure: failure
-    })
+    Redbox.Api.getInventory(this.id, success, failure)
   },
 
-  loadInventorySuccess: function(success, failure, response) {
-    var ids = Redbox.Kiosk.parseInventoryResponse(response.responseJSON)
-
+  loadInventorySuccess: function(success, failure, ids) {
     var findAllSuccess = function(movies) {
       this.movies = movies
       success()
@@ -72,7 +64,7 @@ Kiosk = Class.create({
   }
 })
 
-Kiosk.locate = function(id, lat, long, success, failure) {
+Kiosk.locate = function(id, lat, lng, success, failure) {
   Log.debug("locating kiosk for movie id " + id)
 
   var trim = function(position) {
@@ -81,16 +73,5 @@ Kiosk.locate = function(id, lat, long, success, failure) {
     return parseFloat(parts.join("."))
   }
 
-  lat = trim(lat)
-  long = trim(long)
-  Log.debug("lat: " + lat + ", long: " + long)
-
-  new Ajax.Request(Redbox.Kiosk.locateUrl, {
-    method: "post",
-    requestHeaders: {"Cookie": Redbox.apiCookie()},
-    contentType: "application/json",
-    postBody: Redbox.Kiosk.buildLocateRequest(lat, long, id),
-    onSuccess: function(response) {success(Redbox.Kiosk.parseLocateResponse(response.responseJSON))},
-    onFailure: failure
-  })
+  Redbox.Api.findKiosks(trim(lat), trim(lng), id, success, failure)
 }
