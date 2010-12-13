@@ -27,13 +27,26 @@ Redbox = {
       )
     },
 
-    addToCart: function(kioskId, movieId, success, failure) {
-      Redbox.post(
-        Redbox.Cart.addItemUrl(movie.id),
-        Redbox.Cart.buildAddItemRequest(kiosk.id),
-        Cart.addSuccess.bind(this, kiosk, movie, success, failure),
-        Cart.failure.bind(this, failure)
+    createCart: function(kioskId, movieId, success, failure) {
+      this.post(
+        Redbox.Kiosk.selectUrl(kioskId),
+        Redbox.Kiosk.buildSelectRequest(),
+        this.addMovieToCart.bind(this, movieId, success, failure),
+        failure
       )
+    },
+
+    addMovieToCart: function(movieId, success, failure) {
+      this.post(
+        Redbox.Cart.addMovieUrl(),
+        Redbox.Cart.buildAddMovieRequest(),
+        this.getCart.bind(this, success, failure),
+        failure
+      )
+    },
+
+    getCart: function(success, failure) {
+
     },
 
     post: function(url, body, success, failure, sendCookie) {
@@ -71,7 +84,7 @@ Redbox = {
         userName: username,
         password: password,
         createPersistentCookie: false,
-        '__K': "UNKNOWN" 
+        '__K': "UNKNOWN"
       })
     },
 
@@ -113,16 +126,21 @@ Redbox = {
   },
 
   Cart: {
-    addItemUrl: function(movieId) {
-      return "https://www.redbox.com/ajax.svc/Cart/AddItem/" + movieId
+    addMovieUrl: function(movieId) {
+      return "http://www.redbox.com/api/Cart/AddItem/"
     },
 
-    buildAddItemRequest: function(kioskId) {
+    buildAddMovieRequest: function(movieId) {
       return Object.toJSON({
-        buy: false,
-        kiosk: kioskId,
-        '__K': Redbox.key
+        "productRef": movieId,
+        "productType": 1,
+        "runView": false,
+        "__K": "UNKNOWN"
       })
+    },
+
+    parseAddMovieResponse: function(json) {
+      return json.d.success
     },
 
     refreshUrl: function() {
@@ -182,6 +200,16 @@ Redbox = {
   },
 
   Kiosk: {
+    selectUrl: function(kioskId) {
+      return "http://www.redbox.com/api/Store/SelectStore/" + kioskId
+    },
+
+    buildSelectRequest: function() {
+      return Object.toJSON({
+        '__K': "UNKNOWN"
+      })
+    },
+
     locateUrl: "http://www.redbox.com/api/Store/GetStores/",
 
     buildLocateRequest: function(lat, lng, movieId) {
