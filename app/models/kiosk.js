@@ -51,7 +51,7 @@ Kiosk = Class.create({
   },
 
   loadInventory: function(success, failure) {
-    Redbox.Api.getInventory(this.id, success, failure)
+    Redbox.Api.getInventory(this.id, this.loadInventorySuccess.bind(this, success, failure), failure)
   },
 
   loadInventorySuccess: function(success, failure, ids) {
