@@ -1,6 +1,6 @@
 Cart = Class.create({
   checkout: function(card, verificationCode, success, failure) {
-    Redbox.checkout(card, verificationCode, success, failure)
+    Redbox.Api.checkout(this, card, verificationCode, success, failure)
   }
 })
 

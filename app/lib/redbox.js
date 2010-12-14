@@ -32,6 +32,10 @@ Redbox = {
 
     getCards: function(success, failure) {
       Redbox.Api1.getCards(success, failure)
+    },
+
+    checkout: function(cart, card, verificationCode, success, failure) {
+      Redbox.Api1.checkout(cart, card, verificationCode, success, failure)
     }
   },
 
@@ -84,6 +88,24 @@ Redbox = {
         Redbox.Cart.refreshUrl1(),
         Redbox.Cart.buildRefreshRequest1(),
         function(response) {success(Redbox.Cart.parseRefreshResponse1(response.responseJSON))},
+        failure
+      )
+    },
+
+    getCards: function(success, failure) {
+      this.post(
+        Redbox.Account.cardsUrl1(),
+        Redbox.Account.buildGetCardsRequest1(),
+        function(response) {success(Redbox.Account.parseGetCardsResponse1(response.responseJSON))},
+        failure
+      )
+    },
+
+    checkout: function(cart, card, cvc, success, failure) {
+      this.post(
+        Redbox.Cart.reserveUrl1(),
+        Redbox.Cart.buildReserveRequest1(cart, card, cvc),
+        function(response) {(Redbox.Cart.parseReserveResponse1(response.responseJSON) ? success : failure)()},
         failure
       )
     },

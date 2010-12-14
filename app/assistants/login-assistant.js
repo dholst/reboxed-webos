@@ -1,7 +1,7 @@
 LoginAssistant = Class.create(BaseAssistant, {
   initialize: function($super) {
     $super()
-    this.user = {username: "", password: ""};
+    this.user = {username: "reboxed@semicolonapps.com", password: "Password1!"};
     this.button = {buttonLabel: "Login", disabled: true};
     this.rememberMe = {};
     this.readCookie();

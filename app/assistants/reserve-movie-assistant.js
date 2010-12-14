@@ -82,7 +82,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
     else {
       this.button.disabled = true;
       this.controller.modelChanged(this.button);
-      this.cart.checkoutWith(this.cards[this.selectedCard.value], this.cvc.value, this.checkoutComplete.bind(this), this.checkoutFailed.bind(this));
+      this.cart.checkout(this.cards[this.selectedCard.value], this.cvc.value, this.checkoutComplete.bind(this), this.checkoutFailed.bind(this));
     }
   },
 
