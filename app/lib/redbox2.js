@@ -33,21 +33,25 @@ Redbox.Api2 = {
   },
 
   createCart: function(kioskId, movieId, success, failure) {
-    //var self = this
+    var self = this
 
-    //self.post(
-    //self.addMovieUrl(movieId),
-    //self.buildAddMovieRequest(kioskId),
-    //function(response) {
-    //if(self.parseAddMovieResponse(response.responseJSON)) {
-    //self.getCart(success, failure)
-    //}
-    //else {
-    //failure()
-    //}
-    //},
-    //failure
-    //)
+    self.post(
+      self.addMovieUrl(),
+      self.buildAddMovieRequest(movieId),
+      function(response) {
+        if(self.parseAddMovieResponse(response.responseJSON)) {
+          self.selectKiosk(kioskId, success, failure)
+        }
+        else {
+          failure()
+        }
+      },
+      failure
+    )
+  },
+
+  selectKiosk: function(kioskId, success, failure) {
+
   },
 
   getCart: function(success, failure) {
@@ -86,9 +90,8 @@ Redbox.Api2 = {
   post: function(url, body, success, failure, sendCookie) {
     Log.debug("redbox request: " + body)
 
-    new Ajax.Request(url, {
+    var parameters = {
       method: "post",
-      //requestHeaders: {"Cookie": "RB_2.0=1"},
       contentType: "application/json",
       postBody: body,
       onSuccess: success,
@@ -97,11 +100,17 @@ Redbox.Api2 = {
         Log.debug("redbox response: " + response.responseText)
         Log.debug("redbox headers: " + response.getAllHeaders())
       }
-    })
+    }
+
+    if(Redbox.key) {
+      parameters.requestHeaders = {"Cookie": "RB_2.0=1"}
+    }
+
+    new Ajax.Request(url, parameters)
   },
 
   loginUrl: function() {
-    return this.https + "www.redbox.com/api/Account/Login/"
+    return this.secureEndpoint + "Account/Login/"
   },
 
   buildLoginRequest: function(username, password) {
@@ -118,7 +127,7 @@ Redbox.Api2 = {
   },
 
   getCardsUrl: function() {
-    return this.https +  "www.redbox.com/ajax.svc/Account/GetCards/";
+    return this.secureEndpoint + "Account/GetCards/";
   },
 
   buildGetCardsRequest: function() {
@@ -150,7 +159,7 @@ Redbox.Api2 = {
   },
 
   addMovieUrl: function(movieId) {
-    return this.https + "www.redbox.com/api/Cart/AddItem/"
+    return this.endpoint + "Cart/AddItem/"
   },
 
   buildAddMovieRequest: function(movieId) {
@@ -223,7 +232,7 @@ Redbox.Api2 = {
   //},
 
   selectUrl: function(kioskId) {
-    return this.http + "www.redbox.com/api/Store/SelectStore/" + kioskId
+    return this.endpoint + "Store/SelectStore/" + kioskId
   },
 
   buildSelectRequest: function() {
@@ -233,7 +242,7 @@ Redbox.Api2 = {
   },
 
   locateKioskUrl: function() {
-    return this.http + "www.redbox.com/api/Store/GetStores/"
+    return this.endpoint + "Store/GetStores/"
   },
 
   buildLocateKioskRequest: function(lat, lng, movieId) {
@@ -278,7 +287,7 @@ Redbox.Api2 = {
   },
 
   kioskInventoryUrl: function() {
-    return this.http + "www.redbox.com/api/Store/GetStores/"
+    return this.endpoint + "Store/GetStores/"
   },
 
   buildKioskInventoryRequest: function(kioskId) {
@@ -335,7 +344,7 @@ Redbox.Api2 = {
     return vendor + name
   },
 
-  https: "https://",
-    http: "http://"
+  secureEndpoint: "https://www.redbox.com/api/",
+    endpoint: "http://www.redbox.com/"
 }
 

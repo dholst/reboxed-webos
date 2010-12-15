@@ -9,6 +9,10 @@ Preferences = {
     this.setCookie(this.BLURAY, value)
   },
 
+  forceNewApi: function() {
+    return false
+  },
+
   getCookie: function(name, defaultValue) {
     var cookie = this.cookieFor(name)
 

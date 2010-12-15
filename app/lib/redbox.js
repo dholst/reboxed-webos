@@ -14,13 +14,11 @@ var Redbox = {
   },
 
   getApi: function() {
-    //return Redbox.Api2
-
-    if(Redbox.key) {
-      return Redbox.Api1
+    if(Preferences.forceNewApi() || !Redbox.key) {
+      return Redbox.Api2
     }
     else {
-      return Redbox.Api2
+      return Redbox.Api1
     }
   },
 
