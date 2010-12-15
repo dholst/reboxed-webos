@@ -51,7 +51,7 @@ Kiosk = Class.create({
   },
 
   loadInventory: function(success, failure) {
-    Redbox.Api.getInventory(this.id, this.loadInventorySuccess.bind(this, success, failure), failure)
+    Redbox.getInventory(this.id, this.loadInventorySuccess.bind(this, success, failure), failure)
   },
 
   loadInventorySuccess: function(success, failure, ids) {
@@ -73,5 +73,5 @@ Kiosk.locate = function(id, lat, lng, success, failure) {
     return parseFloat(parts.join("."))
   }
 
-  Redbox.Api.findKiosks(trim(lat), trim(lng), id, success, failure)
+  Redbox.findKiosks(trim(lat), trim(lng), id, success, failure)
 }

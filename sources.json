@@ -9,6 +9,8 @@
   {"source": "app/lib/movie-sync.js"},
   {"source": "app/lib/game-sync.js"},
   {"source": "app/lib/redbox.js"},
+  {"source": "app/lib/redbox1.js"},
+  {"source": "app/lib/redbox2.js"},
   {"source": "app/lib/reboxed.js"},
   {"source": "app/lib/yahoo.js"},
   {"source": "app/models/card.js"},
