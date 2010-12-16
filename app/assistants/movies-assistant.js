@@ -9,7 +9,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
     this.setupWidgets()
     this.setupListeners()
 
-    Reboxed.Metrix.checkBulletinBoard(this.controller, 67)
+    Reboxed.Metrix.checkBulletinBoard(this.controller, 80)
   },
 
   ready: function() {
