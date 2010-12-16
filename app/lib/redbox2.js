@@ -102,10 +102,6 @@ Redbox.Api2 = {
       }
     }
 
-    if(Redbox.key) {
-      parameters.requestHeaders = {"Cookie": "RB_2.0=1"}
-    }
-
     new Ajax.Request(url, parameters)
   },
 
@@ -247,22 +243,23 @@ Redbox.Api2 = {
 
   buildLocateKioskRequest: function(lat, lng, movieId) {
     var json = {
-      resultOptions: {
-        profile: true,
-        status: true,
-        proximity: true,
-        max: 50
-      },
-
       filters: {
         proximity: {
           lat: lat,
           lng: lng,
           radius: 50
-        },
+        }
+      },
 
-        "__K": "UNKNOWN"
-      }
+      resultOptions: {
+        max: 50,
+        profile: true,
+        status: true,
+        proximity: true,
+        user: true
+      },
+
+      "__K": "UNKNOWN"
     }
 
     if(movieId) {
@@ -345,6 +342,6 @@ Redbox.Api2 = {
   },
 
   secureEndpoint: "https://www.redbox.com/api/",
-    endpoint: "http://www.redbox.com/"
+    endpoint: "http://www.redbox.com/api/"
 }
 
