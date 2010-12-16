@@ -36,6 +36,33 @@ Redbox.Api2 = {
     var self = this
 
     self.post(
+      self.getMoviesInCartUrl(),
+      self.buildGetMoviesInCartRequest(),
+      function(response) {self.removeMovieFromCart(self.parseGetMoviesInCartResponse(response.responseJSON), kioskId, movieId, success, failure)},
+      failure
+    )
+  },
+
+  removeMovieFromCart: function(movies, kioskId, movieId, success, failure) {
+    var self = this
+
+    if(movies.length) {
+      self.post(
+        self.removeMovieUrl(),
+        self.buildRemoveMovieRequest(movies.shift()),
+        self.removeMovieFromCart.bind(self, movies, kioskId, movieId, success, failure),
+        failure
+      )
+    }
+    else {
+      self.addMovieToCart(kioskId, movieId, success, failure)
+    }
+  },
+
+  addMovieToCart: function(kioskId, movieId, success, failure) {
+    var self = this
+
+    self.post(
       self.addMovieUrl(),
       self.buildAddMovieRequest(movieId),
       function(response) {
@@ -51,7 +78,21 @@ Redbox.Api2 = {
   },
 
   selectKiosk: function(kioskId, success, failure) {
+    var self = this
 
+    self.post(
+      self.selectKioskUrl(kioskId),
+      self.buildSelectKioskRequest(),
+      function(response) {
+        if(self.parseSelectKioskResponse(response.responseJSON)) {
+          self.getCart(success, failure)
+        }
+        else {
+          failure()
+        }
+      },
+      failure
+    )
   },
 
   getCart: function(success, failure) {
@@ -88,7 +129,7 @@ Redbox.Api2 = {
   },
 
   post: function(url, body, success, failure, sendCookie) {
-    Log.debug("redbox request: " + body)
+    Log.debug("redbox request: " + url + " - " + body)
 
     var parameters = {
       method: "post",
@@ -134,16 +175,18 @@ Redbox.Api2 = {
 
   parseGetCardsResponse: function(json) {
     var cards = []
-    var jsonCards = json.d
 
-    jsonCards.each(function(jsonCard) {
+    if(json.d && json.d.data)
+      var jsonCards = json.d.data
+
+    json.d.data.each(function(jsonCard) {
       var card = new Card()
       card.original = jsonCard
-      card.id = card.original.ID
-      card.number = card.original.CardNumber
-      card.alias = card.original.Alias
+      card.id = card.original.id
+      card.number = card.original.num
+      card.alias = card.original.alias
 
-      if(card.original.IsPreferred) {
+      if(card.original.pref) {
         cards.unshift(card)
       }
       else {
@@ -168,73 +211,106 @@ Redbox.Api2 = {
   },
 
   parseAddMovieResponse: function(json) {
-    return json.d.success
+    return json.d && json.d.success && json.d.data && json.d.data.session && json.d.data.session.items && json.d.data.session.items.length == 1
   },
 
-  //refreshUrl: function() {
-  //return "https://www.redbox.com/ajax.svc/Cart/Refresh/"
-  //},
-
-  //buildRefreshRequest: function() {
-  //return Object.toJSON({
-  //'applyCredit': false,
-  //'__K': Redbox.key
-  //})
-  //},
-
-  //parseRefreshResponse: function(json) {
-  //var cart = new Cart()
-  //cart.original = json.d.cart
-
-  //cart.price = cart.original.SubTotal || cart.original.DiscountedSubTotal
-  //cart.tax = cart.original.Tax
-  //cart.total = cart.original.GrandTotal
-  //cart.canCheckout = cart.original.CanCheckout
-  //cart.pickupBy = cart.original.PickupBy
-
-  //cart.kiosk = new Kiosk()
-  //cart.kiosk.vendor = Redbox.Kiosk.buildNameFrom(cart.original.Kiosk.Vendor, cart.original.Kiosk.Name)
-  //cart.kiosk.address = cart.original.Kiosk.Address
-  //cart.kiosk.city = cart.original.Kiosk.City
-  //cart.kiosk.state = cart.original.Kiosk.State
-  //cart.kiosk.zip = cart.original.Kiosk.Zip
-
-  //if(cart.original.Items.length > 0) {
-  //cart.movie = new Movie()
-  //cart.movie.name = cart.original.Items.last().Name
-  //cart.movie.rating = cart.original.Items.last().Rating
-  //}
-
-  //return cart
-  //},
-
-  //reserveUrl: function() {
-  //return "https://www.redbox.com/ajax.svc/Cart/Reserve/"
-  //},
-
-  //buildReserveRequest: function(cart, card, verificationCode) {
-  //var request = {}
-  //request.Cart = cart.original
-  //request.Card = card.original
-  //request.Card.CVV = verificationCode
-  //request['__K'] = Redbox.key
-
-  //return Object.toJSON(request)
-  //},
-
-  //parseReserveResponse: function(json) {
-  //return json.d.msgs.length == 0
-  //}
-  //},
-
-  selectUrl: function(kioskId) {
-    return this.endpoint + "Store/SelectStore/" + kioskId
+  selectKioskUrl: function(kioskId) {
+    return this.secureEndpoint + "Store/SelectStore/" + kioskId
   },
 
-  buildSelectRequest: function() {
+  buildSelectKioskRequest: function() {
     return Object.toJSON({
-      '__K': "UNKNOWN"
+      "__K": "UNKNOWN"
     })
+  },
+
+  getMoviesInCartUrl: function() {
+    return this.getCartUrl()
+  },
+
+  buildGetMoviesInCartRequest: function() {
+    return this.buildGetCartRequest()
+  },
+
+  parseGetMoviesInCartResponse: function(json) {
+    var items = []
+
+    if(json.d && json.d.success && json.d.data && json.d.data.cart && json.d.data.cart.items.length) {
+      for(var i = 0; i < json.d.data.cart.items.length; i++) {
+        items.push(json.d.data.cart.items[i].productRef)
+      }
+    }
+
+    return items
+  },
+
+  removeMovieUrl: function() {
+    return this.secureEndpoint + "Cart/RemoveItem/"
+  },
+
+  buildRemoveMovieRequest: function(movieId) {
+    return Object.toJSON({
+      "productRef": movieId,
+      "productType": 1,
+      "runView": false,
+      "__K": "UNKNOWN"
+    })
+  },
+
+  parseSelectKioskResponse: function(json) {
+    return json.d && json.d.success && json.d.data
+  },
+
+  getCartUrl: function() {
+    return this.secureEndpoint + "Cart/GetView/"
+  },
+
+  buildGetCartRequest: function() {
+    return Object.toJSON({
+      "__K": "UNKNOWN"
+    })
+  },
+
+  parseGetCartResponse: function(json) {
+    var cart = null
+
+    if(json.d && json.d.success && json.d.data && json.d.data.cart && json.d.data.cart.items.length == 1 && json.d.data.cart.items[0].canCheckout) {
+      cart = new Cart()
+      cart.original = json.d.data.cart
+
+      cart.price = cart.original.discountedSubTotal || cart.original.subTotal
+      cart.tax = cart.original.tax
+      cart.total = cart.original.grandTotal
+      cart.pickupBy = cart.original.pickupBy
+
+      cart.movie = new Movie()
+      cart.movie.name = cart.original.items[0].name
+      cart.movie.rating = cart.original.items[0].rating
+    }
+
+    return cart
+  },
+
+  checkoutUrl: function() {
+    return this.secureEndpoint + "Cart/Checkout/"
+  },
+
+  buildCheckoutRequest: function(cart, card, verificationCode) {
+    var request = cart.original
+    request.card = card.original
+    request.card.cvv = verificationCode
+    request['__K'] = "UNKNOWN"
+
+    return Object.toJSON(request)
+  },
+
+  parseCheckoutResponse: function(json) {
+    if(json.d && json.d.success && json.d.data && json.d.data.cart && json.d.data.cart.errors) {
+      return !json.d.data.cart.errors.errs || json.d.data.cart.errors.errs.length == 0
+    }
+    else {
+      return false
+    }
   },
 
   locateKioskUrl: function() {

@@ -12,7 +12,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   activate: function($super) {
     $super()
-    
+
     if(User.current) {
       this.addToCart();
     }
@@ -32,6 +32,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   cartCreated: function(cart) {
     this.cart = cart;
+    this.cart.kiosk = this.kiosk
     this.update("movie-name", this.cart.movie.name);
     Card.getAll(this.cardsRetrieved.bind(this), this.cardsFailed.bind(this));
   },
