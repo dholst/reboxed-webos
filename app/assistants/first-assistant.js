@@ -2,11 +2,15 @@ var FirstAssistant = Class.create(BaseAssistant, {
   activate: function($super) {
     $super()
     this.spinnerOn("Initializing database...")
-    Database.getInstance().open(this.databaseOpened.bind(this))
+    Database.getInstance().open(this.databaseOpened.bind(this), this.databaseNotOpened.bind(this))
   },
 
   databaseOpened: function() {
-    Depot.initialize(this.depotOpened.bind(this))
+    Depot.initialize(this.depotOpened.bind(this), this.depotNotOpened.bind(this))
+  },
+
+  databaseNotOpened: function() {
+    this.controller.stageController.swapScene("bail", "Unable to initialize database")
   },
 
   depotOpened: function() {
@@ -28,6 +32,10 @@ var FirstAssistant = Class.create(BaseAssistant, {
     else {
       this.controller.stageController.swapScene("terms", scene)
     }
+  },
+
+  depotNotOpened: function() {
+    this.controller.stageController.swapScene("bail", "Unable to initialize depot")
   },
 
   initializeRedbox: function() {

@@ -17,11 +17,13 @@ BaseAssistant = Class.create({
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: true, items: appMenuItems})
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {})
 
-    Movie.upcomingCount(function(count) {
-      if(count) {
-        this.upcomingMoviesAvailable = true
-      }
-    }.bind(this))
+    if(Database.getInstance().initialized) {
+      Movie.upcomingCount(function(count) {
+        if(count) {
+          this.upcomingMoviesAvailable = true
+        }
+      }.bind(this))
+    }
 
     this.toggleMenuPanel = this.toggleMenuPanel.bind(this)
     var scrim = this.getMenuScrim()

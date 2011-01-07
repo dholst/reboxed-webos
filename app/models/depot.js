@@ -1,11 +1,11 @@
 var Depot = {
-  initialize: function(onSuccess) {
+  initialize: function(onSuccess, onFailure) {
     Log.debug("initializing datastore")
 
     this.depot = new Mojo.Depot(
       {name: "ext:reboxed", version: 1, replace: false},
       function() {Log.debug("datastore initialized"); onSuccess()},
-      function() {Log.debug("could not initialize datastore")}
+      function() {Log.debug("could not initialize datastore"); onFailure()}
     );
   },
 
