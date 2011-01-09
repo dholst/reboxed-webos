@@ -134,6 +134,7 @@ Redbox.Api2 = {
     var parameters = {
       method: "post",
       contentType: "application/json",
+      requestHeaders: {"__K": Redbox.key2},
       postBody: body,
       onSuccess: success,
       onFailure: failure,
@@ -154,8 +155,7 @@ Redbox.Api2 = {
     return Object.toJSON({
       userName: username,
       password: password,
-      createPersistentCookie: false,
-      '__K': "UNKNOWN"
+      createPersistentCookie: false
     })
   },
 
@@ -169,7 +169,6 @@ Redbox.Api2 = {
 
   buildGetCardsRequest: function() {
     return Object.toJSON({
-      '__K': "UNKNOWN"
     })
   },
 
@@ -205,8 +204,7 @@ Redbox.Api2 = {
     return Object.toJSON({
       "productRef": movieId,
       "productType": 1,
-      "runView": false,
-      "__K": "UNKNOWN"
+      "runView": false
     })
   },
 
@@ -220,7 +218,6 @@ Redbox.Api2 = {
 
   buildSelectKioskRequest: function() {
     return Object.toJSON({
-      "__K": "UNKNOWN"
     })
   },
 
@@ -252,8 +249,7 @@ Redbox.Api2 = {
     return Object.toJSON({
       "productRef": movieId,
       "productType": 1,
-      "runView": false,
-      "__K": "UNKNOWN"
+      "runView": false
     })
   },
 
@@ -267,7 +263,6 @@ Redbox.Api2 = {
 
   buildGetCartRequest: function() {
     return Object.toJSON({
-      "__K": "UNKNOWN"
     })
   },
 
@@ -299,7 +294,6 @@ Redbox.Api2 = {
     var request = cart.original
     request.card = card.original
     request.card.cvv = verificationCode
-    request['__K'] = "UNKNOWN"
 
     return Object.toJSON(request)
   },
@@ -333,9 +327,7 @@ Redbox.Api2 = {
         status: true,
         proximity: true,
         user: true
-      },
-
-      "__K": "UNKNOWN"
+      }
     }
 
     if(movieId) {
@@ -371,9 +363,7 @@ Redbox.Api2 = {
 
       resultOptions: {
         inventory: true
-      },
-
-      "__K": "UNKNOWN"
+      }
     }
 
     return Object.toJSON(json)
