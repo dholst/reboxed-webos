@@ -66,7 +66,7 @@ MovieSync = Class.create({
     Log.debug("found " + this.total_sunk + " new movies")
 
     if(this.notify && this.total_sunk) {
-      Reboxed.notify("new movies available, tap to reload", true)
+      //Reboxed.notify("new movies available, tap to reload", true)
     }
 
     if(this.syncGenres) {
