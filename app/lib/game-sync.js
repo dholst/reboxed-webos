@@ -18,7 +18,7 @@ GameSync = Class.create({
         //parameters.since = "11/01/2010"
       }
 
-      new Ajax.Request("http://reboxed.semicolonapps.com/games", {
+      new Ajax.Request("http://reboxed-proxy.heroku.com/games", {
         method: "get",
         parameters: parameters,
         onSuccess: this.syncGames.bind(this),

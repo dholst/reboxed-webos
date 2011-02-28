@@ -4,13 +4,13 @@ describe("Movie Sync", function() {
 
     MovieSync.sync();
 
-    expect(Ajax.Request).wasCalledWith("http://reboxed.semicolonapps.com/movies", {
+    expect(Ajax.Request).wasCalledWith("http://reboxed-proxy.heroku.com/movies", {
       method: "get",
       onSuccess: jasmine.any(Function),
       onFailure: jasmine.any(Function)
     });
   });
-  
+
   it("should send complete event on ajax failure", function() {
     spyOn(Ajax, "Request");
     spyOn(Mojo.Event, "send");

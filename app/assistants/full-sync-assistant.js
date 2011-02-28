@@ -11,11 +11,11 @@ FullSyncAssistant = Class.create(BaseAssistant, {
     $("spinner-message").insert({after: '<div id="progress-container"><div style="width: 65%; margin: auto;" id="progress" x-mojo-element="ProgressBar"></div></div>'})
     this.controller.instantiateChildWidgets($("progress-container"))
 
-    new Ajax.Request("http://reboxed.semicolonapps.com/meta", {
+    new Ajax.Request("http://reboxed-proxy.heroku.com/meta", {
       method: "get",
       onSuccess: this.sync.bind(this),
       onFailure: this.syncFailed.bind(this)
-    })
+    });
   },
 
   sync: function(response) {

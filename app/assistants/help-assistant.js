@@ -20,7 +20,7 @@ HelpAssistant = Class.create(BaseAssistant, {
         id: "com.palm.app.email",
         params: {
           summary: "Reboxed debug log",
-          recipients: [{contactDisplay: "Reboxed", role: 1, type: "email", value: "reboxed@semicolonapps.com"}],
+          recipients: [{contactDisplay: "Reboxed", role: 1, type: "email", value: "reboxedapp@gmail.com"}],
           text: $A(Log.items).map(function(o) {return o.message}).join("|")
         }
       }

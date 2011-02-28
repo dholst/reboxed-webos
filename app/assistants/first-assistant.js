@@ -39,7 +39,7 @@ var FirstAssistant = Class.create(BaseAssistant, {
   },
 
   initializeRedbox: function() {
-    new Ajax.Request("http://reboxed.semicolonapps.com/api3.js", {
+    new Ajax.Request("http://reboxed-proxy.heroku.com/api3.js", {
       method: "get",
 
       onSuccess: function(response) {
