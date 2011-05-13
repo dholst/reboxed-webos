@@ -57,7 +57,7 @@ var Redbox = {
 
   Images: {
     thumbnailUrl: function() {
-      return "http://images.redbox.com/Images/Thumbnails"
+      return "http://images.redbox.com/Images/EPC/Thumb150"
     }
   }
 }
