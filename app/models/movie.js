@@ -219,11 +219,14 @@ Movie.findAllUncategorized = function(success, failure) {
 }
 
 Movie.blurayWhere = function() {
-  if(Preferences.showBluray()) {
-    return "1 = 1"
+  if(Preferences.showBluray() && Preferences.showDvd()) {
+    return "1 = 1";
+  }
+  else if(Preferences.showDvd()) {
+    return "m.name not like '%BLU-RAY%'";
   }
   else {
-    return "m.name not like '%BLU-RAY%'"
+    return "m.name like '%BLU-RAY%'";
   }
 }
 

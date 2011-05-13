@@ -1,5 +1,6 @@
 Preferences = {
   BLURAY: "show-bluray",
+  DVD: "show-dvd",
 
   showBluray: function() {
     return this.getCookie(this.BLURAY, true)
@@ -7,6 +8,14 @@ Preferences = {
 
   setBluray: function(value) {
     this.setCookie(this.BLURAY, value)
+  },
+
+  showDvd: function() {
+    return this.getCookie(this.DVD, true)
+  },
+
+  setDvd: function(value) {
+    this.setCookie(this.DVD, value)
   },
 
   forceNewApi: function() {
@@ -25,6 +34,7 @@ Preferences = {
   },
 
   setCookie: function(name, value) {
+    console.log("setting " + name + " to " + value);
     this.cookieFor(name).put(value)
   },
 
