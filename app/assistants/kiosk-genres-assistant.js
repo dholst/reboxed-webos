@@ -6,7 +6,13 @@ KioskGenresAssistant = Class.create(BaseGenresAssistant, {
 
   setup: function($super) {
     $super()
+    this.setUpGoBack();
     this.controller.update("header", this.kiosk.vendor)
+  },
+
+  cleanup: function($super) {
+    $super();
+    this.cleanUpGoBack();
   },
   
   ready: function() {

@@ -33,6 +33,19 @@ BaseAssistant = Class.create({
     }
 
     this.controller.listen(document, Reboxed.Event.refresh, this.refresh = this.refresh.bind(this))
+    this.goBack = this.goBack.bind(this);
+  },
+
+  setUpGoBack: function() {
+    this.controller.listen("go-back", Mojo.Event.tap, this.goBack)
+  },
+
+  cleanUpGoBack: function() {
+    this.controller.stopListening("go-back", Mojo.Event.tap, this.goBack)
+  },
+
+  goBack: function() {
+    this.controller.stageController.popScene();
   },
 
   activate: function(resync) {

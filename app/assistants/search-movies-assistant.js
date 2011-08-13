@@ -10,8 +10,10 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
   setup: function($super) {
     $super()
 
+    this.setUpGoBack();
+
     var listAttributes = {
-      renderLimit: 10,
+      renderLimit: 30,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this)
@@ -32,6 +34,7 @@ SearchMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   cleanup: function($super) {
     $super()
+    this.cleanUpGoBack();
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped)
   },
 

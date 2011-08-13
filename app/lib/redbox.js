@@ -1,25 +1,30 @@
 var Redbox = {
   initialize: function() {
-    new Ajax.Request("http://www.redbox.com/", {
+    new Ajax.Request("http://www.redbox.com/M/", {
       method: "get",
-      onSuccess: function(response) {
-        var match = response.responseText.match(/rb\.api\.key *= * [',"](.*?)[',"]/)
-        Log.debug(match)
+      onComplete: function() {
+        new Ajax.Request("http://www.redbox.com/", {
+          method: "get",
+          onSuccess: function(response) {
+            var match = response.responseText.match(/rb\.api\.key *= * [',"](.*?)[',"]/)
+            Log.debug(match)
 
-        if(match && match.length > 1) {
-          Redbox.key2 = match[1]
-          Log.debug(Redbox.key2)
-        }
+            if(match && match.length > 1) {
+              Redbox.key2 = match[1]
+              Log.debug(Redbox.key2)
+            }
 
-        match = response.responseText.match(/__K.*value="(.*)"/)
-        Log.debug(match)
+            match = response.responseText.match(/__K.*value="(.*)"/)
+            Log.debug(match)
 
-        if(match && match.length > 1) {
-          Redbox.key = match[1]
-          Log.debug(Redbox.key)
-        }
+            if(match && match.length > 1) {
+              Redbox.key = match[1]
+              Log.debug(Redbox.key)
+            }
+          }
+        })
       }
-    })
+    });
   },
 
   getApi: function() {

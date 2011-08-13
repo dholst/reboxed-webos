@@ -16,14 +16,14 @@ var GamesAssistant = Class.create(BaseMoviesAssistant, {
 
   setupWidgets: function() {
     var listAttributes = {
-      renderLimit: 10,
+      renderLimit: 30,
       lookahead: 20,
       listTemplate: "games/games",
       itemTemplate: "games/game",
       onItemRendered: this.itemRendered.bind(this),
       itemsCallback: this.itemsCallback.bind(this),
       dividerTemplate: "games/divider",
-      dividerFunction: this.divideGames
+      dividerFunction: this.divideGames,
     }
 
     this.controller.setupWidget("games", listAttributes)

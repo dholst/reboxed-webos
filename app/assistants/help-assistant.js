@@ -1,6 +1,7 @@
 HelpAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super()
+    this.setUpGoBack();
     this.noAppMenu()
     this.controller.update('app-name', Mojo.appInfo.title)
     this.controller.update('app-details', Mojo.appInfo.version + " by " + Mojo.appInfo.vendor)
@@ -9,6 +10,7 @@ HelpAssistant = Class.create(BaseAssistant, {
 
   cleanup: function($super) {
     $super()
+    this.cleanUpGoBack();
     this.controller.stopListening('debug', Mojo.Event.tap, this.sendDebugLog)
   },
 

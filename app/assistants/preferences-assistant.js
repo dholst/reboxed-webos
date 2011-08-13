@@ -16,12 +16,14 @@ var PreferencesAssistant = Class.create(BaseAssistant, {
     this.controller.setupWidget("dvd", {}, this.dvd);
     this.controller.listen("bluray", Mojo.Event.propertyChange, this.setBluray = this.setBluray.bind(this));
     this.controller.listen("dvd", Mojo.Event.propertyChange, this.setDvd = this.setDvd.bind(this));
+    this.controller.listen("go-back", Mojo.Event.tap, this.goBack = this.goBack.bind(this));
   },
 
   cleanup: function($super) {
     $super();
     this.controller.stopListening("bluray", Mojo.Event.propertyChange, this.setBluray);
     this.controller.stopListening("dvd", Mojo.Event.propertyChange, this.setDvd);
+    this.controller.stopListening("go-back", Mojo.Event.tabp, this.goBack);
   },
 
   setBluray: function() {
@@ -48,11 +50,15 @@ var PreferencesAssistant = Class.create(BaseAssistant, {
     Preferences.setBluray(this.bluray.value);
   },
 
+  goBack: function() {
+    var reload = (this.originalBlurayValue != this.bluray.value || this.originalDvdValue != this.dvd.value);
+    this.controller.stageController.popScene(reload);
+  },
+
   handleCommand: function($super) {
     if(Mojo.Event.back) {
       event.stop();
-      var reload = (this.originalBlurayValue != this.bluray.value || this.originalDvdValue != this.dvd.value);
-      this.controller.stageController.popScene(reload);
+      this.goBack();
     }
     else {
       $super();

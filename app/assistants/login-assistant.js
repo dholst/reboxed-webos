@@ -9,14 +9,20 @@ LoginAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super();
+    this.setUpGoBack();
     this.controller.setupWidget("username", {modelProperty: "username", changeOnKeyPress: true, focus: true, textCase: Mojo.Widget.steModeLowerCase}, this.user);
     this.controller.setupWidget("password", {modelProperty: "password", changeOnKeyPress: true}, this.user);
     this.controller.setupWidget("login", {type: Mojo.Widget.activityButton}, this.button);
     this.controller.setupWidget("remember-me", {}, this.rememberMe);
 
     this.controller.listen("username", Mojo.Event.propertyChange, this.propertyChanged.bind(this));
-		this.controller.listen("password", Mojo.Event.propertyChange, this.propertyChanged.bind(this));
+    this.controller.listen("password", Mojo.Event.propertyChange, this.propertyChanged.bind(this));
     this.controller.listen("login", Mojo.Event.tap, this.login.bind(this));
+  },
+
+  cleanup: function($super) {
+    $super()
+    this.cleanUpGoBack();
   },
 
   activate: function($super) {
@@ -49,7 +55,10 @@ LoginAssistant = Class.create(BaseAssistant, {
     this.controller.stageController.popScene();
   },
 
-  loginFailure: function() {
+  loginFailure: function(message) {
+    if(message) {
+      $("login-failure-message").update(message);
+    }
     this.controller.get("login-failure").show();
     this.enableButton();
   },

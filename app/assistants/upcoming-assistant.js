@@ -12,7 +12,8 @@ var UpcomingAssistant = Class.create(BaseMoviesAssistant, {
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
       dividerTemplate: "movies/divider",
-  		dividerFunction: this.divideMovies
+  		dividerFunction: this.divideMovies,
+      renderLimit: 30
     }
 
     this.controller.setupWidget("movies", listAttributes, this.movieList)

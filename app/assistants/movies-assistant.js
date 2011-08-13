@@ -18,7 +18,7 @@ MoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   setupWidgets: function() {
     var listAttributes = {
-      renderLimit: 10,
+      renderLimit: 30,
       lookahead: 20,
 			listTemplate: "movies/movies",
       itemTemplate: "movies/movie",

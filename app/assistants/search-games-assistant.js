@@ -9,7 +9,7 @@ var SearchGamesAssistant = Class.create(BaseMoviesAssistant, {
     $super()
 
     var listAttributes = {
-      renderLimit: 10,
+      renderLimit: 30,
       listTemplate: "games/games",
       itemTemplate: "games/game",
       onItemRendered: this.itemRendered.bind(this)

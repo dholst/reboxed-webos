@@ -13,7 +13,8 @@ BaseKiosksAssistant = Class.create(BaseAssistant, {
       itemTemplate: "kiosks/kiosk",
       dividerTemplate: "kiosks/divider",
   		dividerFunction: this.divide,
-      onItemRendered: this.itemRendered.bind(this)
+      onItemRendered: this.itemRendered.bind(this),
+      renderLimit: 30
     }
 
     this.controller.setupWidget("kiosks", listAttributes, this.kiosks);

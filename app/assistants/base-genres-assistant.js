@@ -10,7 +10,8 @@ BaseGenresAssistant = Class.create(BaseAssistant, {
 
     var listAttributes = {
       listTemplate: "genres/genres",
-      itemTemplate: "genres/genre"
+      itemTemplate: "genres/genre",
+      renderLimit: 30
     }
 
     this.controller.setupWidget("genres", listAttributes, this.genreList)

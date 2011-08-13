@@ -8,6 +8,7 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   setup: function($super) {
     $super()
+    this.setUpGoBack();
     this.setupWidgets()
     this.setupListeners()
   },
@@ -18,7 +19,8 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
       itemTemplate: "movies/movie",
       onItemRendered: this.itemRendered.bind(this),
       dividerTemplate: "movies/divider",
-  		dividerFunction: this.divideMovies
+  		dividerFunction: this.divideMovies,
+      renderLimit: 30
     }
 
     this.controller.setupWidget("movies", listAttributes, this.movieList)
@@ -48,6 +50,7 @@ KioskMoviesAssistant = Class.create(BaseMoviesAssistant, {
 
   cleanup: function($super) {
     $super()
+    this.cleanUpGoBack();
     this.controller.stopListening("movies", Mojo.Event.listTap, this.movieTapped)
     this.controller.stopListening("search", Mojo.Event.tap, this.toggleMenuPanel)
   	this.controller.stopListening("search-cancel", Mojo.Event.tap, this.toggleMenuPanel)

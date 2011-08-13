@@ -1,10 +1,11 @@
 {
   "id": "com.semicolonapps.reboxed",
-  "version": "0.8.5",
+  "version": "0.9.0",
   "vendor": "SemicolonApps",
   "type": "web",
   "main": "index.html",
   "title": "Reboxed",
   "icon": "reboxed_64.png",
+  "uiRevision": 2,
   "splashicon": "reboxed_250.png"
 }

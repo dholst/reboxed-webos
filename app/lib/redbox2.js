@@ -27,9 +27,21 @@ Redbox.Api2 = {
     self.post(
       self.loginUrl(),
       self.buildLoginRequest(username, password),
-      function(response) {(self.parseLoginResponse(response.responseJSON) ? success : failure)()},
+      self.loginComplete.bind(success, failure),
       failure
     )
+  },
+
+  loginComplete: function(response, success, failure) {
+    var self = this
+    var loggedIn = self.parseLoginResponse(response.responseJSON);
+
+    if(loggedIn) {
+      self.getCards(success, (failure.curry("Couldn't retrieve cards"))());
+    }
+    else {
+      failure();
+    }
   },
 
   createCart: function(kioskId, movieId, success, failure) {
@@ -91,7 +103,8 @@ Redbox.Api2 = {
           failure()
         }
       },
-      failure
+      failure,
+      "application/x-www-form-urlencoded"
     )
   },
 
@@ -112,7 +125,16 @@ Redbox.Api2 = {
     self.post(
       self.getCardsUrl(),
       self.buildGetCardsRequest(),
-      function(response) {success(self.parseGetCardsResponse(response.responseJSON))},
+      function(response) {
+        var cards = self.parseGetCardsResponse(response.responseJSON);
+
+        if(cards) {
+          success(cards);
+        }
+        else {
+          failure();
+        }
+      },
       failure
     )
   },
@@ -128,23 +150,29 @@ Redbox.Api2 = {
     )
   },
 
-  post: function(url, body, success, failure, sendCookie) {
+  post: function(url, body, success, failure, contentType) {
+    var self = this;
     Log.debug("redbox request: " + url + " - " + body)
 
     var parameters = {
       method: "post",
-      contentType: "application/json",
-      requestHeaders: {"__K": Redbox.key2},
+      contentType: contentType || "application/json",
+      requestHeaders: {
+        "__K": Redbox.key2,
+        "Referer": "http://redbox.mobile.com",
+        "User-Agent": "iOSProxy/200"
+      },
       postBody: body,
-      onSuccess: success,
-      onFailure: failure,
-      onComplete: function(response) {
-        Log.debug("redbox response: " + response.responseText)
-        Log.debug("redbox headers: " + response.getAllHeaders())
-      }
+      onSuccess: function(response) {self.logResponse(response); success(response);},
+      onFailure: function(response) {self.logResponse(response); failure(response);}
     }
 
     new Ajax.Request(url, parameters)
+  },
+
+  logResponse: function(response) {
+    Log.debug("redbox response: " + response.responseText)
+    Log.debug("redbox headers: " + response.getAllHeaders())
   },
 
   loginUrl: function() {
@@ -175,25 +203,27 @@ Redbox.Api2 = {
   parseGetCardsResponse: function(json) {
     var cards = []
 
-    if(json.d && json.d.data)
-      var jsonCards = json.d.data
+    if(json.d && json.d.success) {
+      json.d.data.each(function(jsonCard) {
+        var card = new Card()
+        card.original = jsonCard
+        card.id = card.original.id
+        card.number = card.original.num
+        card.alias = card.original.alias
 
-    json.d.data.each(function(jsonCard) {
-      var card = new Card()
-      card.original = jsonCard
-      card.id = card.original.id
-      card.number = card.original.num
-      card.alias = card.original.alias
+        if(card.original.pref) {
+          cards.unshift(card)
+        }
+        else {
+          cards.push(card)
+        }
+      })
 
-      if(card.original.pref) {
-        cards.unshift(card)
-      }
-      else {
-        cards.push(card)
-      }
-    })
-
-    return cards
+      return cards
+    }
+    else {
+      return false;
+    }
   },
 
   addMovieUrl: function(movieId) {
@@ -218,6 +248,7 @@ Redbox.Api2 = {
 
   buildSelectKioskRequest: function() {
     return Object.toJSON({
+      "returnUserStores": false
     })
   },
 

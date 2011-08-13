@@ -9,6 +9,7 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super()
+    this.setUpGoBack();
 
     this.controller.update('header', this.movie.name)
 
@@ -33,9 +34,9 @@ MovieAssistant = Class.create(BaseAssistant, {
     this.locateTextEntry = this.locateTextEntry.bind(this)
 
     this.controller.listen(document, Reboxed.Event.imageCached, this.imageCached)
-  	this.controller.listen("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
-  	this.controller.listen("locate-submit", Mojo.Event.tap, this.locateMovie)
-  	this.controller.listen("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
+    this.controller.listen("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
+    this.controller.listen("locate-submit", Mojo.Event.tap, this.locateMovie)
+    this.controller.listen("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
     this.controller.listen("youtube", Mojo.Event.tap, this.showYoutubeTrailer = this.showYoutubeTrailer.bind(this))
 
     if(this.icon.id == "locate") {
@@ -52,10 +53,11 @@ MovieAssistant = Class.create(BaseAssistant, {
   },
 
   cleanup: function() {
+    this.cleanUpGoBack();
     this.controller.stopListening(document, Reboxed.Event.imageCached, this.imageCached)
-  	this.controller.stopListening("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
-  	this.controller.stopListening("locate-submit", Mojo.Event.tap, this.locateMovie)
-  	this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
+    this.controller.stopListening("locate-cancel", Mojo.Event.tap, this.toggleMenuPanel)
+    this.controller.stopListening("locate-submit", Mojo.Event.tap, this.locateMovie)
+    this.controller.stopListening("locate-text", Mojo.Event.propertyChange, this.locateTextEntry)
     this.controller.stopListening("youtube", Mojo.Event.tap, this.showYoutubeTrailer)
 
     if(this.icon.id == "locate") {
@@ -90,7 +92,7 @@ MovieAssistant = Class.create(BaseAssistant, {
 
   menuPanelOn: function($super){
     $super("locate-text")
-	},
+  },
 
   showYoutubeTrailer: function() {
     this.controller.serviceRequest("palm://com.palm.applicationManager", {

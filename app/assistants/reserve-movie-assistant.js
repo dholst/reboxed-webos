@@ -7,7 +7,13 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super();
+    this.setUpGoBack();
     this.update("movie-name", "Reserve: " + this.movie.name);
+  },
+
+  cleanup: function($super) {
+    this.cleanUpGoBack();
+    $super();
   },
 
   activate: function($super) {
@@ -81,6 +87,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
       this.reserveError("Verify your age.");
     }
     else {
+      $("go-back").hide();
       this.button.disabled = true;
       this.controller.modelChanged(this.button);
       this.cart.checkout(this.cards[this.selectedCard.value], this.cvc.value, this.checkoutComplete.bind(this), this.checkoutFailed.bind(this));
@@ -114,6 +121,7 @@ ReserveMovieAssistant = Class.create(BaseAssistant, {
   },
 
   reserveError: function(message) {
+    $("go-back").show();
     this.button.disabled = false;
     this.controller.modelChanged(this.button);
     this.controller.get("confirm").mojo.deactivate();

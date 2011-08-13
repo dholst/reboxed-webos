@@ -52,6 +52,10 @@ body {
     background: url(../images/list.png) no-repeat center;
 }
 
+.palm-page-header #go-back {
+  background: url(../images/go-back.png) no-repeat center;
+}
+
 /*
  * GENERIC
  */
@@ -235,3 +239,13 @@ div.palm-row.genre .details {
   height: 60px;
   background: url(../images/rightarrow.png) center center no-repeat;
 }
+
+
+.palm-divider.labeled .left {
+  background: url(../images/divider-line-light.png) no-repeat 100% 60%;
+}
+
+.palm-divider.labeled .right {
+  background: url(../images/divider-line-light.png) no-repeat 0% 60%;
+}
+
