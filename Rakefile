@@ -36,14 +36,3 @@ def version
   app_info['version']
 end
 
-namespace :jasmine do
-  require 'jasmine'
-
-  task :server do
-    require 'spec/support/jasmine_config'
-    Jasmine::Config.new.start_server
-  end
-end
-
-desc "Run specs via server"
-task :jasmine => ['jasmine:server']

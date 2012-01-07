@@ -1,10 +1,10 @@
 Yahoo = {
   geocode: function(location, success, failure) {
-    new Ajax.Request("http://local.yahooapis.com/MapsService/V1/geocode", {
+    new Ajax.Request("http://where.yahooapis.com/geocode", {
       method: "get",
       parameters: {
         appid: "WPa.RN7V34HTuIeClhDW1m6.ippi8LbvUl2wh4rvvNoc404G1smYIgBmnaZuC.Mc3xF2",
-        location: location
+        q: location
       },
       onSuccess: Yahoo.geoLocateSuccess.bind(this, success),
       onFailure: Yahoo.geoLocateFailure.bind(this, failure)
@@ -13,7 +13,8 @@ Yahoo = {
 
   geoLocateSuccess: function(success, response) {
     var xml = response.responseXML;
-    success(this.getTextFromNode(xml, "Latitude"), this.getTextFromNode(xml, "Longitude"));
+    var result = xml.getElementsByTagName("Result")[0]
+    success(this.getTextFromNode(result, "latitude"), this.getTextFromNode(result, "longitude"));
   },
 
   getTextFromNode: function(doc, tag) {
